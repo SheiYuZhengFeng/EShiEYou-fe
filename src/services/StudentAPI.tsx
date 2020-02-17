@@ -10,7 +10,7 @@ const MainAPI = {
     return request(prefix + "/me");
   },
   edit(body: {category: number, level: number, target: number, content: string}) : Promise<SimpleResponse> {
-    return request(prefix + "/edit");
+    return request(prefix + "/edit", body);
   },
 };
 
