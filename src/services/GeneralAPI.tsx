@@ -4,10 +4,10 @@ const UserAPI = {
   login(body: {category: number, username: string, password: string}) : Promise<SimpleResponse | {data: {name: string, token: string}}> {
     return request("/user/login", body, false);
   },
-  password(body: {oldpassword: string, newpassword: string}) {
+  password(body: {oldpassword: string, newpassword: string}) : Promise<SimpleResponse> {
     return request("/user/password", body);
   },
-  logout() {
+  logout() : Promise<SimpleResponse> {
     return request("/user/logout");
   },
   getStudentBrief(body: {id: number}) : Promise<SimpleResponse | {data: {username: string, sex: number, age: number, category: number, level: number, target: number, content: string}}> {
