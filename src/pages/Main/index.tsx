@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import styles from './index.module.less';
 
 class Main extends React.Component {
   render() {
