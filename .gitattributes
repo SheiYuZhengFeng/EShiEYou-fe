@@ -1,0 +1,2 @@
+*.js linguist-language=typescript
+*.less linguist-language=css
