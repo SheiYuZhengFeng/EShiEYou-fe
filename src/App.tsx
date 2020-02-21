@@ -1,9 +1,13 @@
 import React from 'react';
+import styles from './App.module.less';
 import Router from './router';
 
 const App = () => {
+  console.log(styles);
   return (
-    <Router />
+    <div className={styles.whole}>
+      <Router />
+    </div>
   );
 }
 
