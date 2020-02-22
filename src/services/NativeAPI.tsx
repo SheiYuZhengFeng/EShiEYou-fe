@@ -6,7 +6,7 @@ const MainAPI = {
   register(body: {username: string, name: string, password: string, sex: number, age: number, content: string, phone: string, qualification: string, background: string}) : Promise<SimpleResponse> {
     return request(prefix + "/register", body, false);
   },
-  me() : Promise<SimpleResponse | {data: {username: string, name: string, sex: number, age: number, createtime: number, content: string, phone: string, qualification: string, background: string, payment: number, time: string}}> {
+  me() : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, createtime: number, content: string, phone: string, qualification: string, background: string, payment: number, time: string}}> {
     return request(prefix + "/me");
   },
   edit(body: {content: string, time: string}) : Promise<SimpleResponse> {
@@ -15,7 +15,7 @@ const MainAPI = {
 };
 
 const OrderAPI = {
-  list() : Promise<SimpleResponse | {data: {orders: {id: number, state: number, cid: number, student: number, createtime: number, starttime: number, endtime: number}[]}}> {
+  list() : Promise<SimpleResponse & {data: {orders: {id: number, state: number, cid: number, student: number, createtime: number, starttime: number, endtime: number}[]}}> {
     return request(prefix + "/order/list");
   },
   reply(body: {id: number, accept: boolean}) : Promise<SimpleResponse> {
@@ -24,7 +24,7 @@ const OrderAPI = {
 };
 
 const BillAPI = {
-  list() : Promise<SimpleResponse | {data: {bills: {id: number, cost: number, createtime: number}[]}}> {
+  list() : Promise<SimpleResponse & {data: {bills: {id: number, cost: number, createtime: number}[]}}> {
     return request(prefix + "/bill/list");
   },
   pay(body: {cost: number}) : Promise<SimpleResponse> {
