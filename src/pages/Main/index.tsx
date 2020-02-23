@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.less';
 import Navigator from '../../components/Navigator';
-import Copyright from '../../components/Navigator/Copyright';
+import Copyright from '../../components/Copyright';
 
 class Main extends React.Component {
   render() {
