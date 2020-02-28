@@ -24,7 +24,7 @@ const OrderAPI = {
 };
 
 const BillAPI = {
-  list() : Promise<SimpleResponse & {data: {bills: {id: number, cost: number, createtime: number}[]}}> {
+  list() : Promise<SimpleResponse & {data: {bills: {id: number, status: number, cost: number, createtime: number}[]}}> {
     return request(prefix + "/bill/list");
   },
   pay(body: {cost: number}) : Promise<SimpleResponse> {
