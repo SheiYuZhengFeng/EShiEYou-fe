@@ -6,7 +6,7 @@ export interface SimpleResponse {
   data: any,
 }
 
-const server = "https://mockapi.eolinker.com/xst28TE9fd8c9df6f852cffd7f835a68febaceb5100bc4d/user/logout";
+const server = "https://mockapi.eolinker.com/xst28TE9fd8c9df6f852cffd7f835a68febaceb5100bc4d";
 
 const withToken = (body : {} | undefined) => {
   if (isUndefined(body)) body = {};
