@@ -1,4 +1,4 @@
-import request, { SimpleResponse } from "../utils/request";
+import request from "../utils/request";
 
 const prefix = "/foreign";
 

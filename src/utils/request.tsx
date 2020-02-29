@@ -1,11 +1,6 @@
 import axios from "axios";
 import { isUndefined } from "util";
 
-export interface SimpleResponse {
-  code: number,
-  data: any,
-}
-
 const server = "https://mockapi.eolinker.com/xst28TE9fd8c9df6f852cffd7f835a68febaceb5100bc4d";
 
 const withToken = (body : {} | undefined) => {

@@ -1,4 +1,4 @@
-import request, { SimpleResponse } from "../utils/request";
+import request from "../utils/request";
 
 const UserAPI = {
   login(body: {category: number, username: string, password: string}) : Promise<SimpleResponse & {data: {name: string, token: string}}> {
