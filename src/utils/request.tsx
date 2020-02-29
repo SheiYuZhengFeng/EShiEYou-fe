@@ -1,12 +1,14 @@
 import axios from "axios";
 import { isUndefined } from "util";
+import store from "../store";
 
 const server = "https://mockapi.eolinker.com/xst28TE9fd8c9df6f852cffd7f835a68febaceb5100bc4d";
 
 const withToken = (body : {} | undefined) => {
   if (isUndefined(body)) body = {};
-  if (!window.localStorage.token) return body;
-  return {...body, token: window.localStorage.token};
+  const { token } = store.getState().UserReducer.session;
+  if (!token) return body;
+  return {...body, token: token};
 }
 
 export default async function request(url : string, body ?: {}, token = true) : Promise<SimpleResponse> {
