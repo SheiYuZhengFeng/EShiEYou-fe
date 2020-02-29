@@ -3,10 +3,10 @@ import request, { SimpleResponse } from "../utils/request";
 const prefix = "/native";
 
 const MainAPI = {
-  register(body: {username: string, name: string, password: string, sex: number, age: number, content: string, phone: string, qualification: string, background: string}) : Promise<SimpleResponse> {
+  register(body: {username: string, name: string, password: string, sex: number, age: number, content: string, phone: string, qualification: string, background: string, language: number}) : Promise<SimpleResponse> {
     return request(prefix + "/register", body, false);
   },
-  me() : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, createtime: number, content: string, phone: string, qualification: string, background: string, payment: number, time: string}}> {
+  me() : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, createtime: number, content: string, phone: string, qualification: string, background: string, payment: number, time: string, language: number}}> {
     return request(prefix + "/me");
   },
   edit(body: {content: string, time: string}) : Promise<SimpleResponse> {

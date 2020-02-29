@@ -10,19 +10,19 @@ const UserAPI = {
   logout() : Promise<SimpleResponse> {
     return request("/user/logout");
   },
-  getStudentBrief(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, sex: number, age: number, category: number, level: number, target: number, content: string}}> {
+  getStudentBrief(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, sex: number, age: number, language: number, level: number, target: number, content: string}}> {
     return request("/user/student/brief", body, false);
   },
-  getNativeBrief(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, sex: number, age: number, content: string, qualification: string, background: string, time: string}}> {
+  getNativeBrief(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, sex: number, age: number, content: string, qualification: string, background: string, time: string, language: number}}> {
     return request("/user/native/brief", body, false);
   },
   getForeignBrief(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, sex: number, age: number, content: string, language: number, qualification: string, background: string, resume: string}}> {
     return request("/user/foreign/brief", body, false);
   },
-  getStudentDetail(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, category: number, level: number, target: number, content: string, phone: string}}> {
+  getStudentDetail(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, language: number, level: number, target: number, content: string, phone: string}}> {
     return request("/user/student/detail", body);
   },
-  getNativeDetail(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, content: string, phone: string, qualification: string, background: string, time: string}}> {
+  getNativeDetail(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, content: string, phone: string, qualification: string, background: string, time: string, language: number}}> {
     return request("/user/native/detail", body);
   },
   getForeignDetail(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, content: string, phone: string, language: number, qualification: string, background: string, resume: string}}> {
