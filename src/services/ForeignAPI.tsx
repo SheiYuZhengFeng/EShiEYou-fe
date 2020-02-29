@@ -6,7 +6,7 @@ const MainAPI = {
   register(body: {username: string, name: string, password: string, sex: number, age: number, content: string, phone: string, language: number, qualification: string, background: string, resume: string}) : Promise<SimpleResponse> {
     return request(prefix + "/register", body, false);
   },
-  my() : Promise<SimpleResponse & {data: {id: number, username: string, name: string, sex: number, age: number, createtime: number, content: string, phone: string, language: number, qualification: string, background: string, payment: number, resume: string}}> {
+  me() : Promise<SimpleResponse & {data: {id: number, username: string, name: string, sex: number, age: number, createtime: number, content: string, phone: string, language: number, qualification: string, background: string, payment: number, resume: string}}> {
     return request(prefix + "/me");
   },
   edit(body: {content: string}) : Promise<SimpleResponse> {
