@@ -5,6 +5,7 @@ export const UserActionType = {
   LOGOUT: "LOGOUT",
   TOLOGIN: "TOLOGIN",
   TOREGISER: "TOREGISTER",
+  INFORMATION: "INFORMATION",
 }
 
 export const LoginAction = (payload: {name: string, token: string, category: number}) => {
@@ -21,4 +22,8 @@ export const toLoginAction = () => {
 
 export const toRegisterAction = () => {
   store.dispatch({ type: UserActionType.TOREGISER });
+}
+
+export const informationAction = (payload: any) => {
+  store.dispatch({ type: UserActionType.INFORMATION, payload: payload });
 }
