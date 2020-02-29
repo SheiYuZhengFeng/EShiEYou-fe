@@ -6,16 +6,22 @@ import GeneralAPI from '../../../services/GeneralAPI';
 
 const { Option } = Select;
 
-class Login extends React.Component {
+class Login extends React.Component<{}, {loading: boolean}> {
   form: any = {category: 0, username: "", password: ""}
+  constructor(props: {}) {
+    super(props);
+    this.state = {loading: false};
+  }
   handleLogin = () => {
     if (this.form.username === "" || this.form.password === "") {
       message.error("请输入用户名和密码！");
       return;
     }
     const hide = message.loading("正在登录...", 0);
+    this.setState({...this.state, loading: true});
     GeneralAPI.user.login(this.form).then(res => {
       hide();
+      this.setState({...this.state, loading: false});
       if (res.code === 0) {
         message.success(res.data.name + "，欢迎回来！");
         LoginAction(res.data);
@@ -43,8 +49,8 @@ class Login extends React.Component {
         </Select>
         <Input name="username" prefix={<Icon type="user"/>} placeholder="用户名" style={inputStyle} onChange={this.handleChange}/>
         <Input name="password" prefix={<Icon type="lock"/>} type="password" placeholder="密码" style={inputStyle} onChange={this.handleChange}/>
-        <Button type="primary" htmlType="submit" style={inputStyle} onClick={this.handleLogin}>登录</Button>
-        <Button style={inputStyle} onClick={toRegisterAction}>注册</Button>
+        <Button type="primary" htmlType="submit" style={inputStyle} onClick={this.handleLogin} loading={this.state.loading}>登录</Button>
+        <Button style={inputStyle} onClick={toRegisterAction} disabled={this.state.loading}>注册</Button>
       </div>
     );
   }
