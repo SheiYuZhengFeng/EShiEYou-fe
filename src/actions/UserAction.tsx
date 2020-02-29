@@ -7,7 +7,7 @@ export const UserActionType = {
   TOREGISER: "TOREGISTER",
 }
 
-export const LoginAction = (payload: {name: string, token: string}) => {
+export const LoginAction = (payload: {name: string, token: string, category: number}) => {
   store.dispatch({ type: UserActionType.LOGIN, payload: payload });
 }
 

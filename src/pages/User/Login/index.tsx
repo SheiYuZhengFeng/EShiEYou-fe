@@ -24,7 +24,7 @@ class Login extends React.Component<{}, {loading: boolean}> {
       this.setState({...this.state, loading: false});
       if (res.code === 0) {
         message.success(res.data.name + "，欢迎回来！");
-        LoginAction(res.data);
+        LoginAction({...res.data, category: this.form.category});
       }
       else {
         message.error("用户名或密码错误！");
