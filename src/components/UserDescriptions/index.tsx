@@ -3,10 +3,13 @@ import { Descriptions } from "antd";
 
 const { Item } = Descriptions;
 
+const CATEGORY = ["学生", "中教", "外教"];
 const SEX = ["男", "女"];
 const LANGUAGE = ["韩语", "日语"];
 const LEVEL = ["初级", "中级", "高级"];
 const TARGET = ["书面能力", "口语能力", "母语地区生存"];
+
+export const CONST = {categoty: CATEGORY, sex: SEX, language: LANGUAGE, level: LEVEL, target: TARGET}
 
 const desc = [
   ["username", "用户名"],

@@ -3,6 +3,7 @@ import styles from './index.module.less';
 import { Select, Input, Button, Icon, message } from 'antd';
 import { toRegisterAction, LoginAction } from '../../../actions/UserAction';
 import GeneralAPI from '../../../services/GeneralAPI';
+import { CONST } from '../../../components/UserDescriptions';
 
 const { Option } = Select;
 
@@ -43,9 +44,7 @@ class Login extends React.Component<{}, {loading: boolean}> {
       <div className={styles.whole}>
         登录为
         <Select defaultValue={0} style={{marginLeft: "1em"}} onChange={this.handleSelect}>
-          <Option value={0}>学生</Option>
-          <Option value={1}>中教</Option>
-          <Option value={2}>外教</Option>
+          {CONST.categoty.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
         </Select>
         <Input name="username" prefix={<Icon type="user"/>} placeholder="用户名" style={inputStyle} onChange={this.handleChange}/>
         <Input name="password" prefix={<Icon type="lock"/>} type="password" placeholder="密码" style={inputStyle} onChange={this.handleChange}/>
