@@ -4,7 +4,7 @@ import Combiner from '../../components/Combiner';
 import store from '../../store';
 import Login from './Login';
 import Register from './Register';
-import { Spin, Avatar, Switch, Button, Modal, message } from 'antd';
+import { Spin, Avatar, Switch, Button, Modal, message, Input, Icon } from 'antd';
 import StudentAPI from '../../services/StudentAPI';
 import NativeAPI from '../../services/NativeAPI';
 import ForeignAPI from '../../services/ForeignAPI';
@@ -13,10 +13,11 @@ import { informationAction, LogoutAction } from '../../actions/UserAction';
 import UserDescriptions from '../../components/UserDescriptions';
 import GeneralAPI from '../../services/GeneralAPI';
 
-class User extends React.Component<{}, {loged: boolean, view: number, information: any, expand: boolean}> {
+class User extends React.Component<{}, {loged: boolean, view: number, information: any, expand: boolean, password: boolean}> {
+  form: any = {}
   constructor(props: any) {
     super(props);
-    this.state = {information: {}, expand: false, ...store.getState().UserReducer};
+    this.state = {information: {}, expand: false, password: false, ...store.getState().UserReducer};
   }
   ss = store.subscribe(() => {
     this.setState({...this.state, ...store.getState().UserReducer});
@@ -42,9 +43,40 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
         },
       });
     }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      this.form[e.target.name] = e.target.value.trim();
+    }
+    const handlePassword = () => {
+      const { form } = this;
+      if (!form.oldpassword || !form.newpassword || !form.repeat || form.newpassword !== form.repeat) {
+        message.error("请输入新旧密码且两次新密码输入一致！");
+        return;
+      }
+      const hide = message.loading("正在修改...", 0);
+      this.setState({...this.state, password: true});
+      GeneralAPI.user.password({oldpassword: form.oldpassword, newpassword: form.newpassword}).then(res => {
+        hide();
+        this.setState({...this.state, password: false});
+        if (res.code === 0) {
+          LogoutAction();
+          message.success("密码修改成功，请用新密码重新登录！");
+        }
+        else {
+          message.error("修改失败，旧密码错误！");
+        }
+      });
+      this.form = {};
+    }
     return (
       <div key="0" className={styles.settings}>
-        <Button key="0" className={styles.input} onClick={confirmLogout}>退出登录</Button>
+        <div className={styles.item}>
+          <p className={styles.title}>修改密码</p>
+          <Input className={styles.input} type="password" name="oldpassword" prefix={<Icon type="lock"/>} placeholder="旧密码" onChange={handleChange} disabled={this.state.password} />
+          <Input className={styles.input} type="password" name="newpassword" prefix={<Icon type="lock"/>} placeholder="新密码" onChange={handleChange} disabled={this.state.password} />
+          <Input className={styles.input} type="password" name="repeat" prefix={<Icon type="lock"/>} placeholder="重复新密码" onChange={handleChange} disabled={this.state.password} />
+          <Button className={styles.input} type="primary" onClick={handlePassword} loading={this.state.password}>修改</Button>
+        </div>
+        <Button className={styles.item} onClick={confirmLogout}>退出登录</Button>
       </div>
     );
   }
