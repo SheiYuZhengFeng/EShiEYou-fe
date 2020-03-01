@@ -28,6 +28,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
   }
   setting = () => {
     if (!this.state.expand) return null;
+    const that = this;
     const confirmLogout = () => {
       Modal.confirm({
         title: "即将退出登录",
@@ -39,6 +40,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
           GeneralAPI.user.logout().then(res => {
             hide();
             message.success("你已退出登录！");
+            that.setState({...that.state, expand: false});
             LogoutAction();
           });
         },
@@ -62,6 +64,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
         hide();
         this.setState({...this.state, password: false});
         if (res.code === 0) {
+          this.setState({...this.state, expand: false});
           LogoutAction();
           message.success("密码修改成功，请用新密码重新登录！");
         }
