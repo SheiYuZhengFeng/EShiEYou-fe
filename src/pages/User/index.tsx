@@ -26,6 +26,17 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
     this.setState({...this.state, expand: checked});
     if (checked) this.form = {...this.state.information};
   }
+  updateInformation = () => {
+    const deal = (res: SimpleResponse) => {
+      if (res.code === 0) {
+        informationAction(res.data);
+      }
+    }
+    const { category } = store.getState().UserReducer.session;
+    if (category === 0) StudentAPI.main.me().then(res => deal(res));
+    if (category === 1) NativeAPI.main.me().then(res => deal(res));
+    if (category === 2) ForeignAPI.main.me().then(res => deal(res));
+  }
   setting = () => {
     if (!this.state.expand) return null;
     const that = this;
@@ -88,6 +99,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
         this.setState({...this.state, modify: false});
         if (res.code === 0) {
           message.success("个人信息修改成功！");
+          this.updateInformation();
         }
         else {
           message.error("个人信息修改失败！");
@@ -128,15 +140,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
   }
   panel = () => {
     if (Object.keys(this.state.information).length === 0) {
-      const deal = (res: SimpleResponse) => {
-        if (res.code === 0) {
-          informationAction(res.data);
-        }
-      }
-      const { category } = store.getState().UserReducer.session;
-      if (category === 0) StudentAPI.main.me().then(res => deal(res));
-      if (category === 1) NativeAPI.main.me().then(res => deal(res));
-      if (category === 2) ForeignAPI.main.me().then(res => deal(res));
+      this.updateInformation();
       return <Spin size="large" />;
     }
     const i = this.state.information;
