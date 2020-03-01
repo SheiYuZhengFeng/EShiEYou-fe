@@ -6,4 +6,21 @@
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
+
+  .panel {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    
+    .avatar {
+      vertical-align: middle;
+      background-color: @primary-color;
+    }
+
+    .description {
+      width: 85%;
+      margin-top: 2em;
+    }
+  }
 }
