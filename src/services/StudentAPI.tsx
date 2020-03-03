@@ -15,10 +15,10 @@ const MainAPI = {
 };
 
 const OrderAPI = {
-  my() : Promise<SimpleResponse & {data: {orders: {id: number, state: number, cid: number, student: number, teacher: number, createtime: number, starttime: number, endtime: number}[]}}> {
+  my() : Promise<SimpleResponse & {data: {orders: {id: number, state: number, cid: number, student: number, teacher: number, createtime: number, starttime: number, endtime: number, rid: number}[]}}> {
     return request(prefix + "/order/my");
   },
-  add(body: {cid: number, teacher: number, starttime: number, endtime: number}) : Promise<SimpleResponse> {
+  add(body: {cid: number, teacher: number, starttime: number, endtime: number, rid: number}) : Promise<SimpleResponse> {
     return request(prefix + "/order/add", body);
   },
 };

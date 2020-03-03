@@ -15,7 +15,7 @@ const MainAPI = {
 };
 
 const OrderAPI = {
-  list() : Promise<SimpleResponse & {data: {orders: {id: number, state: number, cid: number, student: number, createtime: number, starttime: number, endtime: number}[]}}> {
+  list() : Promise<SimpleResponse & {data: {orders: {id: number, state: number, cid: number, student: number, createtime: number, starttime: number, endtime: number, rid: number}[]}}> {
     return request(prefix + "/order/list");
   },
   reply(body: {id: number, accept: boolean}) : Promise<SimpleResponse> {
