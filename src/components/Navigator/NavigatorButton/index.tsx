@@ -1,22 +1,21 @@
 import React from 'react';
 import styles from './index.module.less';
-import { Tooltip, Icon } from 'antd';
+import { Icon } from 'antd';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { NavLink } from 'react-router-dom';
 
 class NavigatorButton extends React.Component<{href: string, title: string, type: string} & RouteComponentProps> {
   
   render() {
-    let iconClass = styles.icon;
+    let wholeClass = styles.whole;
     if (this.props.location.pathname.indexOf(this.props.href.toString()) !== -1 && !(this.props.href.toString() === "/" && this.props.location.pathname !== "/")) {
-      iconClass += " " + styles.activeIcon;
+      wholeClass += " " + styles.active;
     }
     return (
       <NavLink to={this.props.href}>
-        <div className={styles.whole}>
-          <Tooltip title={this.props.title} placement={"top"}>
-            <Icon className={iconClass} type={this.props.type} />
-          </Tooltip>
+        <div className={wholeClass}>
+          <Icon className={styles.icon} type={this.props.type} />
+          <p className={styles.title}>{this.props.title}</p>
         </div>
       </NavLink>
     );
