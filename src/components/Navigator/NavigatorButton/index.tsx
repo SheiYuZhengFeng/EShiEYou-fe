@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './index.module.less';
-import { Icon } from 'antd';
+import { Icon, Tooltip } from 'antd';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { NavLink } from 'react-router-dom';
 
-class NavigatorButton extends React.Component<{href: string, title: string, type: string} & RouteComponentProps> {
+class NavigatorButton extends React.Component<{href: string, title: string, type: string, wrap?: boolean} & RouteComponentProps> {
   
   render() {
     let wholeClass = styles.whole;
@@ -13,10 +13,18 @@ class NavigatorButton extends React.Component<{href: string, title: string, type
     }
     return (
       <NavLink to={this.props.href}>
-        <div className={wholeClass}>
-          <Icon className={styles.icon} type={this.props.type} />
-          <p className={styles.title}>{this.props.title}</p>
-        </div>
+        {this.props.wrap ? 
+          <Tooltip title={this.props.title} placement="top">
+            <div className={wholeClass}>
+              <Icon className={styles.icon} type={this.props.type} />
+            </div>
+          </Tooltip>
+        : 
+          <div className={wholeClass}>
+            <Icon className={styles.icon} type={this.props.type} />
+            <p className={styles.title}>{this.props.title}</p>
+          </div>
+        }
       </NavLink>
     );
   }
