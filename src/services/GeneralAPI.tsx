@@ -57,6 +57,21 @@ const MailAPI = {
   },
 };
 
-const GeneralAPI = {user: UserAPI, course: CourseAPI, mail: MailAPI};
+const BillAPI = {
+  get(body: {money: number}) : Promise<SimpleResponse> {
+    return request("/bill/get", body);
+  },
+  pay(body: {money: number}) : Promise<SimpleResponse & {data: {qrcode: string}}> {
+    return request("/bill/pay", body);
+  },
+  balance() : Promise<SimpleResponse & {data: {balance: number}}> {
+    return request("/bill/balance");
+  },
+  list() : Promise<SimpleResponse & {data: {bills: {id: number, createtime: number, money: number, type: number, status: number, content: string}[]}}> {
+    return request("/bill/list");
+  },
+};
+
+const GeneralAPI = {user: UserAPI, course: CourseAPI, mail: MailAPI, bill: BillAPI};
 
 export default GeneralAPI;
