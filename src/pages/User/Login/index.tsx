@@ -4,12 +4,13 @@ import { Select, Input, Button, Icon, message } from 'antd';
 import { toRegisterAction, LoginAction } from '../../../actions/UserAction';
 import GeneralAPI from '../../../services/GeneralAPI';
 import { CONST } from '../../../components/UserDescriptions';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 const { Option } = Select;
 
-class Login extends React.Component<{}, {loading: boolean}> {
+class Login extends React.Component<RouteComponentProps, {loading: boolean}> {
   form: any = {category: 0, username: "", password: ""}
-  constructor(props: {}) {
+  constructor(props: any) {
     super(props);
     this.state = {loading: false};
   }
@@ -26,6 +27,7 @@ class Login extends React.Component<{}, {loading: boolean}> {
       if (res.code === 0) {
         message.success(res.data.name + "，欢迎回来！");
         LoginAction({...res.data, category: this.form.category});
+        this.props.history.push("/mycourse");
       }
       else {
         message.error("用户名或密码错误！");
@@ -55,4 +57,4 @@ class Login extends React.Component<{}, {loading: boolean}> {
   }
 }
 
-export default Login;
+export default withRouter(Login);

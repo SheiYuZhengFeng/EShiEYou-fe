@@ -23,6 +23,12 @@ const OrderAPI = {
   },
 };
 
-const NativeAPI = {main: MainAPI, order: OrderAPI};
+const CourseAPI = {
+  list() : Promise<SimpleResponse & {data: {courses: {cid: number, name: string, cost: number, discount: number, category: number, content: string, teacher: number, score: number, starttime: number, endtime: number}}}> {
+    return request(prefix + "/course/list");
+  },
+};
+
+const NativeAPI = {main: MainAPI, order: OrderAPI, course: CourseAPI};
 
 export default NativeAPI;

@@ -13,7 +13,7 @@ class Navigator extends React.Component {
         <NavigatorButton href="/about" title="关于我们" type="question-circle" wrap={state.loged} />
         <NavigatorButton href="/course" title={state.loged && state.session.category === 0 ? "购买课程" : "所有课程"} type="account-book" />
         {state.loged ? <>
-          {state.session.category !== 1 ? <NavigatorButton href="/mycourse" title={state.session.category === 0 ? "已购课程" : "我的课程"} type="book" /> : null}
+          <NavigatorButton href="/mycourse" title={state.session.category === 0 ? "已购课程" : "我的课程"} type="book" />
           {state.session.category !== 2 ? <NavigatorButton href="/order" title="我的预约" type="calendar" /> : null}
           <NavigatorButton href="/mail" title="查看私信" type="message" />
         </> : null}
