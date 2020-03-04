@@ -1,1 +1,100 @@
 @import '../../../themes/default.module.less';
+
+.whole {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: flex-start;
+
+  .skeleton {
+    width: 90%;
+  }
+
+  .courses {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+
+    .course {
+      width: 100%;
+      max-width: 25em;
+      cursor: pointer;
+      border-left: .5em solid #5485E555;
+      border-radius: .5em;
+      padding: 1em;
+      margin: 1em .5em;
+      transition: .2s;
+      height: auto;
+
+      &:hover {
+        background-color: #5485E522;
+      }
+
+      & > div {
+        margin-bottom: 1em;
+      }
+
+      & > div:last-child {
+        margin-bottom: 0;
+      }
+
+      .hidden {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .name {
+        width: 90%;
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+      
+      .time {
+        color: #888888;
+        font-size: .9em;
+      }
+
+      .content {
+        color: #aaaaaa;
+        word-break: break-all;
+        line-height: 2em;
+      }
+
+      .bottom {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        .buttons button {
+          margin-right: .5em;
+        }
+
+        .buttons button:last-child {
+          margin-left: 0;
+        }
+
+        .price {
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: baseline;
+
+          .now {
+            font-size: 2em;
+            font-weight: bolder;
+            color: orange;
+          }
+
+          .former {
+            font-size: 1em;
+            color: grey;
+            text-decoration: line-through;
+            margin-right: .5em;
+          }
+        }
+      }
+    }
+  }
+}

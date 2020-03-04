@@ -1,5 +1,27 @@
 import request from "../utils/request";
 
+export interface CourseBrief {
+  cid: number,
+  name: string,
+  cost: number,
+  discount: number,
+  category: number,
+  content: string,
+  starttime: number,
+}
+
+export interface CourseDetail {
+  name: string,
+  cost: number,
+  discount: number,
+  category: number,
+  content: string,
+  teacher: number,
+  score: number,
+  starttime: number,
+  endtime: number,
+}
+
 const UserAPI = {
   login(body: {category: number, username: string, password: string}) : Promise<SimpleResponse & {data: {name: string, token: string}}> {
     return request("/user/login", body, false);
@@ -31,10 +53,10 @@ const UserAPI = {
 };
 
 const CourseAPI = {
-  getList() : Promise<SimpleResponse & {data: {courses: {cid: number, name: string, cost: number, discount: number, category: number, content: string, starttime: number}[]}}> {
+  getList() : Promise<SimpleResponse & {data: {courses: CourseBrief[]}}> {
     return request("/course/list", undefined, false);
   },
-  getDetail(body: {id: number}) : Promise<SimpleResponse & {data: {name: string, cost: number, discount: number, category: number, content: string, teacher: number, score: number, starttime: number, endtime: number}}> {
+  getDetail(body: {id: number}) : Promise<SimpleResponse & {data: CourseDetail}> {
     return request("/course/detail", body, false);
   },
   getVideoTitle(body: {id: number}) : Promise<SimpleResponse & {data: {videos: {vid: number, vname: string, previd: number, nextvid: number}[]}}> {
