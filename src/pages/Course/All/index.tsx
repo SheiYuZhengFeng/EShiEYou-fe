@@ -3,18 +3,23 @@ import styles from "./index.module.less";
 import GeneralAPI, { CourseBrief } from "../../../services/GeneralAPI";
 import { message, Skeleton, Tag, Button } from "antd";
 import { CONST } from "../../../components/UserDescriptions";
+import store from "../../../store";
+import { allCourseAction } from "../../../actions/CourseAction";
 
 const COLOR = ["orange", "green"];
 
 class AllCourse extends React.Component<{buy: boolean}, {courses: CourseBrief[]}> {
   constructor(props: any) {
     super(props);
-    this.state = {courses: []};
+    this.state = {courses: store.getState().CourseReducer.allcourse};
   }
+  ss = store.subscribe(() => {
+    this.setState({...this.state, courses: store.getState().CourseReducer.allcourse});
+  })
   updateList = () => {
     GeneralAPI.course.getList().then(res => {
       if (res.code === 0) {
-        this.setState({...this.state, courses: res.data.courses});
+        allCourseAction(res.data.courses);
       }
       else {
         message.error("拉取课程列表失败");
