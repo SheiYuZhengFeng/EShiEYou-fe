@@ -4,7 +4,6 @@ import Combiner from "../../components/Combiner";
 import { RouteComponentProps } from "react-router";
 import AllCourse from "./All";
 import MyCourse from "./My";
-import store from "../../store";
 import DetailCourse, { DetailCourseConfig } from "./Detail";
 
 class Course extends React.Component<RouteComponentProps<{cid: string}>, {type: number, config?: DetailCourseConfig}> {
@@ -20,7 +19,7 @@ class Course extends React.Component<RouteComponentProps<{cid: string}>, {type: 
   }
   render() {
     let component: JSX.Element;
-    if (this.state.type === 0) component = <AllCourse buy={store.getState().UserReducer.session.category === 0} />;
+    if (this.state.type === 0) component = <AllCourse />;
     else if (this.state.type === 1) component = <MyCourse />;
     else component = <DetailCourse config={this.state.config as DetailCourseConfig} />
     return Combiner(
