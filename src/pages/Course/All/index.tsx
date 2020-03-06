@@ -7,6 +7,7 @@ import store from "../../../store";
 import { allCourseAction } from "../../../actions/CourseAction";
 import { RouteComponentProps, withRouter } from "react-router";
 import QueueAnim from "rc-queue-anim";
+import Price from "../../../components/Price";
 
 class AllCourse extends React.Component<RouteComponentProps & {buy: boolean}, {courses: CourseBrief[]}> {
   constructor(props: any) {
@@ -52,12 +53,7 @@ class AllCourse extends React.Component<RouteComponentProps & {buy: boolean}, {c
                   {this.props.buy ? <Button size={"small"} type="primary" onClick={this.toBuy.bind(this, v.cid)}>购买</Button> : null}
                   <Button size={"small"}>查看详细</Button>
                 </div>
-                <div className={styles.price}>
-                  {v.discount > 0 ? <div className={styles.former}>{v.cost}</div> : null}
-                  <div className={styles.now}>
-                    {v.discount > 0 ? (v.cost * (100 - v.discount) / 100).toFixed(0) : v.cost}
-                  </div>
-                </div>
+                <Price cost={v.cost} discount={v.discount} />
               </div>
             </div>
           )}
