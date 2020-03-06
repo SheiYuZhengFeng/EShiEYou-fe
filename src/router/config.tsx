@@ -12,6 +12,8 @@ import About from "../pages/About";
 export default <>
   <Route component={ Main } exact path="/" />
   <Route component={ Course } exact path="/course" />
+  <Route component={ Course } exact path="/course/:cid" />
+  <Route component={ Course } exact path="/course/:cid/buy" />
   <Route component={ Course } exact path="/mycourse" />
   <Route component={ Order } exact path="/order" />
   <Route component={ Mail } exact path="/mail" />
