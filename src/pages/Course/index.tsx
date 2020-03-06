@@ -15,7 +15,7 @@ class Course extends React.Component<RouteComponentProps<{cid: string}>, {type: 
     else {
       const cid = parseInt(this.props.match.params.cid);
       const buying = this.props.location.pathname.endsWith("/buy");
-      this.state = {type: 2, config: {cid, buying, detailed: false}}
+      this.state = {type: 2, config: {cid, buying, buy: true, detailed: false}}
     }
   }
   render() {

@@ -1,10 +1,13 @@
 import React from "react";
 import styles from "./index.module.less";
 import GeneralAPI, { CourseDetail, Video, VideoTitle, ForeignBrief, ForeignDetail } from "../../../services/GeneralAPI";
-import { Spin, Empty } from "antd";
+import { Spin, Empty, Tag, Collapse, Rate } from "antd";
+import UserDescriptions, { CONST } from "../../../components/UserDescriptions";
+import QueueAnim from "rc-queue-anim";
 
 export interface DetailCourseConfig {
   cid: number,
+  buy: boolean,
   buying: boolean,
   detailed: boolean,
 }
@@ -37,9 +40,17 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig}, {status
     else {
       const data = this.state.data as CourseDetail;
       component = (
-        <div className={styles.detail}>
-          
-        </div>
+        <QueueAnim className={styles.detail}>
+          <div key="name" className={styles.name}><Tag className={styles.tag} color={CONST.color[data.category]}>{CONST.language[data.category]}</Tag>{data.name}</div>
+          <div key="time" className={styles.time}>开课时间：{new Date(data.starttime * 1000).toLocaleString()}</div>
+          <div key="score" className={styles.score}><Rate disabled value={Math.round(data.score / 100 * 10) / 2} allowHalf /></div>
+          <div key="content" className={styles.content}>{data.content}</div>
+          <Collapse key="collapse" bordered={false}>
+            <Collapse.Panel key="1" header="外教信息" className={styles.panel}>
+              <UserDescriptions className={styles.teacher} title="" information={this.state.foreign}></UserDescriptions>
+            </Collapse.Panel>
+          </Collapse>
+        </QueueAnim>
       );
     }
     return <div className={styles.whole}>{component}</div>;

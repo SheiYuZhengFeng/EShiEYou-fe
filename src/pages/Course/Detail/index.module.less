@@ -8,5 +8,39 @@
 
   .detail {
     width: 80%;
+    letter-spacing: .1em;
+
+    > div {
+      margin-bottom: 1em;
+    }
+  
+    > div:last-child {
+      margin-bottom: 0;
+    }
+
+    .name {
+      font-size: 1.5em;
+      font-weight: bolder;
+      word-break: break-all;
+
+      .tag {
+        font-size: .7em;
+      }
+    }
+
+    .content {
+      line-height: 2em;
+      word-break: break-all;
+    }
+
+    .panel {
+      border: none;
+      border-radius: .5em;
+      transition: .2s;
+
+      &:hover {
+        background-color: fade(@primary-color, 5%);
+      }
+    }
   }
 }
