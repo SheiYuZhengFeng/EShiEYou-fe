@@ -5,6 +5,16 @@
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
+
+  .back {
+    position: absolute;
+    left: calc((10% - 1em) / 2);
+    top: 0;
+    cursor: pointer;
+    z-index: 1;
+    font-size: 2em;
+  }
 
   .detail {
     width: 80%;

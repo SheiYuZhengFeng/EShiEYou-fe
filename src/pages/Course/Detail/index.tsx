@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "./index.module.less";
 import GeneralAPI, { CourseDetail, Video, VideoTitle, ForeignBrief, ForeignDetail } from "../../../services/GeneralAPI";
-import { Spin, Empty, Tag, Collapse, Rate } from "antd";
+import { Spin, Empty, Tag, Collapse, Rate, Icon } from "antd";
 import UserDescriptions, { CONST } from "../../../components/UserDescriptions";
 import QueueAnim from "rc-queue-anim";
+import { RouteComponentProps, withRouter } from "react-router";
 
 export interface DetailCourseConfig {
   cid: number,
@@ -12,7 +13,7 @@ export interface DetailCourseConfig {
   detailed: boolean,
 }
 
-class DetailCourse extends React.Component<{config: DetailCourseConfig}, {status: number, data?: CourseDetail, video?: Video[] | VideoTitle[], foreign?: ForeignBrief | ForeignDetail}> {
+class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteComponentProps, {status: number, data?: CourseDetail, video?: Video[] | VideoTitle[], foreign?: ForeignBrief | ForeignDetail}> {
   constructor(props: any) {
     super(props);
     this.state = {status: 3};
@@ -53,8 +54,15 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig}, {status
         </QueueAnim>
       );
     }
-    return <div className={styles.whole}>{component}</div>;
+    return (
+      <div className={styles.whole}>
+        <div key="back" className={styles.back} onClick={this.props.history.goBack}>
+          <Icon type="left-circle" />
+        </div>
+        {component}
+      </div>
+    );
   }
 }
 
-export default DetailCourse;
+export default withRouter(DetailCourse);
