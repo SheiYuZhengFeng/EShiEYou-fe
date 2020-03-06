@@ -22,6 +22,46 @@ export interface CourseDetail {
   endtime: number,
 }
 
+export interface VideoTitle {
+  vid: number,
+  vname: string,
+  previd: number,
+  nextvid: number,
+}
+
+export interface Video {
+  vid: number,
+  vname: string,
+  duration: number,
+  url: string,
+  previd: number,
+  nextvid: number,
+}
+
+export interface ForeignBrief {
+  username: string,
+  sex: number,
+  age: number,
+  content: string,
+  language: number,
+  qualification: string,
+  background: string,
+  resume: string,
+}
+
+export interface ForeignDetail {
+  username: string,
+  name: string,
+  sex: number,
+  age: number,
+  content: string,
+  phone: string,
+  language: number,
+  qualification: string,
+  background: string,
+  resume: string,
+}
+
 const UserAPI = {
   login(body: {category: number, username: string, password: string}) : Promise<SimpleResponse & {data: {name: string, token: string}}> {
     return request("/user/login", body, false);
@@ -38,7 +78,7 @@ const UserAPI = {
   getNativeBrief(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, sex: number, age: number, content: string, qualification: string, background: string, time: string, language: number}}> {
     return request("/user/native/brief", body, false);
   },
-  getForeignBrief(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, sex: number, age: number, content: string, language: number, qualification: string, background: string, resume: string}}> {
+  getForeignBrief(body: {id: number}) : Promise<SimpleResponse & {data: ForeignBrief}> {
     return request("/user/foreign/brief", body, false);
   },
   getStudentDetail(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, language: number, level: number, target: number, content: string, phone: string}}> {
@@ -47,7 +87,7 @@ const UserAPI = {
   getNativeDetail(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, content: string, phone: string, qualification: string, background: string, time: string, language: number}}> {
     return request("/user/native/detail", body);
   },
-  getForeignDetail(body: {id: number}) : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, content: string, phone: string, language: number, qualification: string, background: string, resume: string}}> {
+  getForeignDetail(body: {id: number}) : Promise<SimpleResponse & {data: ForeignDetail}> {
     return request("/user/foreign/detail", body);
   },
 };
@@ -59,10 +99,10 @@ const CourseAPI = {
   getDetail(body: {id: number}) : Promise<SimpleResponse & {data: CourseDetail}> {
     return request("/course/detail", body, false);
   },
-  getVideoTitle(body: {id: number}) : Promise<SimpleResponse & {data: {videos: {vid: number, vname: string, previd: number, nextvid: number}[]}}> {
+  getVideoTitle(body: {id: number}) : Promise<SimpleResponse & {data: {videos: VideoTitle[]}}> {
     return request("/course/videotitle", body, false);
   },
-  getVideo(body: {id: number}) : Promise<SimpleResponse & {data: {videos: {vid: number, vname: string, duration: number, url: string, previd: number, nextvid: number}[]}}> {
+  getVideo(body: {id: number}) : Promise<SimpleResponse & {data: {videos: Video[]}}> {
     return request("/course/video", body);
   },
 };
