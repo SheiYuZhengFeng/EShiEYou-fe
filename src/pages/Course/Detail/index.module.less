@@ -66,4 +66,49 @@
       }
     }
   }
+
+  .video {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .item {
+      max-width: 15em;
+      width: 100%;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      background: #ffcb7c;
+      border-radius: 1em;
+      padding: 1em;
+      margin: 1.5em 1.5em 0 0;
+      cursor: pointer;
+      box-shadow: .25em .25em .5em -.3em fade(black, 60%);
+
+      > div {
+        width: 100%;
+      }
+      
+      .control {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .play {
+          font-size: 2em;
+        }
+
+        .duration {
+          font-weight: bold;
+        }
+      }
+
+      .title {
+        margin-top: .5em;
+      }
+    }
+  }
 }

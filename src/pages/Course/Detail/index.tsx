@@ -72,12 +72,17 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
       onOk,
     });
   }
+  toPlay = (url: string | undefined) => {
+    if (!url) message.error("请先购买课程后观看！");
+    else this.props.history.push(url);
+  }
   render() {
     let component: JSX.Element;
     if (this.state.status > 0) component = <Spin size="large" />;
     else if (this.state.status < 0) component = <Empty description="没有找到这门课程" />;
     else {
       const data = this.state.data as CourseDetail;
+      const video = this.state.video as (Video & VideoTitle)[];
       component = (
         <QueueAnim className={styles.detail}>
           <div key="name" className={styles.name}><Tag className={styles.tag} color={CONST.color[data.category]}>{CONST.language[data.category]}</Tag>{data.name}</div>
@@ -94,6 +99,19 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
               {this.props.config.buy ? <Button className={styles.buy} type="primary" onClick={this.buyCourse}>购买</Button> : null}
             </div>
             <Price cost={data.cost} discount={data.discount} extra />
+          </div>
+          <div key="video" className={styles.video}>
+            {video.map((v, i) => 
+              <div key={i} className={styles.item} onClick={this.toPlay.bind(this, v.url)}>
+                <div className={styles.control}>
+                  <Icon className={styles.play} type="play-circle" theme="filled" />
+                  {v.duration ? <div className={styles.duration}>{v.duration}</div> : null}
+                </div>
+                <div className={styles.title}>
+                  {v.vname}
+                </div>
+              </div>
+            )}
           </div>
         </QueueAnim>
       );
