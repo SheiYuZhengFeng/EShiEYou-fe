@@ -4,17 +4,36 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: baseline;
+  letter-spacing: 0;
+
+  > div {
+    margin-right: .5em;
+  }
+
+  > div:last-child {
+    margin-right: 0;
+  }
 
   .now {
     font-size: 2em;
     font-weight: bolder;
     color: orange;
+    margin-right: 0;
   }
 
   .former {
     font-size: 1em;
     color: grey;
     text-decoration: line-through;
-    margin-right: .5em;
+  }
+
+  .yuan {
+    font-size: 1em;
+    color: orange;
+  }
+
+  .discount {
+    color: green;
+    font-size: 1.1em;
   }
 }

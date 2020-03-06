@@ -1,15 +1,16 @@
 import React from "react";
 import styles from "./index.module.less";
+import { Icon } from "antd";
 
-class Price extends React.Component<{cost: number, discount: number}> {
+class Price extends React.Component<{cost: number, discount: number, extra?: boolean}> {
   render() {
-    const { cost, discount } = this.props;
+    const { cost, discount, extra } = this.props;
     return (
       <div className={styles.whole}>
+        {extra ? <div className={styles.discount}><Icon type="arrow-down" />{discount}%</div> : null}
         {discount > 0 ? <div className={styles.former}>{cost}</div> : null}
-        <div className={styles.now}>
-          {discount > 0 ? (cost * (100 - discount) / 100).toFixed(0) : cost}
-        </div>
+        <div className={styles.now}>{discount > 0 ? (cost * (100 - discount) / 100).toFixed(0) : cost}</div>
+        {extra ? <div className={styles.yuan}>元</div> : null}
       </div>
     );
   }
