@@ -34,8 +34,8 @@ class Main extends React.Component {
           </Carousel>
           <div style={{marginTop: "3em", fontWeight: "bold", width: "100%", paddingLeft: "1em"}}>我们的优势</div>
           <div className={styles.advans}>
-            {Advantages.map(v => (
-              <div className={styles.advan}>
+            {Advantages.map((v, i) => (
+              <div key={i} className={styles.advan}>
                 <img src={v.img} alt={v.title} />
                 <div className={styles.title}>{v.title}</div>
                 <div className={styles.desc}>{v.desc}</div>

@@ -23,8 +23,8 @@ class About extends React.Component {
       <div className={styles.container}>
         <div className={styles.whole}>
           <div className={styles.values}>
-            {Values.map(v => (
-              <div className={styles.value}>
+            {Values.map((v, i) => (
+              <div key={i} className={styles.value}>
                 <img src={v.img} alt={v.title} />
                 <div className={styles.title}>{v.title}</div>
               </div>
