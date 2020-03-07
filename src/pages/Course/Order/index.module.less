@@ -1,1 +1,58 @@
 @import "../../../themes/default.module.less";
+
+.whole {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  .info {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+
+    > div {
+      margin-bottom: 1em;
+    }
+
+    > div:last-child {
+      margin-bottom: 0;
+    }
+
+    .name {
+      font-size: 1.1em;
+    }
+
+    .time {
+      display: flex;
+      flex-flow: row nowrap;
+
+      input[type="text"] {
+        border: none;
+        border-radius: .5em;
+        box-shadow: 0 0 .3em 0 fade(black, 30%);
+        width: 15em;
+      }
+    }
+
+    .teachers {
+      width: 100%;
+      
+      .teacher {
+        border: none;
+        border-radius: .5em;
+        transition: .2s;
+  
+        &:hover {
+          background-color: fade(@primary-color, 5%);
+        }
+      }
+    }
+
+    .submit {
+      width: 18em;
+    }
+  }
+}

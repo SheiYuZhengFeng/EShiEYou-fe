@@ -2,6 +2,17 @@ import request from "../utils/request";
 
 const prefix = "/student";
 
+export interface CourseTeacher {
+  id: number,
+  username: string,
+  sex: number,
+  age: number,
+  content: string,
+  qualification: string,
+  background: string,
+  time: string,
+}
+
 const MainAPI = {
   register(body: {username: string, name: string, password: string, sex: number, age: number, language: number, level: number, target: number, content: string, phone: string}) : Promise<SimpleResponse> {
     return request(prefix + "/register", body, false);
@@ -18,7 +29,7 @@ const OrderAPI = {
   my() : Promise<SimpleResponse & {data: {orders: {id: number, state: number, cid: number, student: number, teacher: number, createtime: number, starttime: number, endtime: number, rid: number}[]}}> {
     return request(prefix + "/order/my");
   },
-  add(body: {cid: number, teacher: number, starttime: number, endtime: number, rid: number}) : Promise<SimpleResponse> {
+  add(body: {cid: number, teacher: number, starttime: number, endtime: number}) : Promise<SimpleResponse> {
     return request(prefix + "/order/add", body);
   },
 };
@@ -27,7 +38,7 @@ const CourseAPI = {
   my() : Promise<SimpleResponse & {data: {courses: {cid: number, name: string, catagory: number, starttime: number, endtime: number}[]}}> {
     return request(prefix + "/course/my");
   },
-  teacher(body: {cid: number}) : Promise<SimpleResponse & {data: {teachers: {id: number, username: string, sex: number, age: number, content: string, qualification: string, backgroud: string, time: string}[]}}> {
+  teacher(body: {cid: number}) : Promise<SimpleResponse & {data: {teachers: CourseTeacher[]}}> {
     return request(prefix + "/course/teacher", body);
   },
   buy(body: {cid: number}) : Promise<SimpleResponse> {
