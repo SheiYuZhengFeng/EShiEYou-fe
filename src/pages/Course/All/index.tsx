@@ -17,6 +17,9 @@ class AllCourse extends React.Component<RouteComponentProps, {courses: CourseBri
   ss = store.subscribe(() => {
     this.setState({...this.state, courses: store.getState().CourseReducer.allcourse});
   })
+  componentWillUnmount() {
+    this.ss();
+  }
   updateList = () => {
     GeneralAPI.course.getList().then(res => {
       if (res.code === 0) {

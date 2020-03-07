@@ -11,9 +11,19 @@ import StudentAPI from "../../../services/StudentAPI";
 
 export interface DetailCourseConfig {
   cid: number,
-  buy: boolean,
   buying: boolean,
-  detailed: boolean,
+  isMy: boolean,
+}
+
+const durationToTime = (d: number) => {
+  let h = Math.floor(d / 3600), m = Math.floor((d % 3600) / 3600), s = d % 60;
+  let t = "";
+  if (m < 10) t = "0" + m;
+  else t = m.toString();
+  if (s < 10) t = t + ":0" + s;
+  else t = t + ":" + s;
+  if (h > 0) t = h + ":" + t;
+  return t;
 }
 
 class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteComponentProps, {status: number, data?: CourseDetail, video?: Video[] | VideoTitle[], foreign?: ForeignBrief | ForeignDetail}> {
@@ -25,13 +35,13 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
       if (res.code === 0) { this.setState((state) => {return {status: state.status - 1, data: res.data};}); return res.data.teacher; } // 抛出外教 id
       else this.setState({status: -1});
     }).then((id: number) => {
-      const getForeign = this.props.config.detailed ? GeneralAPI.user.getForeignDetail : GeneralAPI.user.getForeignBrief;
+      const getForeign = this.props.config.isMy ? GeneralAPI.user.getForeignDetail : GeneralAPI.user.getForeignBrief;
       getForeign({id}).then(res => { // 获取外教信息
         if (res.code === 0) this.setState((state) => {return {status: state.status - 1, foreign: res.data};});
         else this.setState({status: -1});
       });
     });
-    const getVideo = this.props.config.detailed ? GeneralAPI.course.getVideo : GeneralAPI.course.getVideoTitle;
+    const getVideo = this.props.config.isMy ? GeneralAPI.course.getVideo : GeneralAPI.course.getVideoTitle;
     getVideo({id: cid}).then(res => { // 获取视频信息
       if (res.code === 0) this.setState((state) => {return {status: state.status - 1, video: res.data.videos};});
       else this.setState({status: -1});
@@ -94,18 +104,20 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
               <UserDescriptions className={styles.teacher} title="" information={this.state.foreign}></UserDescriptions>
             </Collapse.Panel>
           </Collapse>
-          <div key="pay" className={styles.pay}>
-            <div className={styles.buttons}>
-              {this.props.config.buy ? <Button className={styles.buy} type="primary" onClick={this.buyCourse}>购买</Button> : null}
+          {this.props.config.isMy ? null :
+            <div key="pay" className={styles.pay}>
+              <div className={styles.buttons}>
+                <Button className={styles.buy} type="primary" onClick={this.buyCourse}>购买</Button>
+              </div>
+              <Price cost={data.cost} discount={data.discount} extra />
             </div>
-            <Price cost={data.cost} discount={data.discount} extra />
-          </div>
+          }
           <div key="video" className={styles.video}>
             {video.map((v, i) => 
               <div key={i} className={styles.item} onClick={this.toPlay.bind(this, v.url)}>
                 <div className={styles.control}>
                   <Icon className={styles.play} type="play-circle" theme="filled" />
-                  {v.duration ? <div className={styles.duration}>{v.duration}</div> : null}
+                  {v.duration ? <div className={styles.duration}>{durationToTime(v.duration)}</div> : null}
                 </div>
                 <div className={styles.title}>
                   {v.vname}

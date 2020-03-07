@@ -19,6 +19,9 @@ class MyCourse extends React.Component<RouteComponentProps, {courses: CourseBrie
   ss = store.subscribe(() => {
     this.setState({...this.state, courses: store.getState().CourseReducer.mycourse});
   })
+  componentWillUnmount() {
+    this.ss();
+  }
   updateList = () => {
     if (!store.getState().UserReducer.loged) return;
     let getList = StudentAPI.course.my;

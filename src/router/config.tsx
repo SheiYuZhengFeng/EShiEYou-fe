@@ -15,6 +15,7 @@ export default <>
   <Route component={ Course } exact path="/course/:cid" />
   <Route component={ Course } exact path="/course/:cid/buy" />
   <Route component={ Course } exact path="/mycourse" />
+  <Route component={ Course } exact path="/mycourse/:cid" />
   <Route component={ Order } exact path="/order" />
   <Route component={ Mail } exact path="/mail" />
   <Route component={ User } exact path="/user" />
