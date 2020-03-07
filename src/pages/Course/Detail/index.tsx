@@ -86,7 +86,7 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
       component = (
         <QueueAnim className={styles.detail}>
           <div key="name" className={styles.name}><Tag className={styles.tag} color={CONST.color[data.category]}>{CONST.language[data.category]}</Tag>{data.name}</div>
-          <div key="time" className={styles.time}>开课时间：{new Date(data.starttime * 1000).toLocaleString()}</div>
+          <div key="time" className={styles.time}>开课时间：{new Date(data.starttime * 1000).toLocaleString()} ~ {new Date(data.endtime * 1000).toLocaleString()}</div>
           <div key="score" className={styles.score}><Rate disabled value={Math.round(data.score / 100 * 10) / 2} allowHalf /></div>
           <div key="content" className={styles.content}>{data.content}</div>
           <Collapse key="collapse" bordered={false}>
