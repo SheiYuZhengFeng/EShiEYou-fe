@@ -3,6 +3,7 @@ import styles from './index.module.less';
 import Combiner from '../../components/Combiner';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
+import QueueAnim from 'rc-queue-anim';
 
 const Advantages: {img: string, title: string, desc: string}[] = [
   {
@@ -26,14 +27,14 @@ class Main extends React.Component {
   render() {
     return Combiner(
       <div className={styles.container}>
-        <div className={styles.whole}>
-          <Carousel className={styles.carousel} showThumbs={false} showStatus={false} autoPlay infiniteLoop emulateTouch interval={5000}>
+        <QueueAnim className={styles.whole} interval={0} animConfig={[{translateY: [0, 30]}]}>
+          <Carousel key="carousel" className={styles.carousel} showThumbs={false} showStatus={false} autoPlay infiniteLoop emulateTouch interval={5000}>
             <div><img src={require("../../themes/images/main/carousel/jianjie.png")} alt="" /></div>
             <div><img src={require("../../themes/images/main/carousel/shizi.png")} alt="" /></div>
             <div><img src={require("../../themes/images/main/carousel/kecheng.png")} alt="" /></div>
           </Carousel>
-          <div style={{marginTop: "3em", fontWeight: "bold", width: "100%", paddingLeft: "1em"}}>我们的优势</div>
-          <div className={styles.advans}>
+          <div key="advan" style={{marginTop: "3em", fontWeight: "bold", width: "100%", paddingLeft: "1em"}}>我们的优势</div>
+          <div key="advans" className={styles.advans}>
             {Advantages.map((v, i) => (
               <div key={i} className={styles.advan}>
                 <img src={v.img} alt={v.title} />
@@ -42,7 +43,7 @@ class Main extends React.Component {
               </div>
             ))}
           </div>
-        </div>
+        </QueueAnim>
       </div>
     );
   }

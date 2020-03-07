@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./index.module.less";
 import Combiner from "../../components/Combiner";
+import QueueAnim from 'rc-queue-anim';
 
 const Values: {img: string, title: string}[] = [
   {
@@ -22,14 +23,14 @@ class About extends React.Component {
     return Combiner(
       <div className={styles.container}>
         <div className={styles.whole}>
-          <div className={styles.values}>
+          <QueueAnim className={styles.values} interval={300}>
             {Values.map((v, i) => (
               <div key={i} className={styles.value}>
                 <img src={v.img} alt={v.title} />
                 <div className={styles.title}>{v.title}</div>
               </div>
             ))}
-          </div>
+          </QueueAnim>
         </div>
       </div>
     );
