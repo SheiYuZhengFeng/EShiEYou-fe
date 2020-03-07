@@ -8,6 +8,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import Price, { calcPrice } from "../../../components/Price";
 import store from "../../../store";
 import StudentAPI from "../../../services/StudentAPI";
+import { raiseOrderAction } from "../../../actions/CourseAction";
 
 export interface DetailCourseConfig {
   cid: number,
@@ -86,6 +87,10 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
     if (!url) message.error("请先购买课程后观看！");
     else this.props.history.push(url);
   }
+  toOrder = (id: number, name: string, e: React.MouseEvent<HTMLInputElement>) => {
+    raiseOrderAction({cid: id, name});
+    this.props.history.push("/mycourse/" + id + "/order");
+  }
   render() {
     let component: JSX.Element;
     if (this.state.status > 0) component = <Spin size="large" />;
@@ -104,14 +109,13 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
               <UserDescriptions className={styles.teacher} title="" information={this.state.foreign}></UserDescriptions>
             </Collapse.Panel>
           </Collapse>
-          {this.props.config.isMy ? null :
-            <div key="pay" className={styles.pay}>
-              <div className={styles.buttons}>
-                <Button className={styles.buy} type="primary" onClick={this.buyCourse}>购买</Button>
-              </div>
-              <Price cost={data.cost} discount={data.discount} extra />
+          <div key="control" className={styles.control}>
+            <div className={styles.buttons}>
+              {this.props.config.isMy ? null : <Button className={styles.button} type="primary" onClick={this.buyCourse}>购买</Button>}
+              {this.props.config.isMy && store.getState().UserReducer.session.category === 0 ? <Button className={styles.button} type="primary" onClick={this.toOrder.bind(this, this.props.config.cid, data.name)}>预约上课</Button> : null}
             </div>
-          }
+            {this.props.config.isMy ? null : <Price cost={data.cost} discount={data.discount} extra />}
+          </div>
           <div key="video" className={styles.video}>
             {video.map((v, i) => 
               <div key={i} className={styles.item} onClick={this.toPlay.bind(this, v.url)}>

@@ -1,4 +1,4 @@
-import { CourseBrief, CourseDetail } from "../services/GeneralAPI"
+import { CourseBrief } from "../services/GeneralAPI"
 import store from "../store"
 
 export const CourseAction = {
@@ -21,7 +21,7 @@ export const clearMyCourseAction = () => {
   store.dispatch({ type: CourseAction.CLEARMYCOURSE});
 }
 
-export const raiseOrderAction = (payload: CourseDetail) => {
+export const raiseOrderAction = (payload: {cid: number, name: string}) => {
   store.dispatch({ type: CourseAction.RAISEORDER, payload: payload });
 }
 

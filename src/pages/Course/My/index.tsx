@@ -4,7 +4,7 @@ import { CourseBrief } from "../../../services/GeneralAPI";
 import { message, Skeleton, Tag, Button } from "antd";
 import { CONST } from "../../../components/UserDescriptions";
 import store from "../../../store";
-import { myCourseAction } from "../../../actions/CourseAction";
+import { myCourseAction, raiseOrderAction } from "../../../actions/CourseAction";
 import { RouteComponentProps, withRouter } from "react-router";
 import QueueAnim from "rc-queue-anim";
 import StudentAPI from "../../../services/StudentAPI";
@@ -41,6 +41,11 @@ class MyCourse extends React.Component<RouteComponentProps, {courses: CourseBrie
   toDetail = (id: number) => {
     this.props.history.push("/mycourse/" + id);
   }
+  toOrder = (id: number, name: string, e: React.MouseEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    raiseOrderAction({cid: id, name});
+    this.props.history.push("/mycourse/" + id + "/order");
+  }
   render() {
     const { state } = this;
     if (Object.keys(state.courses).length === 0) {
@@ -58,6 +63,7 @@ class MyCourse extends React.Component<RouteComponentProps, {courses: CourseBrie
               <div className={styles.time}>结课时间：{new Date((v as any).endtime * 1000).toLocaleString()}</div>
               <div className={styles.bottom}>
                 <div className={styles.buttons}>
+                  {store.getState().UserReducer.session.category === 0 ? <Button size={"small"} type="primary" onClick={this.toOrder.bind(this, v.cid, v.name)}>预约上课</Button> : null}
                   <Button size={"small"}>查看详细</Button>
                 </div>
               </div>
