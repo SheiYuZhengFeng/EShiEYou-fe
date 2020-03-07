@@ -1,1 +1,47 @@
 @import "../../themes/default.module.less";
+
+.whole {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  .values {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+
+    .value {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 3em;
+
+      img {
+        width: 80%;
+        margin-bottom: 2em;
+      }
+
+      .title {
+        font-size: 2em;
+        word-spacing: .5em;
+        font-weight: bolder;
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          height: .1em;
+          width: 5em;
+          background-color: @primary-color;
+          bottom: 0;
+          left: 50%;
+          transform: translate(-50%, .5em);
+        }
+      }
+    }
+  }
+}
