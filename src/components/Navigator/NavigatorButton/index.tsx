@@ -8,7 +8,7 @@ class NavigatorButton extends React.Component<{href: string, title: string, type
   
   render() {
     let wholeClass = styles.whole;
-    if (this.props.location.pathname.indexOf(this.props.href.toString()) !== -1 && !(this.props.href.toString() === "/" && this.props.location.pathname !== "/")) {
+    if (this.props.location.pathname.startsWith(this.props.href.toString()) && !(this.props.href.toString() === "/" && this.props.location.pathname !== "/")) {
       wholeClass += " " + styles.active;
     }
     return (
