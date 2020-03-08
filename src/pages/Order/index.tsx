@@ -92,6 +92,12 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
   toClassRoom = (rid: number) => {
     this.props.history.push("/room/" + rid);
   }
+  toCourse = (cid: number) => {
+    this.props.history.push("/mycourse/" + cid);
+  }
+  showUser = (id: number, category: number) => {
+
+  }
   render() {
     const { category } = store.getState().UserReducer.session;
     let component: JSX.Element;
@@ -111,6 +117,7 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
               </div>
             } className={styles.panel + " " + Map.background(v)}>
               <div className={styles.state}>{Map.description(v)}</div>
+              <div className={styles.createtime}>预约创建于 {new Date(v.createtime * 1000).toLocaleString()}</div>
               <div className={styles.controls}>
                 {category === 1 && v.state === 1 ? // 中教，待确认，接受/拒绝
                   <>
@@ -124,6 +131,8 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
                 {v.state === 0 && v.rid > 0 ? // 上课中
                   <Button type="primary" onClick={this.toClassRoom.bind(this, v.rid)}>进入课堂</Button>
                 : null}
+                <Button onClick={this.toCourse.bind(this, v.cid)}>查看课程</Button>
+                <Button onClick={this.showUser.bind(this, category === 0 ? v.teacher : v.student, 1 - category)}>查看{category === 0 ? "中教" : "学生"}信息</Button>
               </div>
             </Collapse.Panel>
           ))}
