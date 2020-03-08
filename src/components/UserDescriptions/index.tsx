@@ -24,7 +24,6 @@ const desc = [
   ["phone", "手机号"],
   ["qualification", "语言资质"],
   ["background", "学历"],
-  ["payment", "未提现佣金"],
   ["time", "可预约时间"],
   ["resume", "简历"],
   ["content", "个人简介"],
@@ -41,7 +40,14 @@ const findDesc = (x: string) => {
 
 class UserDescriptions extends React.Component<{title: string, information: any, className?: string}> {
   render() {
-    const keys = Object.keys(this.props.information).sort((a: string, b: string) => findDesc(a) - findDesc(b));
+    const keys = Object.keys(this.props.information).filter(value => {
+      for (let i = 0; i < desc.length; ++i) {
+        if (desc[i][0] === value) {
+          return true;
+        }
+      }
+      return false;
+    }).sort((a: string, b: string) => findDesc(a) - findDesc(b));
     return (
       <Descriptions className={this.props.className} title={this.props.title}>
         {keys.map(k => {
