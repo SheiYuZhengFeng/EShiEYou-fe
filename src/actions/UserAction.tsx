@@ -1,5 +1,6 @@
 import store from "../store"
 import { clearMyCourseAction } from "./CourseAction";
+import { clearOrderListAction } from "./OrderAction";
 
 export const UserActionType = {
   LOGIN: "LOGIN",
@@ -16,6 +17,7 @@ export const LoginAction = (payload: {name: string, token: string, category: num
 export const LogoutAction = () => {
   store.dispatch({ type: UserActionType.LOGOUT });
   clearMyCourseAction();
+  clearOrderListAction();
 }
 
 export const toLoginAction = () => {

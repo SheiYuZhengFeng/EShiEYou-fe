@@ -1,1 +1,64 @@
 @import '../../themes/default.module.less';
+
+.whole {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  > div {
+    width: 90%;
+  }
+
+  .orders {
+    background-color: white;
+
+    .header {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      align-items: center;
+
+      .icon {
+        font-size: 1.3em;
+      }
+
+      .time {
+        margin-left: .5em;
+      }
+    }
+
+    .panel {
+      border: none;
+      border-radius: .5em;
+      margin-bottom: 1em;
+    }
+
+    .panel:last-child {
+      margin-bottom: 0;
+    }
+
+    @keyframes onclass {
+      0% { background-color: fade(red, 10%); }
+      100% { background-color: fade(red, 40%); }
+    }
+
+    .canceled { background-color: fade(black, 5%); }
+    .waiting { background-color: fade(orange, 20%); }
+    .onclass { animation: onclass 1s ease-in-out 0s infinite alternate; }
+    .finished { background-color: fade(green, 10%); }
+    .beforeclass { background-color: fade(@primary-color, 20%); }
+
+    .controls {
+      margin-top: 1em;
+
+      button {
+        margin-right: .5em;
+      }
+
+      button:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

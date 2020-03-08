@@ -1,4 +1,5 @@
 import request from "../utils/request";
+import { OrderEntity } from "./StudentAPI";
 
 const prefix = "/native";
 
@@ -15,11 +16,14 @@ const MainAPI = {
 };
 
 const OrderAPI = {
-  list() : Promise<SimpleResponse & {data: {orders: {id: number, state: number, cid: number, student: number, createtime: number, starttime: number, endtime: number, rid: number}[]}}> {
+  list() : Promise<SimpleResponse & {data: {orders: OrderEntity[]}}> {
     return request(prefix + "/order/list");
   },
   reply(body: {id: number, accept: boolean}) : Promise<SimpleResponse> {
     return request(prefix + "/order/reply", body);
+  },
+  cancel(body: {id: number}) : Promise<SimpleResponse> {
+    return request(prefix + "/order/cancel", body);
   },
 };
 

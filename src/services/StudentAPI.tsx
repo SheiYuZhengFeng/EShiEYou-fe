@@ -13,6 +13,18 @@ export interface CourseTeacher {
   time: string,
 }
 
+export interface OrderEntity {
+  id: number,
+  state: number,
+  cid: number,
+  student: number,
+  teacher: number,
+  createtime: number,
+  starttime: number,
+  endtime: number,
+  rid: number,
+}
+
 const MainAPI = {
   register(body: {username: string, name: string, password: string, sex: number, age: number, language: number, level: number, target: number, content: string, phone: string}) : Promise<SimpleResponse> {
     return request(prefix + "/register", body, false);
@@ -26,11 +38,14 @@ const MainAPI = {
 };
 
 const OrderAPI = {
-  my() : Promise<SimpleResponse & {data: {orders: {id: number, state: number, cid: number, student: number, teacher: number, createtime: number, starttime: number, endtime: number, rid: number}[]}}> {
+  my() : Promise<SimpleResponse & {data: {orders: OrderEntity[]}}> {
     return request(prefix + "/order/my");
   },
   add(body: {cid: number, teacher: number, starttime: number, endtime: number}) : Promise<SimpleResponse> {
     return request(prefix + "/order/add", body);
+  },
+  cancel(body: {id: number}) : Promise<SimpleResponse> {
+    return request(prefix + "/order/cancel", body);
   },
 };
 
