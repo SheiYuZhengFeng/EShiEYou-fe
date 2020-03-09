@@ -8,6 +8,7 @@ import NativeAPI from '../../services/NativeAPI';
 import { orderListAction } from '../../actions/OrderAction';
 import { message, Skeleton, Empty, Icon, Collapse, Button, Modal } from 'antd';
 import QueueAnim from 'rc-queue-anim';
+import ShowUserDescriptions from '../../components/UserDescriptions/WithModal';
 
 const getType = (v: OrderEntity) => {
   const { state, rid } = v;
@@ -96,7 +97,7 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
     this.props.history.push("/mycourse/" + cid);
   }
   showUser = (id: number, category: number) => {
-
+    ShowUserDescriptions(category, id, true);
   }
   render() {
     const { category } = store.getState().UserReducer.session;
