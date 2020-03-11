@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./index.module.less";
 import GeneralAPI, { CourseDetail, Video, VideoTitle, ForeignBrief, ForeignDetail } from "../../../services/GeneralAPI";
 import { Spin, Empty, Tag, Collapse, Rate, Icon, Button, Modal, message, notification } from "antd";
-import UserDescriptions, { CONST } from "../../../components/UserDescriptions";
+import UserDescriptions, { CONST, GeneralUser } from "../../../components/UserDescriptions";
 import QueueAnim from "rc-queue-anim";
 import { RouteComponentProps, withRouter } from "react-router";
 import Price, { calcPrice } from "../../../components/Price";
@@ -106,7 +106,7 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
           <div key="content" className={styles.content}>{data.content}</div>
           <Collapse key="collapse" bordered={false}>
             <Collapse.Panel key="1" header="外教信息" className={styles.panel}>
-              <UserDescriptions className={styles.teacher} title="" information={this.state.foreign}></UserDescriptions>
+              <UserDescriptions className={styles.teacher} title="" information={this.state.foreign as GeneralUser}></UserDescriptions>
             </Collapse.Panel>
           </Collapse>
           <div key="control" className={styles.control}>

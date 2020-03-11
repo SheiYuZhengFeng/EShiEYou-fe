@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Spin, Empty } from "antd";
-import UserDescriptions, { CONST } from "..";
+import UserDescriptions, { CONST, GeneralUser } from "..";
 import GeneralAPI from "../../../services/GeneralAPI";
 
 function WithModal(props: {f: (data: {id: number}) => Promise<SimpleResponse>, id: number}) {
   const [status, setStatus] = useState(0);
-  const [data, setData] = useState(undefined);
+  const [data, setData] = useState({});
 
   useEffect(() => {
     if (status === 0) {
       props.f({id: props.id}).then(res => {
         if (res.code === 0) {
-          setData(res.data);
+          setData(res.data as GeneralUser);
           setStatus(1);
         }
         else {

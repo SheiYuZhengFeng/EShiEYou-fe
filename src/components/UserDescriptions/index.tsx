@@ -12,6 +12,24 @@ const COLOR = ["orange", "green"]
 
 export const CONST = {categoty: CATEGORY, sex: SEX, language: LANGUAGE, level: LEVEL, target: TARGET, color: COLOR};
 
+export interface GeneralUser {
+  id?: number,
+  username?: string,
+  name?: string,
+  sex?: number,
+  age?: number,
+  language?: number,
+  level?: number,
+  target?: number,
+  createtime?: number,
+  phone?: string,
+  qualification?: string,
+  background?: string,
+  time?: string,
+  resume?: string,
+  content?: string,
+}
+
 const desc = [
   ["username", "用户名"],
   ["name", "姓名"],
@@ -38,7 +56,7 @@ const findDesc = (x: string) => {
   return -1;
 };
 
-class UserDescriptions extends React.Component<{title: string, information: any, className?: string}> {
+class UserDescriptions extends React.Component<{title: string, information: GeneralUser, className?: string}> {
   render() {
     const keys = Object.keys(this.props.information).filter(value => {
       for (let i = 0; i < desc.length; ++i) {
@@ -52,7 +70,7 @@ class UserDescriptions extends React.Component<{title: string, information: any,
       <Descriptions className={this.props.className} title={this.props.title}>
         {keys.map(k => {
           const i = findDesc(k);
-          let v = this.props.information[k];
+          let v = (this.props.information as any)[k];
           if (k === "sex") v = SEX[v];
           if (k === "language") v = LANGUAGE[v];
           if (k === "level") v = LEVEL[v];

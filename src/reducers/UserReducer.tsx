@@ -1,6 +1,7 @@
 import { UserActionType } from "../actions/UserAction"
+import { GeneralUser } from "../components/UserDescriptions";
 
-const initialState = {
+const initialState : {loged: boolean, view: number, session: {name: string, token: string, category: number}, information: GeneralUser} = {
   loged: false,
   view: 0,
   session: {
@@ -14,7 +15,7 @@ const initialState = {
 const UserReducer = (state = initialState, action: Action) => {
   switch(action.type) {
     case UserActionType.LOGIN:
-      return {...initialState, loged: true, session: action.payload };
+      return {...initialState, loged: true, session: action.payload as {name: string, token: string, category: number}};
     case UserActionType.LOGOUT:
       return initialState;
     case UserActionType.TOLOGIN:
