@@ -19,7 +19,7 @@ function WithModal(props: {f: (data: {id: number}) => Promise<SimpleResponse>, i
         }
       });
     }
-  });
+  }, [props, status]);
 
   return status === 1 ? <UserDescriptions title="" information={data} /> : status === 0 ? <Spin /> : <Empty description="获取用户信息失败" />;
 }
