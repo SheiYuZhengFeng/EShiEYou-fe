@@ -62,6 +62,21 @@ export interface ForeignDetail {
   resume: string,
 }
 
+export interface MailUser {
+  category: number,
+  id: number,
+  username: string,
+}
+
+export interface MailEntity {
+  category1: number,
+  id1: number,
+  category2: number,
+  id2: number,
+  time: number,
+  content: string,
+}
+
 const UserAPI = {
   login(body: {category: number, username: string, password: string}) : Promise<SimpleResponse & {data: {name: string, token: string}}> {
     return request("/user/login", body, false);
@@ -111,10 +126,10 @@ const MailAPI = {
   to(body: {category: number, id: number, content: string}) : Promise<SimpleResponse> {
     return request("/mail/to", body);
   },
-  getList() : Promise<SimpleResponse & {data: {users: {category: number, id: number}[]}}> {
+  getList() : Promise<SimpleResponse & {data: {users: MailUser[]}}> {
     return request("/mail/list");
   },
-  getMail(body: {category: number, id: number}) : Promise<SimpleResponse & {data: {mails: {category1: number, id1: number, category2: number, id2: number, time: number, content: string}[]}}> {
+  getMail(body: {category: number, id: number}) : Promise<SimpleResponse & {data: {mails: MailEntity[]}}> {
     return request("/mail/get", body);
   },
 };
