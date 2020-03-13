@@ -3,7 +3,9 @@ import GeneralAPI, { MailUser, MailEntity } from "../services/GeneralAPI";
 import store from "../store";
 
 export const makeMailAvailable = () => {
-
+  if (store.getState().MailReducer.status <= 0) {
+    updateMailUsers();
+  }
 }
 
 export const updateMailUsers = () => {
@@ -20,7 +22,7 @@ export const updateMailUsers = () => {
 
 export const updateChat = (index: number) => {
   const { users } = store.getState().MailReducer;
-  refreshChatAction(users[index]);
+  refreshChatAction(index);
   GeneralAPI.mail.getMail({id: users[index].id, category: users[index].category}).then(res => {
     if (res.code === 0) {
       chatAction(res.data.mails as MailEntity[]);

@@ -1,7 +1,18 @@
 import { MailUser, MailEntity } from "../services/GeneralAPI";
 import { MailActionType } from "../actions/MailAction";
 
-const initialState : {status: number, view: number, users: MailUser[], chat: {user: MailUser, status: number, mails: MailEntity[]}} = {
+export interface MailState {
+  status: number,
+  view: number,
+  users: MailUser[],
+  chat: {
+    user: MailUser,
+    status: number,
+    mails: MailEntity[],
+  },
+}
+
+const initialState : MailState = {
   status: 0,
   view: -1,
   users: [],
@@ -25,7 +36,7 @@ const MailReducer = (state = initialState, action: Action) => {
     case MailActionType.MAILUSERERROR:
       return {...initialState, status: -1};
     case MailActionType.REFRESHCHAT:
-      return {...state, chat: {user: action.payload as MailUser, status: 0, mails: []}};
+      return {...state, view: action.payload as number, chat: {user: state.users[action.payload], status: 0, mails: []}};
     case MailActionType.CHAT:
       return {...state, chat: {...state.chat, status: 1, mails: action.payload as MailEntity[]}};
     case MailActionType.CHATERROR:

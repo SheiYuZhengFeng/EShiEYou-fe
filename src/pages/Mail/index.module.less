@@ -1,1 +1,80 @@
 @import '../../themes/default.module.less';
+
+
+.whole {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    
+    .panel {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: flex-start;
+        width: 90%;
+
+        > div {
+            height: 40em;
+            overflow-y: scroll;
+        }
+
+        > div::-webkit-scrollbar {
+            display: none;
+        }
+
+        .list {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            min-width: 10em;
+            width: 25%;
+
+            .user {
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: flex-start;
+                align-items: center;
+                width: 100%;
+                padding: 1em;
+                margin-bottom: 1em;
+                border-radius: 1em;
+                background-color: fade(grey, 3%);
+                cursor: pointer;
+
+                &:hover {
+                    background-color: fade(@primary-color, 20%);
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                &.active {
+                    background-color: fade(@primary-color, 70%);
+                    color: white;
+                }
+
+                .listavator {
+                    flex: none;
+                    vertical-align: middle;
+                    height: 3em;
+                    width: 3em;
+                }
+
+                .listusername {
+                    margin-left: .5em;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+        }
+
+        .chat {
+            flex: 1 0;
+            margin-left: 2em;
+        }
+    }
+}

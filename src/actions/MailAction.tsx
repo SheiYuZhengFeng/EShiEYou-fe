@@ -22,7 +22,7 @@ export const mailUserErrorAction = () => {
   store.dispatch({ type: MailActionType.MAILUSERERROR });
 }
 
-export const refreshChatAction = (payload: MailUser) => {
+export const refreshChatAction = (payload: number) => {
   store.dispatch({ type: MailActionType.REFRESHCHAT, payload });
 }
 
