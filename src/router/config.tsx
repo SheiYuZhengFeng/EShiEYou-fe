@@ -8,6 +8,7 @@ import Order from "../pages/Order";
 import Mail from "../pages/Mail";
 import Char from "../pages/Char";
 import About from "../pages/About";
+import Room from "../pages/Room";
 
 export default <>
   <Route component={ Main } exact path="/" />
@@ -22,4 +23,5 @@ export default <>
   <Route component={ User } exact path="/user" />
   <Route component={ Char } exact path="/char" />
   <Route component={ About } exact path="/about" />
+  <Route component={ Room } exact path="/room/:rid" />
 </>;
