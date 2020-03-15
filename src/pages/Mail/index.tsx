@@ -7,6 +7,7 @@ import { makeMailAvailable, updateChat } from '../../controller/MailController';
 import { Skeleton, Empty, Avatar, Icon, Input, Button, message } from 'antd';
 import GeneralAPI, { MailEntity } from '../../services/GeneralAPI';
 import TextArea from 'antd/lib/input/TextArea';
+import QueueAnim from 'rc-queue-anim';
 
 class Mail extends React.Component<{}, MailState> {
   constructor(props: any) {
@@ -62,8 +63,8 @@ class Mail extends React.Component<{}, MailState> {
     const { state } = this;
     return Combiner(
       <div className={styles.container}>
-        <div className={styles.whole}>
-          <div className={styles.panel}>
+        <QueueAnim className={styles.whole} animConfig={[{translateY: [0, 10], opacity: [1, 0]}]}>
+          <div key="panel" className={styles.panel}>
             <div className={styles.list}>
               {state.status === 0 ? <><Skeleton active avatar /><Skeleton active avatar /><Skeleton active avatar /><Skeleton active avatar /></>
               : state.status === -1 ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="加载失败" />
@@ -97,7 +98,7 @@ class Mail extends React.Component<{}, MailState> {
               </>}
             </div>
           </div>
-        </div>
+        </QueueAnim>
       </div>
     );
   }
