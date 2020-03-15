@@ -157,7 +157,27 @@
             }
 
             .control {
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: flex-start;
+                align-items: flex-end;
                 height: 8em;
+
+                .input {
+                    width: 100%;
+                    flex: 1 0;
+
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                }
+
+                .send {
+                    height: 2em;
+                    max-width: 15em;
+                    width: 100%;
+                    margin-top: .5em;
+                }
             }
         }
     }

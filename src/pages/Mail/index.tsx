@@ -4,8 +4,9 @@ import Combiner from '../../components/Combiner';
 import store from '../../store';
 import { MailState } from '../../reducers/MailReducer';
 import { makeMailAvailable, updateChat } from '../../controller/MailController';
-import { Skeleton, Empty, Avatar, Icon } from 'antd';
-import { MailEntity } from '../../services/GeneralAPI';
+import { Skeleton, Empty, Avatar, Icon, Input, Button, message } from 'antd';
+import GeneralAPI, { MailEntity } from '../../services/GeneralAPI';
+import TextArea from 'antd/lib/input/TextArea';
 
 class Mail extends React.Component<{}, MailState> {
   constructor(props: any) {
@@ -13,6 +14,7 @@ class Mail extends React.Component<{}, MailState> {
     this.state = {...store.getState().MailReducer};
   }
   mailScroller: HTMLDivElement | null | undefined;
+  textToSend: TextArea | null | undefined;
   scrollToBottom = () => {
     if (this.mailScroller) {
       const scrollHeight = this.mailScroller.scrollHeight;
@@ -37,12 +39,25 @@ class Mail extends React.Component<{}, MailState> {
   handleSelect = (index: number) => {
     updateChat(index);
   }
+  handleSend = () => {
+    const { value } = (this.textToSend as TextArea).state;
+    (this.textToSend as TextArea).setState({...(this.textToSend as TextArea).state, value: ""});
+    if (!value) return;
+    const { category, id } = this.state.users[this.state.view];
+    GeneralAPI.mail.to({category, id, content: value}).then(res => {
+      if (res.code === 0) {
+        updateChat(this.state.view, false);
+      }
+      else {
+        message.error("发送私信失败！");
+      }
+    });
+  }
   render() {
     const isMine = (v: MailEntity) => {
-      /*const { category, id } = this.state.users[this.state.view];
+      const { category, id } = this.state.users[this.state.view];
       if (category === v.category1 && id === v.id1) return true;
-      return false;*/
-      return Math.random() <= 0.5;
+      return false;
     }
     const { state } = this;
     return Combiner(
@@ -76,7 +91,8 @@ class Mail extends React.Component<{}, MailState> {
                   }
                 </div>
                 <div className={styles.control}>
-                  // TODO: 私信界面输入框、发送按钮
+                  <Input.TextArea className={styles.input} autoSize={false} ref={(el) => { this.textToSend = el; }} />
+                  <Button className={styles.send} type="primary" onClick={this.handleSend}>发送</Button>
                 </div>
               </>}
             </div>
