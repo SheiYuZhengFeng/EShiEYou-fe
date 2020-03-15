@@ -75,6 +75,90 @@
         .chat {
             flex: 1 0;
             margin-left: 2em;
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: center;
+            align-items: center;
+
+            > div {
+                width: 100%;
+            }
+
+            .icon {
+                font-size: 5em;
+                color: fade(grey, 50%);
+            }
+
+            .title {
+                height: 2em;
+                background-color: fade(@primary-color, 5%);
+                border-radius: 1em;
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: flex-start;
+                align-items: center;
+                padding-left: 1em;
+            }
+
+            .mails {
+                flex: 1 0;
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: flex-start;
+                align-items: flex-start;
+                overflow-y: scroll;
+                margin: 1em 0;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .mail {
+                    width: 100%;
+                    display: flex;
+                    flex-flow: column nowrap;
+                    justify-content: flex-start;
+                    margin-bottom: 1em;
+                    
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    &.left {
+                        align-items: flex-start;
+
+                        .content {
+                            background-color: fade(@primary-color, 10%);
+                        }
+                    }
+
+                    &.right {
+                        align-items: flex-end;
+
+                        .content {
+                            background-color: fade(@primary-color, 80%);
+                            color: white;
+                        }
+                    }
+
+                    .time {
+                        color: #00000099;
+                        font-size: .8em;
+                    }
+
+                    .content {
+                        max-width: 80%;
+                        word-break: break-all;
+                        letter-spacing: .1em;
+                        padding: 1em;
+                        border-radius: 1em;
+                    }
+                }
+            }
+
+            .control {
+                height: 8em;
+            }
         }
     }
 }

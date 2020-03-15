@@ -25,7 +25,7 @@ export const updateChat = (index: number) => {
   refreshChatAction(index);
   GeneralAPI.mail.getMail({id: users[index].id, category: users[index].category}).then(res => {
     if (res.code === 0) {
-      chatAction(res.data.mails as MailEntity[]);
+      chatAction((res.data.mails as MailEntity[]).sort((a, b) => (a.time - b.time)));
     }
     else {
       chatErrorAction();
