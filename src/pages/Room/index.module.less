@@ -1,1 +1,64 @@
 @import "../../themes/default.module.less";
+
+.whole {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  
+  .player:extend(.maxsize) {
+    flex: 1 0;
+
+    .video {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+  }
+
+  .panel:extend(.maxsize) {
+    height: 10em;
+
+    .progress {
+      width: 12em;
+    }
+  }
+}
+
+.maxsize {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.cloud:extend(.box) {
+  height: 3.5em;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1em;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.cloudbutton:extend(.cloud) {
+  cursor: pointer;
+  box-shadow: 0 0 1em 0 fade(@primary-color, 50%);
+  letter-spacing: .1em;
+
+  &:hover {
+    box-shadow: 0 0 1.5em 0 fade(@primary-color, 50%);
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
