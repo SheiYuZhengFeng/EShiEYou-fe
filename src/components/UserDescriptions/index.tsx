@@ -77,7 +77,7 @@ class UserDescriptions extends React.Component<{title: string, information: Gene
           if (k === "target") v = TARGET[v];
           if (k === "createtime") v = new Date(v).toDateString();
           if (k === "payment") v += " 元";
-          return <Item key={v} label={desc[i][1]}>{v}</Item>;
+          return <Item key={k} label={desc[i][1]}>{v}</Item>;
         })}
       </Descriptions>
     );
