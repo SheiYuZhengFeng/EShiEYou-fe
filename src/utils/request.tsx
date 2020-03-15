@@ -2,7 +2,7 @@ import axios from "axios";
 import { isUndefined } from "util";
 import store from "../store";
 
-const server = "https://mockapi.eolinker.com/xst28TE9fd8c9df6f852cffd7f835a68febaceb5100bc4d";
+export const server = "https://mockapi.eolinker.com/xst28TE9fd8c9df6f852cffd7f835a68febaceb5100bc4d";
 
 const withToken = (body : {} | undefined) => {
   if (isUndefined(body)) body = {};
