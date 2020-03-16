@@ -11,6 +11,9 @@ class WS {
     if (onOpen) this.ws.onopen = () => { onOpen(); };
     if (onClose) this.ws.onclose = () => { onClose(); };
   }
+  send = (code: string, data: string | any) => {
+    this.ws.send(JSON.stringify({code, data}));
+  }
 }
 
 export default WS;
