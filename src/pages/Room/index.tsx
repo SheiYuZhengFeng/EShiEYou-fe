@@ -140,7 +140,7 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
   render() {
     let component: JSX.Element;
     if (this.state.over) component = <Result status="success" title="下课了！" subTitle="本次课程已完成！" extra={<Button type="primary" onClick={this.handleBack}>返回</Button>} />;
-    else if (this.state.connected === -1) component = <Result status="403" title="无法加入课堂" subTitle="是不是网络不好或者进错房间了？" extra={<Button type="primary" onClick={this.handleRefresh}>刷新</Button>} />;
+    else if (this.state.connected === -1) component = <Result status="403" title="无法加入课堂" subTitle="是不是网络不好或者进错房间了？" extra={<><Button type="primary" onClick={this.handleRefresh}>刷新</Button><Button onClick={this.handleBack}>返回</Button></>} />;
     else if (this.state.connected === 0) component = <><Spin size="large" />正在加载...</>;
     else component = (
       <>
