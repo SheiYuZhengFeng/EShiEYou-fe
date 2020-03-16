@@ -3,7 +3,7 @@ import styles from "./index.module.less";
 import WS from "../../utils/ws";
 import { RouteComponentProps, withRouter } from "react-router";
 import store from "../../store";
-import { message, Result, Spin, Slider, Icon, Button } from "antd";
+import { message, Result, Spin, Slider, Icon, Button, Popconfirm } from "antd";
 import { durationToTime } from "../../utils/datetime";
 import { SliderValue } from "antd/lib/slider";
 
@@ -45,7 +45,7 @@ function Cloud(props: {wrapped: JSX.Element}) {
   );
 }
 
-function CloudButton(props: {title: string | JSX.Element, onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void}) {
+function CloudButton(props: {title: string | JSX.Element, onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void}) {
   return (
     <div className={styles.box + " " + styles.cloudbutton} onClick={props.onClick}>
       {props.title}
@@ -119,23 +119,24 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
   }
   handleReady = () => {
-    // TODO: 发送准备消息
+    this.ws.send("ready", "");
   }
   handleUrge = () => {
     // TODO: 发送催促消息
   }
   handleControl = (play: boolean) => {
-    // TODO: 发送控制消息
+    this.ws.send(play ? "play" : "pause", "");
     this.receiveControl(play);
   }
   handleProgress = (value: SliderValue) => {
-    // TODO: 发送调整进度消息
+    this.ws.send("progress", { progress: value as number });
   }
   handleMicrophone = () => {
     // TODO: 控制麦克风
   }
   handleOver = () => {
-    // TODO: 发送下课消息
+    this.ws.send("over", "");
+    this.setState({...this.state, over: true});
   }
   render() {
     let component: JSX.Element;
@@ -162,7 +163,14 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
               onAfterChange={this.handleProgress}
             />} />
             <Cloud wrapped={<div className={styles.lasting}>已上课 {durationToTime(this.state.playstate.time)}</div>} />
-            <CloudButton title={(this.isStudent ? "提前" : "") + "下课"} onClick={this.handleOver} />
+            <Popconfirm
+              title={"确定要" + (this.isStudent ? "提前" : "") + "下课吗？"}
+              onConfirm={this.handleOver}
+              okText="确定"
+              cancelText="取消"
+            >
+              <CloudButton title={(this.isStudent ? "提前" : "") + "下课"} />
+            </Popconfirm>
           </> : <>
             {(this.isStudent && !this.state.roomstate.student) || (!this.isStudent && !this.state.roomstate.native) ?
               <CloudButton title={((this.state.roomstate.student !== this.state.roomstate.native) ? "对方已准备，" : "") + "准备上课"} onClick={this.handleReady} />
