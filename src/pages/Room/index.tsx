@@ -128,7 +128,7 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     this.ws.send("ready", "");
   }
   handleUrge = () => {
-    // TODO: 发送催促消息
+    this.ws.send("urge", "");
   }
   handleControl = (play: boolean) => {
     this.ws.send(play ? "play" : "pause", "");
