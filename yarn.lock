@@ -9235,6 +9235,10 @@ react-app-rewired@^2.1.5:
   dependencies:
     semver "^5.6.0"
 
+"react-audio-recorder@github:MatrixFrog/react-audio-recorder#master":
+  version "2.1.0"
+  resolved "https://codeload.github.com/MatrixFrog/react-audio-recorder/tar.gz/0ead8e5a98d87894913b34d50d01ba834aa4f7f4"
+
 react-datetime@^2.16.3:
   version "2.16.3"
   resolved "https://registry.npm.taobao.org/react-datetime/download/react-datetime-2.16.3.tgz#7f9ac7d4014a939c11c761d0c22d1fb506cb505e"

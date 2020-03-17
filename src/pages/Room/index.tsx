@@ -6,6 +6,7 @@ import store from "../../store";
 import { message, Result, Spin, Slider, Icon, Button, Popconfirm } from "antd";
 import { durationToTime } from "../../utils/datetime";
 import { SliderValue } from "antd/lib/slider";
+import WAVEInterface from "react-audio-recorder/dist/waveInterface";
 
 interface RoomState {
   connected: number,
@@ -20,6 +21,7 @@ interface RoomState {
     duration: number,
   },
   over: boolean,
+  audio: boolean,
 }
 
 const initialRoomState: RoomState = {
@@ -35,6 +37,7 @@ const initialRoomState: RoomState = {
     duration: 1,
   },
   over: false,
+  audio: false,
 };
 
 function Cloud(props: {wrapped: JSX.Element}) {
@@ -59,11 +62,14 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
   audio: HTMLAudioElement | null | undefined;
   isStudent: boolean;
   hide: any;
+  waveInterface: WAVEInterface;
+  sendWave: NodeJS.Timeout | undefined;
   constructor(props: any) {
     super(props);
     this.state = initialRoomState;
     this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
     this.isStudent = store.getState().UserReducer.session.category === 0;
+    this.waveInterface = new WAVEInterface();
   }
   receiveControl = (play: boolean) => {
     if (play) message.info("播放继续");
@@ -132,7 +138,23 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     this.ws.send("progress", { progress: value as number });
   }
   handleMicrophone = () => {
-    // TODO: 控制麦克风
+    if (this.state.audio) {
+      if (this.sendWave) clearInterval(this.sendWave);
+      this.sendWave = undefined;
+      this.waveInterface.reset();
+    }
+    else {
+      this.waveInterface.reset();
+      this.waveInterface.startRecording();
+      this.sendWave = setInterval(() => {
+        const { audioData } = this.waveInterface;
+        this.waveInterface.buffers = [[], []];
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => { this.ws.send("audio", (e.target as FileReader).result as string); }
+        fileReader.readAsDataURL(audioData);
+      }, 200);
+    }
+    this.setState({...this.state, audio: !this.state.audio});
   }
   handleOver = () => {
     this.ws.send("over", "");
@@ -147,11 +169,11 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
       <>
         <div className={styles.player}>
           <img className={styles.video + " " + styles.box} alt="视频画面" ref={(e) => { this.video = e; }} />
-          <audio style={{display: "none"}} ref={(e) => { this.audio = e; }} />
+          <audio style={{display: "none"}} ref={(e) => { this.audio = e; }} autoPlay />
         </div>
         <div className={styles.panel}>
           {this.state.roomstate.onclass ? <>
-            <CloudButton title={<Icon type="audio" theme="filled" />} onClick={this.handleMicrophone} />
+            <CloudButton title={<Icon className={this.state.audio ? styles.audio : ""} type="audio" theme="filled" />} onClick={this.handleMicrophone} />
             <CloudButton title={<Icon type="caret-right" theme="filled" />} onClick={this.handleControl.bind(this, true)} />
             <CloudButton title={<Icon type="pause" />} onClick={this.handleControl.bind(this, false)} />
             <Cloud wrapped={<Slider className={styles.progress}
