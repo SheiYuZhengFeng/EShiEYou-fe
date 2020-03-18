@@ -35,16 +35,20 @@ class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {
   }
   handleSubmit = () => {
     const { form } = this;
-    if (!form.starttime || !form.endtime || form.endtime < form.starttime + 3600 || form.starttime <= new Date().getTime() / 1000) {
-      message.error("请选择正确的预约时间，且时长至少为一小时！");
+    if (!form.starttime || !form.endtime || form.starttime <= new Date().getTime() / 1000) {
+      message.error("请选择正确的预约时间！");
+      return;
+    }
+    form.starttime = Math.round(form.starttime / 3600) * 3600;
+    form.endtime = Math.round(form.endtime / 3600) * 3600;
+    if (form.endtime < form.starttime + 3600) {
+      message.error("预约时间至少一小时！");
       return;
     }
     if (form.teacher === -1 || form.teacher >= this.state.teacher.length) {
       message.error("请选择中教！");
       return;
     }
-    form.starttime = Math.round(form.starttime / 3600) * 3600;
-    form.endtime = Math.round(form.endtime / 3600) * 3600;
     const onOk = () => {
       StudentAPI.order.add({cid: this.state.cid, teacher: this.state.teacher[form.teacher].id, starttime: form.starttime, endtime: form.endtime}).then(res => {
         if (res.code === 0) {
@@ -83,6 +87,7 @@ class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {
           <div className={styles.name}>课程：{this.state.name}</div>
           <div className={styles.time}>预约开始时间：<Datetime onChange={this.handleTime.bind(this, "starttime")} /></div>
           <div className={styles.time}>预约结束时间：<Datetime onChange={this.handleTime.bind(this, "endtime")} /></div>
+          <div className={styles.time}>请精确到小时，分和秒将四舍五入到小时</div>
           <Collapse key="collapse" bordered={false} className={styles.teachers} accordion onChange={this.handleCollapse}>
             {this.state.teacher.map((v, i) => (
               <Collapse.Panel key={i} header={v.username} className={styles.teacher}>
