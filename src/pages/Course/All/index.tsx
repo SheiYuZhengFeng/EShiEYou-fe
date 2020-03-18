@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./index.module.less";
 import GeneralAPI, { CourseBrief } from "../../../services/GeneralAPI";
-import { message, Skeleton, Tag, Button } from "antd";
+import { message, Skeleton, Tag, Button, Empty } from "antd";
 import { CONST } from "../../../components/UserDescriptions";
 import store from "../../../store";
 import { allCourseAction } from "../../../actions/CourseAction";
@@ -9,14 +9,19 @@ import { RouteComponentProps, withRouter } from "react-router";
 import QueueAnim from "rc-queue-anim";
 import Price from "../../../components/Price";
 
-class AllCourse extends React.Component<RouteComponentProps, {courses: CourseBrief[]}> {
+class AllCourse extends React.Component<RouteComponentProps, {got: boolean, courses: CourseBrief[]}> {
   constructor(props: any) {
     super(props);
-    this.state = {courses: store.getState().CourseReducer.allcourse};
+    this.state = {got: store.getState().CourseReducer.allcourse.length > 0, courses: store.getState().CourseReducer.allcourse};
   }
   ss = store.subscribe(() => {
     this.setState({...this.state, courses: store.getState().CourseReducer.allcourse});
   })
+  componentWillMount() {
+    if (!this.state.got) {
+      this.updateList();
+    }
+  }
   componentWillUnmount() {
     this.ss();
   }
@@ -28,6 +33,7 @@ class AllCourse extends React.Component<RouteComponentProps, {courses: CourseBri
       else {
         message.error("拉取课程列表失败");
       }
+      this.setState({...this.state, got: true});
     });
   }
   toBuy = (id: number, e: React.MouseEvent<HTMLInputElement>) => {
@@ -39,9 +45,11 @@ class AllCourse extends React.Component<RouteComponentProps, {courses: CourseBri
   }
   render() {
     const { state } = this;
-    if (Object.keys(state.courses).length === 0) {
-      this.updateList();
+    if (!this.state.got) {
       return <div className={styles.whole}><Skeleton className={styles.skeleton} active /></div>;
+    }
+    else if (this.state.courses.length === 0) {
+      return <Empty description="暂无课程" />;
     }
     return (
       <QueueAnim className={styles.whole} animConfig={[{opacity: [1, 0], translateY: [0, 10]}, {opacity: [1, 0], translateY: [0, -10]}]}>

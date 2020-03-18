@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../All/index.module.less";
 import { CourseBrief } from "../../../services/GeneralAPI";
-import { message, Skeleton, Tag, Button } from "antd";
+import { message, Skeleton, Tag, Button, Empty } from "antd";
 import { CONST } from "../../../components/UserDescriptions";
 import store from "../../../store";
 import { myCourseAction, raiseOrderAction } from "../../../actions/CourseAction";
@@ -11,14 +11,19 @@ import StudentAPI from "../../../services/StudentAPI";
 import NativeAPI from "../../../services/NativeAPI";
 import ForeignAPI from "../../../services/ForeignAPI";
 
-class MyCourse extends React.Component<RouteComponentProps, {courses: CourseBrief[]}> {
+class MyCourse extends React.Component<RouteComponentProps, {got: boolean, courses: CourseBrief[]}> {
   constructor(props: any) {
     super(props);
-    this.state = {courses: store.getState().CourseReducer.mycourse};
+    this.state = {got: store.getState().CourseReducer.mycourse.length > 0, courses: store.getState().CourseReducer.mycourse};
   }
   ss = store.subscribe(() => {
     this.setState({...this.state, courses: store.getState().CourseReducer.mycourse});
   })
+  componentWillMount() {
+    if (!this.state.got) {
+      this.updateList();
+    }
+  }
   componentWillUnmount() {
     this.ss();
   }
@@ -36,6 +41,7 @@ class MyCourse extends React.Component<RouteComponentProps, {courses: CourseBrie
       else {
         message.error("拉取课程列表失败");
       }
+      this.setState({...this.state, got: true});
     });
   }
   toDetail = (id: number) => {
@@ -48,9 +54,11 @@ class MyCourse extends React.Component<RouteComponentProps, {courses: CourseBrie
   }
   render() {
     const { state } = this;
-    if (Object.keys(state.courses).length === 0) {
-      this.updateList();
+    if (!this.state.got) {
       return <div className={styles.whole}><Skeleton className={styles.skeleton} active /></div>;
+    }
+    else if (this.state.courses.length === 0) {
+      return <Empty description="暂无课程" />;
     }
     return (
       <QueueAnim className={styles.whole} animConfig={[{opacity: [1, 0], translateY: [0, 10]}, {opacity: [1, 0], translateY: [0, -10]}]}>
