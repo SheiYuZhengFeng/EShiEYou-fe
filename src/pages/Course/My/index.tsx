@@ -20,9 +20,7 @@ class MyCourse extends React.Component<RouteComponentProps, {got: boolean, cours
     this.setState({...this.state, courses: store.getState().CourseReducer.mycourse});
   })
   componentWillMount() {
-    if (!this.state.got) {
-      this.updateList();
-    }
+    this.updateList();
   }
   componentWillUnmount() {
     this.ss();

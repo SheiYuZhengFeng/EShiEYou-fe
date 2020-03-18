@@ -33,6 +33,9 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
   ss = store.subscribe(() => {
     this.setState({...this.state, order: store.getState().OrderReducer.order, status: store.getState().OrderReducer.status});
   });
+  componentWillMount() {
+    this.updateList();
+  }
   componentWillUnmount() {
     this.ss();
   }
@@ -104,7 +107,6 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
     let component: JSX.Element;
     if (this.state.status === 0) {
       component = <Skeleton active />;
-      this.updateList();
     }
     else if (this.state.order.length === 0) component = <Empty description="暂无预约" />;
     else component = (
