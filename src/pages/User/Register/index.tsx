@@ -7,11 +7,12 @@ import StudentAPI from '../../../services/StudentAPI';
 import NativeAPI from '../../../services/NativeAPI';
 import ForeignAPI from '../../../services/ForeignAPI';
 import { CONST } from '../../../components/UserDescriptions';
+import GeneralAPI from '../../../services/GeneralAPI';
 
 const { Option } = Select;
 
 class Register extends React.Component<{}, {category: number, loading: boolean}> {
-  form: any = {category: 0}
+  form: any = {category: 0, lastTime: 0}
   constructor(props: {}) {
     super(props);
     this.state = {category: 0, loading: false};
@@ -24,7 +25,8 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
     if (form.sex === undefined) msg.push("请选择你的性别");
     if (form.age === undefined) msg.push("请选择你的年龄");
     if (!form.name) msg.push("请输入你的真实姓名");
-    if (!form.phone) msg.push("请输入你的手机号");
+    if (!form.phone || !(form.phone as string).match("1[0-9]{10}")) msg.push("请正确输入你的手机号");
+    if (!form.vcode) msg.push("请获取手机验证码并正确输入");
     if (!form.content) msg.push("请输入你的个人简介");
     if (form.language === undefined) msg.push("请选择你的语种");
     if (form.category === 0) {
@@ -59,6 +61,7 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
       phone: form.phone,
       language: form.language,
       content: form.content,
+      vcode: form.vcode,
     };
     if (form.category === 0) {
       return StudentAPI.main.register({...nf, level: form.level, target: form.target});
@@ -102,6 +105,26 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
     this.form[name] = value;
     if (name === "category") this.setState({category: value});
   }
+  handleGetCode = () => {
+    if (!this.form.phone || !(this.form.phone as string).match("1[0-9]{10}")) {
+      message.error("请输入正确的手机号");
+      return;
+    }
+    const time = new Date().getTime() / 1000;
+    if (time - this.form.lastTime > 60) {
+      GeneralAPI.user.code({phone: this.form.phone}).then(res => {
+        if (res.code === 0) {
+          this.form.lastTime = time;
+          message.success("手机验证码发送成功！");
+        }
+        else {
+          message.error("请稍候重试！");
+        }
+      });
+      return;
+    }
+    message.error("请一分钟后重试！");
+  }
   render() {
     const inputStyle = {marginTop: "1em", width: "100%"};
     const { category } = this.state;
@@ -122,6 +145,7 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
         </Select>
         <Input name="name" prefix={<Icon type="idcard"/>} placeholder="真实姓名" style={inputStyle} onChange={this.handleChange} />
         <Input name="phone" prefix={<Icon type="phone"/>} placeholder="手机号" style={inputStyle} onChange={this.handleChange} />
+        <Input.Search name="vcode" enterButton="获取验证码" prefix={<Icon type="question"/>} placeholder="验证码" style={inputStyle} onChange={this.handleChange} onSearch={this.handleGetCode} />
         <Input name="content" prefix={<Icon type="tags"/>} placeholder="简短介绍一下自己吧！" style={inputStyle} onChange={this.handleChange} />
         <Select style={inputStyle} placeholder={category === 0 ? "想学习的语种" : "教授的语种"} onChange={this.handleSelect.bind(this, "language")}>
           {CONST.language.map((v, i) => <Option key={i} value={i}>{v}</Option>)}

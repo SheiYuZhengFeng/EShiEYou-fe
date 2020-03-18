@@ -3,7 +3,7 @@ import request from "../utils/request";
 const prefix = "/foreign";
 
 const MainAPI = {
-  register(body: {username: string, name: string, password: string, sex: number, age: number, content: string, phone: string, language: number, qualification: string, background: string, resume: string}) : Promise<SimpleResponse> {
+  register(body: {username: string, name: string, password: string, sex: number, age: number, content: string, phone: string, language: number, qualification: string, background: string, resume: string, vcode: string}) : Promise<SimpleResponse> {
     return request(prefix + "/register", body, false);
   },
   me() : Promise<SimpleResponse & {data: {username: string, name: string, sex: number, age: number, createtime: number, content: string, phone: string, language: number, qualification: string, background: string, resume: string}}> {

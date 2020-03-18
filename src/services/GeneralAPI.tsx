@@ -105,6 +105,9 @@ const UserAPI = {
   getForeignDetail(body: {id: number}) : Promise<SimpleResponse & {data: ForeignDetail}> {
     return request("/user/foreign/detail", body);
   },
+  code(body: {phone: string}) : Promise<SimpleResponse & {data: {code: string}}> {
+    return request("/user/code", body, false);
+  },
 };
 
 const CourseAPI = {
