@@ -19,6 +19,7 @@ interface RoomState {
     time: number,
     progress: number,
     duration: number,
+    url: string,
   },
   over: boolean,
   audio: boolean,
@@ -35,6 +36,7 @@ const initialRoomState: RoomState = {
     time: 0,
     progress: 0,
     duration: 1,
+    url: "",
   },
   over: false,
   audio: false,
@@ -58,7 +60,7 @@ function CloudButton(props: {title: string | JSX.Element, onClick?: (event: Reac
 
 class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState> {
   ws: WS;
-  video: HTMLImageElement | null | undefined;
+  video: HTMLVideoElement | null | undefined;
   audio: HTMLAudioElement | null | undefined;
   isStudent: boolean;
   hide: any;
@@ -74,16 +76,19 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
   receiveControl = (play: boolean) => {
     if (play) message.info("播放继续");
     else message.info("播放暂停");
+    if (this.video) {
+      if (play) this.video.play();
+      else this.video.pause();
+    }
   }
   onMessage = (code: string, data: string) => {
     if (this.state.over) return;
     console.log("receive: " + code + ", " + data);
     switch(code){
       case "state":
-        this.setState({...this.state, connected: 1, roomstate: JSON.parse(data)});
-        break;
-      case "video":
-        if (this.video) this.video.src = data;
+        const roomstate = JSON.parse(data);
+        this.setState({...this.state, connected: 1, roomstate});
+        if (roomstate.onclass) message.success("开始上课！");
         break;
       case "audio":
         if (this.audio) this.audio.src = data;
@@ -125,10 +130,7 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
   }
   handleReady = () => {
-    this.ws.send("ready", "");
-  }
-  handleUrge = () => {
-    this.ws.send("urge", "");
+    this.ws.send("ready", store.getState().UserReducer.session.category === 0 ? "student" : "teacher");
   }
   handleControl = (play: boolean) => {
     this.ws.send(play ? "play" : "pause", "");
@@ -168,7 +170,13 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     else component = (
       <>
         <div className={styles.player}>
-          <img className={styles.video + " " + styles.box} alt="视频画面" ref={(e) => { this.video = e; }} />
+          {this.state.playstate.url === "" ?
+            <div className={styles.novideo + " " + styles.box}>
+              <Icon type="video-camera" theme="filled" className={styles.camera} />
+            </div>
+          : 
+            <video className={styles.video + " " + styles.box} src={this.state.playstate.url} ref={(e) => { this.video = e; }} />
+          }
           <audio style={{display: "none"}} ref={(e) => { this.audio = e; }} autoPlay />
         </div>
         <div className={styles.panel}>
@@ -197,7 +205,7 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
             {(this.isStudent && !this.state.roomstate.student) || (!this.isStudent && !this.state.roomstate.native) ?
               <CloudButton title={((this.state.roomstate.student !== this.state.roomstate.native) ? "对方已准备，" : "") + "准备上课"} onClick={this.handleReady} />
             : <>
-              <CloudButton title={"你已准备，催促" + (this.isStudent ? "中教" : "学生") + "准备"} onClick={this.handleUrge} />
+              <CloudButton title={"你已准备，等待对方准备"} />
             </>}
           </>}
         </div>
