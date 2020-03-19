@@ -6,16 +6,16 @@ import QueueAnim from 'rc-queue-anim';
 import StudentAPI from '../../../services/StudentAPI';
 import NativeAPI from '../../../services/NativeAPI';
 import ForeignAPI from '../../../services/ForeignAPI';
-import { CONST } from '../../../components/UserDescriptions';
+import { CONST, STUDENT, FOREIGN, NATIVE } from '../../../components/UserDescriptions';
 import GeneralAPI from '../../../services/GeneralAPI';
 
 const { Option } = Select;
 
 class Register extends React.Component<{}, {category: number, loading: boolean}> {
-  form: any = {category: 0, lastTime: 0}
+  form: any = {category: STUDENT, lastTime: 0}
   constructor(props: {}) {
     super(props);
-    this.state = {category: 0, loading: false};
+    this.state = {category: STUDENT, loading: false};
   }
   validate = () => {
     const { form } = this;
@@ -29,14 +29,14 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
     if (!form.vcode) msg.push("请获取手机验证码并正确输入");
     if (!form.content) msg.push("请输入你的个人简介");
     if (form.language === undefined) msg.push("请选择你的语种");
-    if (form.category === 0) {
+    if (form.category === STUDENT) {
       if (form.level === undefined) msg.push("请选择你目前的语言水平");
       if (form.target === undefined) msg.push("请选择你希望锻炼的能力");
     }
     else {
       if (!form.qualification) msg.push("请输入你的语言资质");
       if (!form.background) msg.push("请输入你的高校与学历");
-      if (form.category === 2) {
+      if (form.category === FOREIGN) {
         if (!form.resume) msg.push("请填写你的简历");
       }
     }
@@ -63,13 +63,13 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
       content: form.content,
       vcode: form.vcode,
     };
-    if (form.category === 0) {
+    if (form.category === STUDENT) {
       return StudentAPI.main.register({...nf, level: form.level, target: form.target});
     }
-    if (form.category === 1) {
+    if (form.category === NATIVE) {
       return NativeAPI.main.register({...nf, qualification: form.qualification, background: form.background});
     }
-    if (form.category === 2) {
+    if (form.category === FOREIGN) {
       return ForeignAPI.main.register({...nf, qualification: form.qualification, background: form.background, resume: form.resume});
     }
   }
@@ -147,34 +147,34 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
         <Input name="phone" prefix={<Icon type="phone"/>} placeholder="手机号" style={inputStyle} onChange={this.handleChange} />
         <Input.Search name="vcode" enterButton="获取验证码" prefix={<Icon type="question"/>} placeholder="验证码" style={inputStyle} onChange={this.handleChange} onSearch={this.handleGetCode} />
         <Input name="content" prefix={<Icon type="tags"/>} placeholder="简短介绍一下自己吧！" style={inputStyle} onChange={this.handleChange} />
-        <Select style={inputStyle} placeholder={category === 0 ? "想学习的语种" : "教授的语种"} onChange={this.handleSelect.bind(this, "language")}>
+        <Select style={inputStyle} placeholder={category === STUDENT ? "想学习的语种" : "教授的语种"} onChange={this.handleSelect.bind(this, "language")}>
           {CONST.language.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
         </Select>
         <QueueAnim>
           {/* 学生 */}
-          {category === 0 ?
+          {category === STUDENT ?
             <Select key="0" style={inputStyle} placeholder="目前的水平" onChange={this.handleSelect.bind(this, "level")}>
               {CONST.level.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
             </Select>
           : null}
-          {category === 0 ?
+          {category === STUDENT ?
             <Select key="1" style={inputStyle} placeholder="最希望锻炼的能力" onChange={this.handleSelect.bind(this, "target")}>
               {CONST.target.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
             </Select>
           : null}
           {/* 中教 */}
-          {category !== 0 ?
+          {category !== STUDENT ?
             <Tooltip key="2" title="如：日语N1">
               <Input name="qualification" prefix={<Icon type="file-done"/>} placeholder="语言资质" style={inputStyle} onChange={this.handleChange} />
             </Tooltip>
           : null}
-          {category !== 0 ?
+          {category !== STUDENT ?
             <Tooltip key="3" title="如：南京大学日语系硕士">
               <Input name="background" prefix={<Icon type="trophy"/>} placeholder="高校与学历" style={inputStyle} onChange={this.handleChange} />
             </Tooltip>
           : null}
           {/* 外教 */}
-          {category === 2 ?
+          {category === FOREIGN ?
             <Input key="4" name="resume" prefix={<Icon type="profile"/>} placeholder="简历" style={inputStyle} onChange={this.handleChange} />
           : null}
         </QueueAnim>

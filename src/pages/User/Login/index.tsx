@@ -3,13 +3,13 @@ import styles from './index.module.less';
 import { Select, Input, Button, Icon, message } from 'antd';
 import { toRegisterAction, LoginAction } from '../../../actions/UserAction';
 import GeneralAPI from '../../../services/GeneralAPI';
-import { CONST } from '../../../components/UserDescriptions';
+import { CONST, STUDENT } from '../../../components/UserDescriptions';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 const { Option } = Select;
 
 class Login extends React.Component<RouteComponentProps, {loading: boolean}> {
-  form: any = {category: 0, username: "", password: ""}
+  form: any = {category: STUDENT, username: "", password: ""}
   constructor(props: any) {
     super(props);
     this.state = {loading: false};

@@ -1,5 +1,6 @@
 import { MailUser, MailEntity } from "../services/GeneralAPI";
 import { MailActionType } from "../actions/MailAction";
+import { STUDENT } from "../components/UserDescriptions";
 
 export interface MailState {
   status: number,
@@ -18,7 +19,7 @@ const initialState : MailState = {
   users: [],
   chat: {
     user: {
-      category: 0,
+      category: STUDENT,
       id: 0,
       username: "",
     },

@@ -1,5 +1,5 @@
 import { UserActionType } from "../actions/UserAction"
-import { GeneralUser } from "../components/UserDescriptions";
+import { GeneralUser, STUDENT } from "../components/UserDescriptions";
 
 const initialState : {loged: boolean, view: number, session: {name: string, token: string, category: number}, information: GeneralUser} = {
   loged: false,
@@ -7,7 +7,7 @@ const initialState : {loged: boolean, view: number, session: {name: string, toke
   session: {
     name: "",
     token: "",
-    category: 0,
+    category: STUDENT,
   },
   information: {},
 }

@@ -1,6 +1,7 @@
 import { clearMailAction, mailUserAction, mailUserErrorAction, refreshChatAction, chatAction, chatErrorAction } from "../actions/MailAction"
 import GeneralAPI, { MailUser, MailEntity } from "../services/GeneralAPI";
 import store from "../store";
+import { SYSTEM } from "../components/UserDescriptions";
 
 export const makeMailAvailable = () => {
   if (store.getState().MailReducer.status <= 0) {
@@ -13,8 +14,8 @@ export const updateMailUsers = () => {
   GeneralAPI.mail.getList().then(res => {
     if (res.code === 0) {
       mailUserAction((res.data.users as MailUser[]).sort((a, b) => {
-        if (a.category === -1) return -1;
-        else if (b.category === -1) return 1;
+        if (a.category === SYSTEM) return -1;
+        else if (b.category === SYSTEM) return 1;
         return 0;
       }));
     }

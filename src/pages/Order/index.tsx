@@ -9,6 +9,7 @@ import { orderListAction } from '../../actions/OrderAction';
 import { message, Skeleton, Empty, Icon, Collapse, Button, Modal } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import ShowUserDescriptions from '../../components/UserDescriptions/WithModal';
+import { FOREIGN, STUDENT, NATIVE } from '../../components/UserDescriptions';
 
 const getType = (v: OrderEntity) => {
   const { state, rid } = v;
@@ -41,8 +42,8 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
   }
   updateList = () => {
     const { UserReducer } = store.getState();
-    if (!UserReducer.loged || UserReducer.session.category === 2) return;
-    (UserReducer.session.category === 0 ? StudentAPI.order.my() : NativeAPI.order.list()).then(res => {
+    if (!UserReducer.loged || UserReducer.session.category === FOREIGN) return;
+    (UserReducer.session.category === STUDENT ? StudentAPI.order.my() : NativeAPI.order.list()).then(res => {
       if (res.code === 0) {
         orderListAction(res.data.orders as OrderEntity[]);
       }
@@ -75,7 +76,7 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
   }
   handleCancel = (id: number, category: number) => {
     const onOk = () => {
-      (category === 0 ? StudentAPI.order.cancel : NativeAPI.order.cancel)({id}).then(res => {
+      (category === STUDENT ? StudentAPI.order.cancel : NativeAPI.order.cancel)({id}).then(res => {
         if (res.code === 0) {
           message.success("取消预约成功！");
           this.updateList();
@@ -122,20 +123,20 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
               <div className={styles.state}>{Map.description(v)}</div>
               <div className={styles.createtime}>预约创建于 {new Date(v.createtime * 1000).toLocaleString()}</div>
               <div className={styles.controls}>
-                {category === 1 && v.state === 1 ? // 中教，待确认，接受/拒绝
+                {category === NATIVE && v.state === 1 ? // 中教，待确认，接受/拒绝
                   <>
                     <Button type="primary" onClick={this.handleAccept.bind(this, v.id, true)}>接受预约</Button>
                     <Button type="danger" onClick={this.handleAccept.bind(this, v.id, false)}>拒绝预约</Button>
                   </>
                 : null}
-                {(v.state === 0 && v.rid === -1) || (v.state === 1 && category === 0) ? // （预约成功，未上课）或（学生，待中教确认），取消预约
+                {(v.state === 0 && v.rid === -1) || (v.state === 1 && category === STUDENT) ? // （预约成功，未上课）或（学生，待中教确认），取消预约
                   <Button type="danger" onClick={this.handleCancel.bind(this, v.id, category)}>取消预约</Button>
                 : null}
                 {v.state === 0 && v.rid > 0 ? // 上课中
                   <Button type="primary" onClick={this.toClassRoom.bind(this, v.rid)}>进入课堂</Button>
                 : null}
                 <Button onClick={this.toCourse.bind(this, v.cid)}>查看课程</Button>
-                <Button onClick={this.showUser.bind(this, category === 0 ? v.teacher : v.student, 1 - category)}>查看{category === 0 ? "中教" : "学生"}信息</Button>
+                <Button onClick={this.showUser.bind(this, category === STUDENT ? v.teacher : v.student, category === STUDENT ? NATIVE : STUDENT)}>查看{category === STUDENT ? "中教" : "学生"}信息</Button>
               </div>
             </Collapse.Panel>
           ))}

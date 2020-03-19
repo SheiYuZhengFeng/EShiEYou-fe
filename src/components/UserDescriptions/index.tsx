@@ -3,6 +3,10 @@ import { Descriptions } from "antd";
 
 const { Item } = Descriptions;
 
+export const SYSTEM = -1;
+export const STUDENT = 0;
+export const NATIVE = 1;
+export const FOREIGN = 2;
 const CATEGORY = ["学生", "中教", "外教"];
 const SEX = ["男", "女"];
 const LANGUAGE = ["韩语", "日语"];

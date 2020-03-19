@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./index.module.less";
 import GeneralAPI, { CourseDetail, Video, VideoTitle, ForeignBrief, ForeignDetail } from "../../../services/GeneralAPI";
 import { Spin, Empty, Tag, Collapse, Rate, Icon, Button, Modal, message, notification } from "antd";
-import UserDescriptions, { CONST, GeneralUser } from "../../../components/UserDescriptions";
+import UserDescriptions, { CONST, GeneralUser, STUDENT } from "../../../components/UserDescriptions";
 import QueueAnim from "rc-queue-anim";
 import { RouteComponentProps, withRouter } from "react-router";
 import Price, { calcPrice } from "../../../components/Price";
@@ -49,7 +49,7 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
   }
   buyCourse = () => {
     if (!store.getState().UserReducer.loged) { message.error("请先登录后购买！"); return; }
-    if (store.getState().UserReducer.session.category !== 0) { message.error("只有学生身份才能购买课程！"); return; }
+    if (store.getState().UserReducer.session.category !== STUDENT) { message.error("只有学生身份才能购买课程！"); return; }
     const data = this.state.data as CourseDetail;
     const onOk = () => {
       StudentAPI.course.buy({cid: this.props.config.cid}).then(res => {
@@ -102,7 +102,7 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
           <div key="control" className={styles.control}>
             <div className={styles.buttons}>
               {this.props.config.isMy ? null : <Button className={styles.button} type="primary" onClick={this.buyCourse}>购买</Button>}
-              {this.props.config.isMy && store.getState().UserReducer.session.category === 0 ? <Button className={styles.button} type="primary" onClick={this.toOrder.bind(this, this.props.config.cid, data.name)}>预约上课</Button> : null}
+              {this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? <Button className={styles.button} type="primary" onClick={this.toOrder.bind(this, this.props.config.cid, data.name)}>预约上课</Button> : null}
             </div>
             {this.props.config.isMy ? null : <Price cost={data.cost} discount={data.discount} extra />}
           </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Spin, Empty } from "antd";
-import UserDescriptions, { CONST, GeneralUser } from "..";
+import UserDescriptions, { CONST, GeneralUser, STUDENT, NATIVE } from "..";
 import GeneralAPI from "../../../services/GeneralAPI";
 
 function WithModal(props: {f: (data: {id: number}) => Promise<SimpleResponse>, id: number}) {
@@ -27,13 +27,13 @@ function WithModal(props: {f: (data: {id: number}) => Promise<SimpleResponse>, i
 function ShowUserDescriptions(category: number, id: number, detailed : boolean = false) {
   let fn: (body: {id: number}) => Promise<SimpleResponse>;
   if (detailed) {
-    if (category === 0) fn = GeneralAPI.user.getStudentDetail;
-    else if (category === 1) fn = GeneralAPI.user.getNativeDetail;
+    if (category === STUDENT) fn = GeneralAPI.user.getStudentDetail;
+    else if (category === NATIVE) fn = GeneralAPI.user.getNativeDetail;
     else fn = GeneralAPI.user.getForeignDetail;
   }
   else {
-    if (category === 0) fn = GeneralAPI.user.getStudentBrief;
-    else if (category === 1) fn = GeneralAPI.user.getNativeBrief;
+    if (category === STUDENT) fn = GeneralAPI.user.getStudentBrief;
+    else if (category === NATIVE) fn = GeneralAPI.user.getNativeBrief;
     else fn = GeneralAPI.user.getForeignBrief;
   }
   Modal.info({

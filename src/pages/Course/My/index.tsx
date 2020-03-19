@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../All/index.module.less";
 import { CourseBrief } from "../../../services/GeneralAPI";
 import { message, Skeleton, Tag, Button, Empty } from "antd";
-import { CONST } from "../../../components/UserDescriptions";
+import { CONST, STUDENT } from "../../../components/UserDescriptions";
 import store from "../../../store";
 import { myCourseAction, raiseOrderAction } from "../../../actions/CourseAction";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -69,7 +69,7 @@ class MyCourse extends React.Component<RouteComponentProps, {got: boolean, cours
               <div className={styles.time}>结课时间：{new Date((v as any).endtime * 1000).toLocaleString()}</div>
               <div className={styles.bottom}>
                 <div className={styles.buttons}>
-                  {store.getState().UserReducer.session.category === 0 ? <Button size={"small"} type="primary" onClick={this.toOrder.bind(this, v.cid, v.name)}>预约上课</Button> : null}
+                  {store.getState().UserReducer.session.category === STUDENT ? <Button size={"small"} type="primary" onClick={this.toOrder.bind(this, v.cid, v.name)}>预约上课</Button> : null}
                   <Button size={"small"}>查看详细</Button>
                 </div>
               </div>

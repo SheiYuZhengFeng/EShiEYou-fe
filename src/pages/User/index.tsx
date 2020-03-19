@@ -10,7 +10,7 @@ import NativeAPI from '../../services/NativeAPI';
 import ForeignAPI from '../../services/ForeignAPI';
 import QueueAnim from 'rc-queue-anim';
 import { informationAction, LogoutAction } from '../../actions/UserAction';
-import UserDescriptions, { CONST } from '../../components/UserDescriptions';
+import UserDescriptions, { CONST, STUDENT, NATIVE, FOREIGN } from '../../components/UserDescriptions';
 import GeneralAPI from '../../services/GeneralAPI';
 
 class User extends React.Component<{}, {loged: boolean, view: number, information: any, expand: boolean, password: boolean, modify: boolean}> {
@@ -36,9 +36,9 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
       }
     }
     const { category } = store.getState().UserReducer.session;
-    if (category === 0) StudentAPI.main.me().then(res => deal(res));
-    if (category === 1) NativeAPI.main.me().then(res => deal(res));
-    if (category === 2) ForeignAPI.main.me().then(res => deal(res));
+    if (category === STUDENT) StudentAPI.main.me().then(res => deal(res));
+    if (category === NATIVE) NativeAPI.main.me().then(res => deal(res));
+    if (category === FOREIGN) ForeignAPI.main.me().then(res => deal(res));
   }
   setting = () => {
     if (!this.state.expand) return null;
@@ -94,8 +94,8 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
       let update;
       const hide = message.loading("正在修改...", 0);
       this.setState({...this.state, modify: true});
-      if (category === 0) update = StudentAPI.main.edit({language: form.language, level: form.level, target: form.target, content: form.content});
-      else if (category === 1) update = NativeAPI.main.edit({time: form.time, content: form.content});
+      if (category === STUDENT) update = StudentAPI.main.edit({language: form.language, level: form.level, target: form.target, content: form.content});
+      else if (category === NATIVE) update = NativeAPI.main.edit({time: form.time, content: form.content});
       else update = ForeignAPI.main.edit({content: form.content});
       update.then(res => {
         hide();
@@ -113,7 +113,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
       <div key="0" className={styles.settings}>
         <div className={styles.item}>
           <p className={styles.title}>修改个人信息</p>
-          {category === 0 ? <>
+          {category === STUDENT ? <>
             <Select className={styles.input} defaultValue={this.state.information.language} placeholder="想学习的语种" onChange={handleSelect.bind(this, "language")}>
               {CONST.language.map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
             </Select>
@@ -124,7 +124,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
               {CONST.target.map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
             </Select>
           </> : null}
-          {category === 1 ? <>
+          {category === NATIVE ? <>
             <Input className={styles.input} name="time" prefix={<Icon type="clock-circle"/>} placeholder="可预约时间" onChange={handleChange} defaultValue={this.state.information.time} />
           </> : null}
           <Input className={styles.input} name="content" prefix={<Icon type="tags"/>} placeholder="简短介绍一下自己吧！" onChange={handleChange} defaultValue={this.state.information.content} />

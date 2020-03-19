@@ -7,6 +7,7 @@ import { message, Result, Spin, Slider, Icon, Button, Popconfirm } from "antd";
 import { durationToTime } from "../../utils/datetime";
 import { SliderValue } from "antd/lib/slider";
 import WAVEInterface from "react-audio-recorder/dist/waveInterface";
+import { STUDENT } from "../../components/UserDescriptions";
 
 interface RoomState {
   connected: number,
@@ -70,7 +71,7 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     super(props);
     this.state = initialRoomState;
     this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
-    this.isStudent = store.getState().UserReducer.session.category === 0;
+    this.isStudent = store.getState().UserReducer.session.category === STUDENT;
     this.waveInterface = new WAVEInterface();
   }
   receiveControl = (play: boolean) => {
@@ -130,7 +131,7 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
   }
   handleReady = () => {
-    this.ws.send("ready", store.getState().UserReducer.session.category === 0 ? "student" : "teacher");
+    this.ws.send("ready", store.getState().UserReducer.session.category === STUDENT ? "student" : "teacher");
   }
   handleControl = (play: boolean) => {
     this.ws.send(play ? "play" : "pause", "");
