@@ -22,6 +22,9 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
   ss = store.subscribe(() => {
     this.setState({...this.state, ...store.getState().UserReducer});
   });
+  componentWillUnmount() {
+    this.ss();
+  }
   onSwitch = (checked: boolean) => {
     this.setState({...this.state, expand: checked});
     if (checked) this.form = {...this.state.information};
