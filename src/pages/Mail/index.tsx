@@ -71,7 +71,7 @@ class Mail extends React.Component<{}, MailState> {
               : <>{state.users.map((v, i) => (
                 <div key={i} className={styles.user + " " + (i === state.view ? styles.active : "")} onClick={i === state.view ? undefined : this.handleSelect.bind(this, i)}>
                   <Avatar className={styles.listavator} size="large">
-                    {v.username}
+                    {v.category >=0 ? v.username : <Icon type="team" />}
                   </Avatar>
                   <div className={styles.listusername}>{v.username}</div>
                 </div>
@@ -79,7 +79,7 @@ class Mail extends React.Component<{}, MailState> {
             </div>
             <div className={styles.chat}>
               {state.view === -1 ? <Icon type="message" theme="filled" className={styles.icon} /> : <>
-                <div className={styles.title}>与 {state.chat.user.username} 的对话 </div>
+                <div className={styles.title}>{state.chat.user.category === -1 ? state.chat.user.username : ("与 " + state.chat.user.username + " 的对话")}</div>
                 <div className={styles.mails} ref={(el) => { this.mailScroller = el; }}>
                   {state.chat.status === 0 ? <Skeleton active paragraph={{rows: 5}} />
                   : state.chat.status === -1 ? <Empty description="加载失败" />

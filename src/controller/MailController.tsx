@@ -12,7 +12,11 @@ export const updateMailUsers = () => {
   clearMailAction();
   GeneralAPI.mail.getList().then(res => {
     if (res.code === 0) {
-      mailUserAction(res.data.users as MailUser[]);
+      mailUserAction((res.data.users as MailUser[]).sort((a, b) => {
+        if (a.category === -1) return -1;
+        else if (b.category === -1) return 1;
+        return 0;
+      }));
     }
     else {
       mailUserErrorAction();
