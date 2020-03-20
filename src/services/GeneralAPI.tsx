@@ -77,6 +77,15 @@ export interface MailEntity {
   content: string,
 }
 
+export interface BillEntity {
+  id: number,
+  createtime: number,
+  money: number,
+  type: number,
+  status: number,
+  content: string,
+}
+
 const UserAPI = {
   login(body: {category: number, username: string, password: string}) : Promise<SimpleResponse & {data: {name: string, token: string}}> {
     return request("/user/login", body, false);
@@ -147,7 +156,7 @@ const BillAPI = {
   balance() : Promise<SimpleResponse & {data: {balance: number}}> {
     return request("/bill/balance");
   },
-  list() : Promise<SimpleResponse & {data: {bills: {id: number, createtime: number, money: number, type: number, status: number, content: string}[]}}> {
+  list() : Promise<SimpleResponse & {data: {bills: BillEntity[]}}> {
     return request("/bill/list");
   },
 };
