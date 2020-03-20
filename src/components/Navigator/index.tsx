@@ -16,6 +16,7 @@ class Navigator extends React.Component {
         {state.loged ? <>
           <NavigatorButton href="/mycourse" title={state.session.category === STUDENT ? "已购课程" : "我的课程"} type="book" />
           {state.session.category !== FOREIGN ? <NavigatorButton href="/order" title="我的预约" type="calendar" /> : null}
+          <NavigatorButton href="/bill" title={"我的" + (state.session.category === STUDENT ? "账单" : "佣金")} type="money-collect" />
           <NavigatorButton href="/mail" title="查看私信" type="message" />
         </> : null}
         <NavigatorButton href="/user" title={state.loged ? "个人中心" : "用户登录"} type="user" />
