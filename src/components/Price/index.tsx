@@ -1,10 +1,7 @@
 import React from "react";
 import styles from "./index.module.less";
 import { Icon } from "antd";
-
-export const calcPrice = (cost: number, discount: number) : number => {
-  return Math.floor(cost * discount / 100) / 100;
-}
+import { calcPrice } from "../../utils/money";
 
 class Price extends React.Component<{cost: number, discount: number, extra?: boolean}> {
   render() {

@@ -5,11 +5,12 @@ import { Spin, Empty, Tag, Collapse, Rate, Icon, Button, Modal, message, notific
 import UserDescriptions, { CONST, GeneralUser, STUDENT } from "../../../components/UserDescriptions";
 import QueueAnim from "rc-queue-anim";
 import { RouteComponentProps, withRouter } from "react-router";
-import Price, { calcPrice } from "../../../components/Price";
+import Price from "../../../components/Price";
 import store from "../../../store";
 import StudentAPI from "../../../services/StudentAPI";
 import { raiseOrderAction } from "../../../actions/CourseAction";
 import { durationToTime } from "../../../utils/datetime";
+import { calcPrice } from "../../../utils/money";
 
 export interface DetailCourseConfig {
   cid: number,
