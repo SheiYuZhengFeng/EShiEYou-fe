@@ -200,14 +200,16 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
               onAfterChange={this.handleProgress}
             />} />
             <Cloud wrapped={<div className={styles.lasting}>已上课 {durationToTime(this.state.playstate.time)}</div>} />
-            <Popconfirm
-              title={"确定要" + (this.isStudent ? "提前" : "") + "下课吗？"}
-              onConfirm={this.handleOver}
-              okText="确定"
-              cancelText="取消"
-            >
-              <CloudButton title={(this.isStudent ? "提前" : "") + "下课"} />
-            </Popconfirm>
+            {this.isStudent ? 
+              <Popconfirm
+                title={"确定要提前下课吗？"}
+                onConfirm={this.handleOver}
+                okText="确定"
+                cancelText="取消"
+              >
+                <CloudButton title={"提前下课"} />
+              </Popconfirm>
+            : null}
           </> : <>
             {(this.isStudent && !this.state.roomstate.student) || (!this.isStudent && !this.state.roomstate.native) ?
               <CloudButton title={((this.state.roomstate.student !== this.state.roomstate.native) ? "对方已准备，" : "") + "准备上课"} onClick={this.handleReady} />
