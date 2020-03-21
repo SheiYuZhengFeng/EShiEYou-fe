@@ -9,6 +9,7 @@ import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import moment from "moment";
 import UserDescriptions from "../../../components/UserDescriptions";
+import { getCurrentUnix, unixToString } from "../../../utils/datetime";
 
 class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {cid: number, name: string, teacher: CourseTeacher[]}> {
   constructor(props: any) {
@@ -35,7 +36,7 @@ class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {
   }
   handleSubmit = () => {
     const { form } = this;
-    if (!form.starttime || !form.endtime || form.starttime <= new Date().getTime() / 1000) {
+    if (!form.starttime || !form.endtime || form.starttime <= getCurrentUnix()) {
       message.error("请选择正确的预约时间！");
       return;
     }
@@ -62,7 +63,7 @@ class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {
     }
     Modal.confirm({
       title: "即将预约",
-      content: "确认要在【" + new Date(form.starttime * 1000).toLocaleString() + "~" + new Date(form.endtime * 1000).toLocaleString() + "】时段，预约“" + this.state.teacher[form.teacher].username + "”中教为你上“" + this.state.name +"”课吗？",
+      content: "确认要在【" + unixToString(form.starttime) + "~" + unixToString(form.endtime) + "】时段，预约“" + this.state.teacher[form.teacher].username + "”中教为你上“" + this.state.name +"”课吗？",
       okText: "确认预约",
       cancelText: "取消",
       onOk,

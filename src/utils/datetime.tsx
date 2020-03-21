@@ -8,3 +8,11 @@ export const durationToTime = (d: number) => {
   if (h > 0) t = h + ":" + t;
   return t;
 }
+
+export const unixToString = (unix: number) => {
+  return new Date(unix * 1000).toLocaleString();
+}
+
+export const getCurrentUnix = () => {
+  return new Date().getTime() / 1000;
+}

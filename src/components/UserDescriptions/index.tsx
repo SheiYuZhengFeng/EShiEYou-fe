@@ -1,5 +1,6 @@
 import React from "react";
 import { Descriptions } from "antd";
+import { unixToString } from "../../utils/datetime";
 
 const { Item } = Descriptions;
 
@@ -79,7 +80,7 @@ class UserDescriptions extends React.Component<{title: string, information: Gene
           if (k === "language") v = LANGUAGE[v];
           if (k === "level") v = LEVEL[v];
           if (k === "target") v = TARGET[v];
-          if (k === "createtime") v = new Date(v).toDateString();
+          if (k === "createtime") v = unixToString(v);
           if (k === "payment") v += " 元";
           return <Item key={k} label={desc[i][1]}>{v}</Item>;
         })}

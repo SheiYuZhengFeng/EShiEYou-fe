@@ -7,6 +7,7 @@ import { updateAll } from "../../controller/BillController";
 import { STUDENT } from "../../components/UserDescriptions";
 import { Empty, Spin, Icon, Tooltip } from "antd";
 import { convertMoney, signedMoney } from "../../utils/money";
+import { unixToString } from "../../utils/datetime";
 
 const getStatusIcon = (status: number) => {
   switch(status){
@@ -76,7 +77,7 @@ class Bill extends React.Component<any, BillState> {
                     <div className={styles.type}>{typeDesc[v.type]}</div>
                   </div>
                 </div>
-                <div className={styles.time}>{new Date(v.createtime * 1000).toLocaleString()}</div>
+                <div className={styles.time}>{unixToString(v.createtime)}</div>
               </Tooltip>
             ))}
           </div>

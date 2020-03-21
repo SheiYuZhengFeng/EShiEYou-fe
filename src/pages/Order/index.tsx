@@ -10,6 +10,7 @@ import { message, Skeleton, Empty, Icon, Collapse, Button, Modal } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import ShowUserDescriptions from '../../components/UserDescriptions/WithModal';
 import { FOREIGN, STUDENT, NATIVE } from '../../components/UserDescriptions';
+import { unixToString } from '../../utils/datetime';
 
 const getType = (v: OrderEntity) => {
   const { state, rid } = v;
@@ -117,11 +118,11 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
             <Collapse.Panel key={i} header={
               <div className={styles.header}>
                 <Icon className={styles.icon} type={Map.icon(v)} />
-                <div className={styles.time}>{new Date(v.starttime * 1000).toLocaleString() + " ~ " + new Date(v.endtime * 1000).toLocaleString()}</div>
+                <div className={styles.time}>{unixToString(v.starttime) + " ~ " + unixToString(v.endtime)}</div>
               </div>
             } className={styles.panel + " " + Map.background(v)}>
               <div className={styles.state}>{Map.description(v)}</div>
-              <div className={styles.createtime}>预约创建于 {new Date(v.createtime * 1000).toLocaleString()}</div>
+              <div className={styles.createtime}>预约创建于 {unixToString(v.createtime)}</div>
               <div className={styles.controls}>
                 {category === NATIVE && v.state === 1 ? // 中教，待确认，接受/拒绝
                   <>

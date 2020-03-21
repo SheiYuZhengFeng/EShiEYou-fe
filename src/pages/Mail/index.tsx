@@ -9,6 +9,7 @@ import GeneralAPI, { MailEntity } from '../../services/GeneralAPI';
 import TextArea from 'antd/lib/input/TextArea';
 import QueueAnim from 'rc-queue-anim';
 import { SYSTEM } from '../../components/UserDescriptions';
+import { unixToString } from '../../utils/datetime';
 
 class Mail extends React.Component<{}, MailState> {
   constructor(props: any) {
@@ -86,7 +87,7 @@ class Mail extends React.Component<{}, MailState> {
                   : state.chat.status === -1 ? <Empty description="加载失败" />
                   : state.chat.mails.map((v, i) => (
                     <div key={i} className={styles.mail + " " + (isMine(v) ? styles.right : styles.left)}>
-                      <div className={styles.time}>{new Date(v.time * 1000).toLocaleString()}</div>
+                      <div className={styles.time}>{unixToString(v.time)}</div>
                       <div className={styles.content}>{v.content}</div>
                     </div>
                   ))

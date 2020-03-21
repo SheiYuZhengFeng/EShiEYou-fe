@@ -10,6 +10,7 @@ import QueueAnim from "rc-queue-anim";
 import StudentAPI from "../../../services/StudentAPI";
 import NativeAPI from "../../../services/NativeAPI";
 import ForeignAPI from "../../../services/ForeignAPI";
+import { unixToString } from "../../../utils/datetime";
 
 class MyCourse extends React.Component<RouteComponentProps, {got: boolean, courses: CourseBrief[]}> {
   constructor(props: any) {
@@ -64,9 +65,9 @@ class MyCourse extends React.Component<RouteComponentProps, {got: boolean, cours
           {state.courses.map((v, i) => 
             <div key={i} className={styles.course} onClick={this.toDetail.bind(this, v.cid)}>
               <div className={styles.name + " " + styles.hidden}><Tag color={CONST.color[v.category]}>{CONST.language[v.category]}</Tag>{v.name}</div>
-              {(v as any).createtime ? <div className={styles.time}>创建时间：{new Date((v as any).createtime * 1000).toLocaleString()}</div> : null}
-              <div className={styles.time}>开课时间：{new Date(v.starttime * 1000).toLocaleString()}</div>
-              <div className={styles.time}>结课时间：{new Date((v as any).endtime * 1000).toLocaleString()}</div>
+              {(v as any).createtime ? <div className={styles.time}>创建时间：{unixToString((v as any).createtime)}</div> : null}
+              <div className={styles.time}>开课时间：{unixToString(v.starttime)}</div>
+              <div className={styles.time}>结课时间：{unixToString((v as any).endtime)}</div>
               <div className={styles.bottom}>
                 <div className={styles.buttons}>
                   {store.getState().UserReducer.session.category === STUDENT ? <Button size={"small"} type="primary" onClick={this.toOrder.bind(this, v.cid, v.name)}>预约上课</Button> : null}

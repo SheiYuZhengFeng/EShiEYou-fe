@@ -8,6 +8,7 @@ import NativeAPI from '../../../services/NativeAPI';
 import ForeignAPI from '../../../services/ForeignAPI';
 import { CONST, STUDENT, FOREIGN, NATIVE } from '../../../components/UserDescriptions';
 import GeneralAPI from '../../../services/GeneralAPI';
+import { getCurrentUnix } from '../../../utils/datetime';
 
 const { Option } = Select;
 
@@ -110,7 +111,7 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
       message.error("请输入正确的手机号");
       return;
     }
-    const time = new Date().getTime() / 1000;
+    const time = getCurrentUnix();
     if (time - this.form.lastTime > 60) {
       GeneralAPI.user.code({phone: this.form.phone}).then(res => {
         if (res.code === 0) {
