@@ -137,7 +137,7 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
   }
   handleReady = () => {
-    this.ws.send("ready", store.getState().UserReducer.session.category === STUDENT ? "student" : "teacher");
+    this.ws.send("ready", "");
   }
   handleControl = (play: boolean) => {
     this.ws.send(play ? "play" : "pause", "");
