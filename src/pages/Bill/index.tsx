@@ -8,6 +8,7 @@ import { STUDENT } from "../../components/UserDescriptions";
 import { Empty, Spin, Icon, Tooltip } from "antd";
 import { convertMoney, signedMoney } from "../../utils/money";
 import { unixToString } from "../../utils/datetime";
+import QueueAnim from "rc-queue-anim";
 
 const getStatusIcon = (status: number) => {
   switch(status){
@@ -45,8 +46,8 @@ class Bill extends React.Component<any, BillState> {
     const { balance, bills } = this.state;
     return Combiner(
       <div className={styles.container}>
-        <div className={styles.whole}>
-          <div className={styles.balance}>
+        <QueueAnim className={styles.whole} animConfig={[{translateY: [0, 30], opacity: [1, 0]}]}>
+          <div key="balance" className={styles.balance}>
             <div className={styles.title}>
               你的{store.getState().UserReducer.session.category === STUDENT ? "余额" : "佣金"}
             </div>
@@ -61,7 +62,7 @@ class Bill extends React.Component<any, BillState> {
               }
             </div>
           </div>
-          <div className={styles.bills}>
+          <div key="bills" className={styles.bills}>
             {bills.status === -1 ?
               <Empty description="拉取失败" />
             : bills.status === 0 ?
@@ -81,7 +82,7 @@ class Bill extends React.Component<any, BillState> {
               </Tooltip>
             ))}
           </div>
-        </div>
+        </QueueAnim>
       </div>
     );
   }
