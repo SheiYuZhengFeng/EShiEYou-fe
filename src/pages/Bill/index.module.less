@@ -23,4 +23,53 @@
       color: @primary-color;
     }
   }
+
+  .bills {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 1.5em;
+
+    .bill {
+      flex: 1 0 15em;
+      display: flex;
+      flex-flow: column nowrap;
+      margin: 1em;
+      padding: 2em;
+      border-radius: 2em;
+      transition: .2s;
+      box-shadow: .2em .2em .5em 0 fade(black, 10%);
+      cursor: pointer;
+
+      &.closed { background-color: fade(black, 1%); }
+      &.waiting { background-color: fade(orange, 10%); }
+      &.ok { background-color: fade(green, 3%); }
+
+      .moneytypestatus {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        .money {
+          font-size: 1.5em;
+          color: @primary-color;
+        }
+
+        .typestatus {
+          display: flex;
+          flex-flow: column nowrap;
+          justify-content: flex-start;
+          align-items: flex-end;
+        }
+      }
+
+      .time {
+        font-size: .9em;
+        color: fade(black, 30%);
+        margin-top: .5em;
+      }
+    }
+  }
 }

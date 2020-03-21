@@ -5,8 +5,26 @@ import { BillState } from "../../reducers/BillReducer";
 import store from "../../store";
 import { updateAll } from "../../controller/BillController";
 import { STUDENT } from "../../components/UserDescriptions";
-import { Empty, Spin } from "antd";
-import { convertMoney } from "../../utils/money";
+import { Empty, Spin, Icon, Tooltip } from "antd";
+import { convertMoney, signedMoney } from "../../utils/money";
+
+const getStatusIcon = (status: number) => {
+  switch(status){
+    case -1: return "close";
+    case 0: return "clock-circle";
+    default: return "check";
+  }
+}
+
+const getStatusColor = (status: number) => {
+  switch(status){
+    case -1: return styles.closed;
+    case 0: return styles.waiting;
+    default: return styles.ok;
+  }
+}
+
+const typeDesc = ["充值", "提现", "消费", "扣除保证金", "返还保证金", "收入", "补偿"];
 
 class Bill extends React.Component<any, BillState> {
   constructor(props: any) {
@@ -23,7 +41,7 @@ class Bill extends React.Component<any, BillState> {
     this.ss();
   }
   render() {
-    const { balance } = this.state;
+    const { balance, bills } = this.state;
     return Combiner(
       <div className={styles.container}>
         <div className={styles.whole}>
@@ -41,6 +59,26 @@ class Bill extends React.Component<any, BillState> {
                 convertMoney(balance.data)
               }
             </div>
+          </div>
+          <div className={styles.bills}>
+            {bills.status === -1 ?
+              <Empty description="拉取失败" />
+            : bills.status === 0 ?
+              <Spin size="large" />
+            : bills.data.map((v, i) => (
+              <Tooltip key={i} title={v.content} className={styles.bill + " " + getStatusColor(v.status)}>
+                <div className={styles.moneytypestatus}>
+                  <div className={styles.money}>{signedMoney(v.money)}</div>
+                  <div className={styles.typestatus}>
+                    <div className={styles.status}>
+                      <Icon type={getStatusIcon(v.status)} />
+                    </div>
+                    <div className={styles.type}>{typeDesc[v.type]}</div>
+                  </div>
+                </div>
+                <div className={styles.time}>{new Date(v.createtime * 1000).toLocaleString()}</div>
+              </Tooltip>
+            ))}
           </div>
         </div>
       </div>
