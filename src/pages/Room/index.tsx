@@ -67,12 +67,18 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
   hide: any;
   waveInterface: WAVEInterface;
   sendWave: NodeJS.Timeout | undefined;
+  heartBeat: NodeJS.Timeout;
   constructor(props: any) {
     super(props);
     this.state = initialRoomState;
     this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
     this.isStudent = store.getState().UserReducer.session.category === STUDENT;
     this.waveInterface = new WAVEInterface();
+    this.heartBeat = setInterval(() => {
+      if (this.state.connected === 1 && !this.state.over && this.ws.ws.readyState === this.ws.ws.OPEN) {
+        this.ws.send("heartbeat", "");
+      }
+    }, 1000);
   }
   receiveControl = (play: boolean) => {
     if (play) message.info("播放继续");
