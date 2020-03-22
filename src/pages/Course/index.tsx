@@ -7,7 +7,7 @@ import MyCourse from "./My";
 import DetailCourse, { DetailCourseConfig } from "./Detail";
 import OrderCourse from "./Order";
 
-class Course extends React.Component<RouteComponentProps<{cid: string}>, {type: number, config?: DetailCourseConfig}> {
+class Course extends React.Component<RouteComponentProps<{cid: string, vid?: string}>, {type: number, config?: DetailCourseConfig}> {
   constructor(props: any) {
     super(props);
     if (this.props.location.pathname === "/course") this.state = {type: 0};
@@ -15,9 +15,10 @@ class Course extends React.Component<RouteComponentProps<{cid: string}>, {type: 
     else if (this.props.location.pathname.endsWith("/order")) this.state = {type: 2};
     else {
       const cid = parseInt(this.props.match.params.cid);
+      const vid = this.props.match.params.vid ? parseInt(this.props.match.params.vid) : -1;
       const buying = this.props.location.pathname.endsWith("/buy");
       const isMy = this.props.location.pathname.startsWith("/mycourse");
-      this.state = {type: 3, config: {cid, buying, isMy}};
+      this.state = {type: 3, config: {cid, vid, buying, isMy}};
     }
   }
   render() {

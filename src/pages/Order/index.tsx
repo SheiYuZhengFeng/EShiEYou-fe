@@ -98,8 +98,8 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
   toClassRoom = (rid: number) => {
     this.props.history.push("/room/" + rid);
   }
-  toCourse = (cid: number) => {
-    this.props.history.push("/mycourse/" + cid);
+  toCourse = (cid: number, vid: number) => {
+    this.props.history.push("/mycourse/" + cid + "/order/" + vid);
   }
   showUser = (id: number, category: number) => {
     ShowUserDescriptions(category, id, true);
@@ -136,7 +136,7 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
                 {v.state === 0 && v.rid > 0 ? // 上课中
                   <Button type="primary" onClick={this.toClassRoom.bind(this, v.rid)}>进入课堂</Button>
                 : null}
-                <Button onClick={this.toCourse.bind(this, v.cid)}>查看课程</Button>
+                <Button onClick={this.toCourse.bind(this, v.cid, v.vid)}>查看课程</Button>
                 <Button onClick={this.showUser.bind(this, category === STUDENT ? v.teacher : v.student, category === STUDENT ? NATIVE : STUDENT)}>查看{category === STUDENT ? "中教" : "学生"}信息</Button>
               </div>
             </Collapse.Panel>

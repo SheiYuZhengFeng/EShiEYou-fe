@@ -14,6 +14,7 @@ import { calcPrice } from "../../../utils/money";
 
 export interface DetailCourseConfig {
   cid: number,
+  vid: number,
   buying: boolean,
   isMy: boolean,
 }
@@ -109,7 +110,7 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
           {this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? <div key="tip">选择一个视频预约上课</div> : null}
           <div key="video" className={styles.video}>
             {video.map((v, i) => 
-              <div key={i} className={styles.item} onClick={this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? this.toOrder.bind(this, this.props.config.cid, data.name, v.vid, v.vname) : undefined}>
+              <div key={i} className={styles.item + (v.vid === this.props.config.vid ? (" " + styles.active) : "")} onClick={this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? this.toOrder.bind(this, this.props.config.cid, data.name, v.vid, v.vname) : undefined}>
                 <div className={styles.control}>
                   <Icon className={styles.play} type="play-circle" theme="filled" />
                   {v.duration ? <div className={styles.duration}>{durationToTime(v.duration)}</div> : null}

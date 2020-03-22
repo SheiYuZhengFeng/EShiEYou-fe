@@ -23,6 +23,7 @@ export interface OrderEntity {
   starttime: number,
   endtime: number,
   rid: number,
+  vid: number,
 }
 
 const MainAPI = {
