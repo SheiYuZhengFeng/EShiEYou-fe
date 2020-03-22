@@ -75,9 +75,8 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
       onOk,
     });
   }
-  toPlay = (url: string | undefined) => {
-    if (!url) message.error("请先购买课程后观看！");
-    else this.props.history.push(url);
+  toPlay = () => {
+    message.error("只有学生身份且购买课程后才能观看！");
   }
   toOrder = (id: number, name: string, vid: number, vname: string, e: React.MouseEvent<HTMLInputElement>) => {
     raiseOrderAction({cid: id, name, vid, vname});
@@ -110,7 +109,7 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
           {this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? <div key="tip">选择一个视频预约上课</div> : null}
           <div key="video" className={styles.video}>
             {video.map((v, i) => 
-              <div key={i} className={styles.item + (v.vid === this.props.config.vid ? (" " + styles.active) : "")} onClick={this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? this.toOrder.bind(this, this.props.config.cid, data.name, v.vid, v.vname) : undefined}>
+              <div key={i} className={styles.item + (v.vid === this.props.config.vid ? (" " + styles.active) : "")} onClick={this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? this.toOrder.bind(this, this.props.config.cid, data.name, v.vid, v.vname) : this.toPlay}>
                 <div className={styles.control}>
                   <Icon className={styles.play} type="play-circle" theme="filled" />
                   {v.duration ? <div className={styles.duration}>{durationToTime(v.duration)}</div> : null}
