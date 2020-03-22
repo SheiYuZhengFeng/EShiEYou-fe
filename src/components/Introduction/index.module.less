@@ -1,0 +1,58 @@
+@import '../../themes/default.module.less';
+
+.whole {
+  margin-bottom: 3em;
+  width: 100%;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .header {
+    font-weight: bold;
+    width: 100%;
+    padding-left: 1em;
+  }
+
+  .items {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  
+    .item {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      letter-spacing: .1em;
+      margin: 2em;
+      width: 30%;
+  
+      img {
+        width: 60%;
+        background-color: white;
+        transition: .3s ease-in-out;
+        box-shadow: 0 0 1em 0 fade(black, 20%);
+        border-radius: 50%;
+      }
+  
+      img:hover {
+        transform: scale(2.5);
+        border-radius: 10%;
+      }
+  
+      .title {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 1em;
+      }
+  
+      .desc {
+        word-break: break-all;
+        margin-top: 1em;
+        text-align: center;
+      }
+    }
+  }
+}
