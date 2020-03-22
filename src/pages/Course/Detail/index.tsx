@@ -78,8 +78,8 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
     if (!url) message.error("请先购买课程后观看！");
     else this.props.history.push(url);
   }
-  toOrder = (id: number, name: string, e: React.MouseEvent<HTMLInputElement>) => {
-    raiseOrderAction({cid: id, name});
+  toOrder = (id: number, name: string, vid: number, vname: string, e: React.MouseEvent<HTMLInputElement>) => {
+    raiseOrderAction({cid: id, name, vid, vname});
     this.props.history.push("/mycourse/" + id + "/order");
   }
   render() {
@@ -103,13 +103,13 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
           <div key="control" className={styles.control}>
             <div className={styles.buttons}>
               {this.props.config.isMy ? null : <Button className={styles.button} type="primary" onClick={this.buyCourse}>购买</Button>}
-              {this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? <Button className={styles.button} type="primary" onClick={this.toOrder.bind(this, this.props.config.cid, data.name)}>预约上课</Button> : null}
             </div>
             {this.props.config.isMy ? null : <Price cost={data.cost} discount={data.discount} extra />}
           </div>
+          {this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? <div key="tip">选择一个视频预约上课</div> : null}
           <div key="video" className={styles.video}>
             {video.map((v, i) => 
-              <div key={i} className={styles.item} onClick={this.toPlay.bind(this, v.url)}>
+              <div key={i} className={styles.item} onClick={this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? this.toOrder.bind(this, this.props.config.cid, data.name, v.vid, v.vname) : undefined}>
                 <div className={styles.control}>
                   <Icon className={styles.play} type="play-circle" theme="filled" />
                   {v.duration ? <div className={styles.duration}>{durationToTime(v.duration)}</div> : null}

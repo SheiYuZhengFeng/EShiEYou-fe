@@ -1,13 +1,24 @@
 import { CourseAction } from "../actions/CourseAction"
 import { CourseBrief } from "../services/GeneralAPI";
 
-const initialState : {allcourse: CourseBrief[], mycourse: CourseBrief[], course: {cid: number, name: string} | undefined} = {
+export interface CourseState {
+  allcourse: CourseBrief[],
+  mycourse: CourseBrief[],
+  course: {
+    cid: number,
+    name: string,
+    vid: number,
+    vname: string,
+  } | undefined,
+}
+
+const initialState : CourseState = {
   allcourse: [],
   mycourse: [],
   course: undefined,
 }
 
-const CourseReducer = (state = initialState, action: Action) => {
+const CourseReducer = (state = initialState, action: Action) : CourseState => {
   switch(action.type) {
     case CourseAction.ALLCOURSE:
       return {...state, allcourse: action.payload as CourseBrief[]};
@@ -16,7 +27,7 @@ const CourseReducer = (state = initialState, action: Action) => {
     case CourseAction.CLEARMYCOURSE:
       return {...state, mycourse: []};
     case CourseAction.RAISEORDER:
-      return {...state, course: action.payload as {cid: number, name: string}};
+      return {...state, course: action.payload as {cid: number, name: string, vid: number, vname: string}};
     case CourseAction.CLEARORDER:
       return {...state, course: undefined};
     default:

@@ -11,14 +11,14 @@ import moment from "moment";
 import UserDescriptions from "../../../components/UserDescriptions";
 import { getCurrentUnix, unixToString } from "../../../utils/datetime";
 
-class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {cid: number, name: string, teacher: CourseTeacher[]}> {
+class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {cid: number, name: string, vid: number, vname: string, teacher: CourseTeacher[]}> {
   constructor(props: any) {
     super(props);
     if (!store.getState().CourseReducer.course || store.getState().CourseReducer.course?.cid !== this.props.cid) {
       message.warning("请从我的课程页面进入预约！");
       this.props.history.goBack();
     }
-    this.state = {...(store.getState().CourseReducer.course as {cid: number, name: string}), teacher: []};
+    this.state = {...(store.getState().CourseReducer.course as {cid: number, name: string, vid: number, vname: string}), teacher: []};
     clearOrderAction();
   }
   form = {
@@ -51,7 +51,7 @@ class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {
       return;
     }
     const onOk = () => {
-      StudentAPI.order.add({cid: this.state.cid, teacher: this.state.teacher[form.teacher].id, starttime: form.starttime, endtime: form.endtime}).then(res => {
+      StudentAPI.order.add({cid: this.state.cid, vid: this.state.vid, teacher: this.state.teacher[form.teacher].id, starttime: form.starttime, endtime: form.endtime}).then(res => {
         if (res.code === 0) {
           message.success("预约成功，不要忘记上课哦！");
           this.props.history.push("/order");
@@ -63,7 +63,7 @@ class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {
     }
     Modal.confirm({
       title: "即将预约",
-      content: "确认要在【" + unixToString(form.starttime) + "~" + unixToString(form.endtime) + "】时段，预约“" + this.state.teacher[form.teacher].username + "”中教为你上“" + this.state.name +"”课吗？",
+      content: "确认要在【" + unixToString(form.starttime) + "~" + unixToString(form.endtime) + "】时段，预约“" + this.state.teacher[form.teacher].username + "”中教为你上“" + this.state.name +"”的“" + this.state.vname + "”课吗？",
       okText: "确认预约",
       cancelText: "取消",
       onOk,
@@ -85,7 +85,8 @@ class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {
     return (
       <div className={styles.whole}>
         <div className={styles.info}>
-          <div className={styles.name}>课程：{this.state.name}</div>
+          <div className={styles.name}>课程名：{this.state.name}</div>
+          <div className={styles.name}>视频名：{this.state.vname}</div>
           <div className={styles.time}>预约开始时间：<Datetime onChange={this.handleTime.bind(this, "starttime")} /></div>
           <div className={styles.time}>预约结束时间：<Datetime onChange={this.handleTime.bind(this, "endtime")} /></div>
           <div className={styles.time}>请精确到小时，分和秒将四舍五入到小时</div>

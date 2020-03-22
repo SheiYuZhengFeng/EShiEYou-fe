@@ -21,10 +21,10 @@ export const clearMyCourseAction = () => {
   store.dispatch({ type: CourseAction.CLEARMYCOURSE});
 }
 
-export const raiseOrderAction = (payload: {cid: number, name: string}) => {
+export const raiseOrderAction = (payload: {cid: number, name: string, vid: number, vname: string}) => {
   store.dispatch({ type: CourseAction.RAISEORDER, payload: payload });
 }
 
 export const clearOrderAction = () => {
-  store.dispatch({ type: CourseAction.CLEARORDER});
+  store.dispatch({ type: CourseAction.CLEARORDER });
 }

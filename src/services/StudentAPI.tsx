@@ -41,7 +41,7 @@ const OrderAPI = {
   my() : Promise<SimpleResponse & {data: {orders: OrderEntity[]}}> {
     return request(prefix + "/order/my");
   },
-  add(body: {cid: number, teacher: number, starttime: number, endtime: number}) : Promise<SimpleResponse> {
+  add(body: {cid: number, vid: number, teacher: number, starttime: number, endtime: number}) : Promise<SimpleResponse> {
     return request(prefix + "/order/add", body);
   },
   cancel(body: {id: number}) : Promise<SimpleResponse> {
