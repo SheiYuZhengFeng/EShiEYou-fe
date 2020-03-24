@@ -36,8 +36,8 @@ class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {
   }
   handleSubmit = () => {
     const { form } = this;
-    if (!form.starttime || !form.endtime || form.starttime <= getCurrentUnix()) {
-      message.error("请选择正确的预约时间！");
+    if (!form.starttime || !form.endtime || form.starttime <= getCurrentUnix() + 6 * 3600) {
+      message.error("请选择预约时间，且至少为6小时后！");
       return;
     }
     form.starttime = Math.round(form.starttime / 3600) * 3600;
