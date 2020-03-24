@@ -5,7 +5,7 @@ import { BillState } from "../../reducers/BillReducer";
 import store from "../../store";
 import { updateAll } from "../../controller/BillController";
 import { STUDENT } from "../../components/UserDescriptions";
-import { Empty, Spin, Icon, Tooltip } from "antd";
+import { Empty, Spin, Icon, Tooltip, Button } from "antd";
 import { convertMoney, signedMoney } from "../../utils/money";
 import { unixToString } from "../../utils/datetime";
 import QueueAnim from "rc-queue-anim";
@@ -47,20 +47,28 @@ class Bill extends React.Component<any, BillState> {
     return Combiner(
       <div className={styles.container}>
         <QueueAnim className={styles.whole} animConfig={[{translateY: [0, 30], opacity: [1, 0]}]}>
-          <div key="balance" className={styles.balance}>
-            <div className={styles.title}>
-              你的{store.getState().UserReducer.session.category === STUDENT ? "余额" : "佣金"}
+          <div key="balancecontrol" className={styles.balancecontrol}>
+            <div className={styles.balance}>
+              <div className={styles.title}>
+                你的{store.getState().UserReducer.session.category === STUDENT ? "余额" : "佣金"}
+              </div>
+              <div className={styles.number}>
+                {balance.status === -1 ?
+                  <Empty description="拉取失败" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                :
+                balance.status === 0 ?
+                  <Spin />
+                :
+                  convertMoney(balance.data)
+                }
+              </div>
             </div>
-            <div className={styles.number}>
-              {balance.status === -1 ?
-                <Empty description="拉取失败" image={Empty.PRESENTED_IMAGE_SIMPLE} />
-              :
-              balance.status === 0 ?
-                <Spin />
-              :
-                convertMoney(balance.data)
-              }
-            </div>
+            {balance.status === 1 ?
+              <div className={styles.control}>
+                <Button>充值</Button>
+                <Button>提现</Button>
+              </div>
+            : null}
           </div>
           <div key="bills" className={styles.bills}>
             {bills.status === -1 ?

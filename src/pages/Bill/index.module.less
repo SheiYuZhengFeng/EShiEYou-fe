@@ -6,21 +6,42 @@
   justify-content: flex-start;
   align-items: center;
 
-  .balance {
+  .balancecontrol {
     display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    align-items: center;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-self: flex-start;
+    width: 100%;
+    padding: 0 2em;
 
-    .title {
-      font-weight: bold;
-      letter-spacing: .2em;
+    .balance {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: flex-start;
+      align-items: center;
+  
+      .title {
+        font-weight: bold;
+        letter-spacing: .2em;
+      }
+  
+      .number {
+        margin-top: .5em;
+        font-size: 2em;
+        color: @primary-color;
+      }
     }
 
-    .number {
-      margin-top: .5em;
-      font-size: 2em;
-      color: @primary-color;
+    .control {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-around;
+      align-items: flex-start;
+      margin-left: 1em;
+
+      button {
+        width: 5em;
+      }
     }
   }
 
