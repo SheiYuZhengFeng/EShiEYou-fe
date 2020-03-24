@@ -49,6 +49,7 @@ class Bill extends React.Component<any, BillState> {
       try {
         let money = Number(text);
         if (isNaN(money)) throw new Error("请输入数字！");
+        if (money <= 0) throw new Error("请输入正数！");
         if (money % 1 !== 0) throw new Error("请输入整数！");
         money *= 100;
         GeneralAPI.bill.pay({money}).then(res => {
@@ -76,6 +77,7 @@ class Bill extends React.Component<any, BillState> {
       try {
         let money = Number(text);
         if (isNaN(money)) throw new Error("请输入数字！");
+        if (money <= 0) throw new Error("请输入正数！");
         money *= 100;
         if (money % 1 !== 0) throw new Error("小数最多两位！");
         if (money > this.state.balance.data) throw new Error("你没有那么多余额哦！");
