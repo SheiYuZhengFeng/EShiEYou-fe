@@ -5,10 +5,12 @@ import { BillState } from "../../reducers/BillReducer";
 import store from "../../store";
 import { updateAll } from "../../controller/BillController";
 import { STUDENT } from "../../components/UserDescriptions";
-import { Empty, Spin, Icon, Tooltip, Button } from "antd";
+import { Empty, Spin, Icon, Tooltip, Button, message, Modal } from "antd";
 import { convertMoney, signedMoney } from "../../utils/money";
 import { unixToString } from "../../utils/datetime";
 import QueueAnim from "rc-queue-anim";
+import ShowModalInput from "../../components/ModalInput";
+import GeneralAPI from "../../services/GeneralAPI";
 
 const getStatusIcon = (status: number) => {
   switch(status){
@@ -42,6 +44,55 @@ class Bill extends React.Component<any, BillState> {
   componentWillUnmount() {
     this.ss();
   }
+  handlePay = () => {
+    ShowModalInput("请输入充值金额（整数，单位：元）", (text) => {
+      try {
+        let money = Number(text);
+        if (isNaN(money)) throw new Error("请输入数字！");
+        if (money % 1 !== 0) throw new Error("请输入整数！");
+        money *= 100;
+        GeneralAPI.bill.pay({money}).then(res => {
+          if (res.code === 0) {
+            Modal.confirm({
+              title: "请扫码完成支付",
+              content: <img src={res.data.qrcode} alt="支付二维码" />,
+              maskClosable: false,
+              okText: "已支付完成",
+              cancelText: "取消支付",
+            });
+          }
+          else {
+            message.error("获取充值二维码失败！");
+          }
+        });
+      }
+      catch(e) {
+        message.error((e as Error).message);
+      }
+    });
+  }
+  handleGet = () => {
+    ShowModalInput("请输入提现金额（最多两位小数，单位：元）", (text) => {
+      try {
+        let money = Number(text);
+        if (isNaN(money)) throw new Error("请输入数字！");
+        money *= 100;
+        if (money % 1 !== 0) throw new Error("小数最多两位！");
+        if (money > this.state.balance.data) throw new Error("你没有那么多余额哦！");
+        GeneralAPI.bill.get({money}).then(res => {
+          if (res.code === 0) {
+            message.success("提现申请成功！");
+          }
+          else {
+            message.error("提现申请失败！");
+          }
+        });
+      }
+      catch(e) {
+        message.error((e as Error).message);
+      }
+    });
+  }
   render() {
     const { balance, bills } = this.state;
     return Combiner(
@@ -65,8 +116,8 @@ class Bill extends React.Component<any, BillState> {
             </div>
             {balance.status === 1 ?
               <div className={styles.control}>
-                <Button>充值</Button>
-                <Button>提现</Button>
+                <Button onClick={this.handlePay}>充值</Button>
+                <Button onClick={this.handleGet}>提现</Button>
               </div>
             : null}
           </div>
