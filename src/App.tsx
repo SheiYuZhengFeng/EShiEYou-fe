@@ -3,7 +3,7 @@ import Router from './router';
 import intl from "react-intl-universal";
 
 const locales = {
-    "zh-CN": require("./locales/zh-CN.json"),
+  "zh-CN": require("./locales/zh-CN.json"),
 };
 
 class App extends React.Component<any, {initDone: boolean}> {

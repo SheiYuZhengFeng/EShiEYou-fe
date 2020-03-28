@@ -1,12 +1,13 @@
 import React from 'react';
 import styles from './index.module.less';
+import intl from "react-intl-universal";
 
 class Copyright extends React.Component {
   render() {
     return (
       <div className={styles.container + ' ' + styles.whole}>
-        <p>E师亦友平台，是南京大学“谁语争锋”团队创建的专注小语种教育的在线学习平台。</p>
-        <p>©2020-2020 谁语争锋团队 版权所有</p>
+        <p>{intl.get("copyright_intro")}</p>
+        <p>{intl.get("copyright_main")}</p>
       </div>
     );
   }

@@ -55,7 +55,7 @@ class AllCourse extends React.Component<RouteComponentProps, {got: boolean, cour
         <div key="courses" className={styles.courses}>
           {state.courses.map((v, i) => 
             <div key={i} className={styles.course} onClick={this.toDetail.bind(this, v.cid)}>
-              <div className={styles.name + " " + styles.hidden}><Tag color={CONST.color[v.category]}>{CONST.language[v.category]}</Tag>{v.name}</div>
+              <div className={styles.name + " " + styles.hidden}><Tag color={CONST.color()[v.category]}>{CONST.language()[v.category]}</Tag>{v.name}</div>
               <div className={styles.time}>{unixToString(v.starttime)}</div>
               <div className={styles.content}>{v.content.length > 100 ? (v.content.substr(0, 100) + "...") : v.content}</div>
               <div className={styles.bottom}>

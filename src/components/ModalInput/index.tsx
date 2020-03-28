@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Input } from "antd";
+import intl from "react-intl-universal";
 
 function ShowModalInput(title: string, callBack: (text: string) => void) {
   let text = "";
@@ -14,8 +15,8 @@ function ShowModalInput(title: string, callBack: (text: string) => void) {
       </div>
     ),
     maskClosable: true,
-    okText: "确定",
-    cancelText: "取消",
+    okText: intl.get("ok"),
+    cancelText: intl.get("cancel"),
     onOk: () => callBack(text),
   });
 }

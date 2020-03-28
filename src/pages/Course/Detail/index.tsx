@@ -91,7 +91,7 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
       const video = this.state.video as (Video & VideoTitle)[];
       component = (
         <QueueAnim className={styles.detail}>
-          <div key="name" className={styles.name}><Tag className={styles.tag} color={CONST.color[data.category]}>{CONST.language[data.category]}</Tag>{data.name}</div>
+          <div key="name" className={styles.name}><Tag className={styles.tag} color={CONST.color()[data.category]}>{CONST.language()[data.category]}</Tag>{data.name}</div>
           <div key="time" className={styles.time}>开课时间：{unixToString(data.starttime)} ~ {unixToString(data.endtime)}</div>
           <div key="score" className={styles.score}><Rate disabled value={Math.round(data.score / 100 * 10) / 2} allowHalf /></div>
           <div key="content" className={styles.content}>{data.content}</div>

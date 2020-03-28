@@ -46,7 +46,7 @@ class Login extends React.Component<RouteComponentProps, {loading: boolean}> {
       <div className={styles.whole}>
         登录为
         <Select defaultValue={0} style={{marginLeft: "1em"}} onChange={this.handleSelect}>
-          {CONST.categoty.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
+          {CONST.categoty().map((v, i) => <Option key={i} value={i}>{v}</Option>)}
         </Select>
         <Input name="username" prefix={<Icon type="user"/>} placeholder="用户名" style={inputStyle} onChange={this.handleChange}/>
         <Input name="password" prefix={<Icon type="lock"/>} type="password" placeholder="密码" style={inputStyle} onChange={this.handleChange}/>

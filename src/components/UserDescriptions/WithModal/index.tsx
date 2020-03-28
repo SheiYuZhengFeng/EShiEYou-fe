@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Spin, Empty } from "antd";
 import UserDescriptions, { CONST, GeneralUser, STUDENT, NATIVE } from "..";
 import GeneralAPI from "../../../services/GeneralAPI";
+import intl from "react-intl-universal";
 
 function WithModal(props: {f: (data: {id: number}) => Promise<SimpleResponse>, id: number}) {
   const [status, setStatus] = useState(0);
@@ -21,7 +22,7 @@ function WithModal(props: {f: (data: {id: number}) => Promise<SimpleResponse>, i
     }
   }, [props, status]);
 
-  return status === 1 ? <UserDescriptions title="" information={data} /> : status === 0 ? <Spin /> : <Empty description="获取用户信息失败" />;
+  return status === 1 ? <UserDescriptions title="" information={data} /> : status === 0 ? <Spin /> : <Empty description={intl.get("fetch_error")} />;
 }
 
 function ShowUserDescriptions(category: number, id: number, detailed : boolean = false) {
@@ -37,10 +38,10 @@ function ShowUserDescriptions(category: number, id: number, detailed : boolean =
     else fn = GeneralAPI.user.getForeignBrief;
   }
   Modal.info({
-    title: CONST.categoty[category] + "信息",
+    title: CONST.categoty()[category] + " " + intl.get("information"),
     content: <div style={{marginTop: "2em"}}><WithModal f={fn} id={id} /></div>,
     maskClosable: true,
-    okText: "关闭",
+    okText: intl.get("close"),
     width: 600,
   });
 }

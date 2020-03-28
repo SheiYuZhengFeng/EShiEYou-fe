@@ -133,13 +133,13 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
       <div className={styles.whole}>
         注册为
         <Select defaultValue={0} style={{marginLeft: "1em"}} onChange={this.handleSelect.bind(this, "category")}>
-          {CONST.categoty.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
+          {CONST.categoty().map((v, i) => <Option key={i} value={i}>{v}</Option>)}
         </Select>
         <Input name="username" prefix={<Icon type="user"/>} placeholder="用户名" style={inputStyle} onChange={this.handleChange} />
         <Input name="password" prefix={<Icon type="lock"/>} type="password" placeholder="密码" style={inputStyle} onChange={this.handleChange} />
         <Input name="repeat" prefix={<Icon type="lock"/>} type="password" placeholder="重复密码" style={inputStyle} onChange={this.handleChange} />
         <Select style={inputStyle} placeholder="性别" onChange={this.handleSelect.bind(this, "sex")}>
-          {CONST.sex.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
+          {CONST.sex().map((v, i) => <Option key={i} value={i}>{v}</Option>)}
         </Select>
         <Select style={inputStyle} placeholder="年龄" onChange={this.handleSelect.bind(this, "age")}>
           {Array.from(Array(50), (v, k) => k + 1).map(x => <Option key={x} value={x}>{x}</Option>)}
@@ -149,18 +149,18 @@ class Register extends React.Component<{}, {category: number, loading: boolean}>
         <Input.Search name="vcode" enterButton="获取验证码" prefix={<Icon type="question"/>} placeholder="验证码" style={inputStyle} onChange={this.handleChange} onSearch={this.handleGetCode} />
         <Input name="content" prefix={<Icon type="tags"/>} placeholder="简短介绍一下自己吧！" style={inputStyle} onChange={this.handleChange} />
         <Select style={inputStyle} placeholder={category === STUDENT ? "想学习的语种" : "教授的语种"} onChange={this.handleSelect.bind(this, "language")}>
-          {CONST.language.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
+          {CONST.language().map((v, i) => <Option key={i} value={i}>{v}</Option>)}
         </Select>
         <QueueAnim>
           {/* 学生 */}
           {category === STUDENT ?
             <Select key="0" style={inputStyle} placeholder="目前的水平" onChange={this.handleSelect.bind(this, "level")}>
-              {CONST.level.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
+              {CONST.level().map((v, i) => <Option key={i} value={i}>{v}</Option>)}
             </Select>
           : null}
           {category === STUDENT ?
             <Select key="1" style={inputStyle} placeholder="最希望锻炼的能力" onChange={this.handleSelect.bind(this, "target")}>
-              {CONST.target.map((v, i) => <Option key={i} value={i}>{v}</Option>)}
+              {CONST.target().map((v, i) => <Option key={i} value={i}>{v}</Option>)}
             </Select>
           : null}
           {/* 中教 */}

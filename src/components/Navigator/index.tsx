@@ -3,23 +3,24 @@ import styles from "./index.module.less";
 import NavigatorButton from "./NavigatorButton";
 import store from "../../store";
 import { STUDENT, FOREIGN } from "../UserDescriptions";
+import intl from "react-intl-universal";
 
 class Navigator extends React.Component {
   render() {
     const state = store.getState().UserReducer;
     return (
       <div className={`${styles.box} ${styles.whole}`}>
-        <NavigatorButton href="/" title="网站首页" type="home" wrap={state.loged} />
-        <NavigatorButton href="/char" title="教学特色" type="bulb" wrap={state.loged} />
-        <NavigatorButton href="/about" title="关于我们" type="question-circle" wrap={state.loged} />
-        <NavigatorButton href="/course" title={state.loged && state.session.category === STUDENT ? "购买课程" : "所有课程"} type="account-book" />
+        <NavigatorButton href="/" title={intl.get("navbar_home")} type="home" wrap={state.loged} />
+        <NavigatorButton href="/char" title={intl.get("navbar_char")} type="bulb" wrap={state.loged} />
+        <NavigatorButton href="/about" title={intl.get("navbar_about")} type="question-circle" wrap={state.loged} />
+        <NavigatorButton href="/course" title={state.loged && state.session.category === STUDENT ? intl.get("navbar_allcourse_student") : intl.get("navbar_allcourse")} type="account-book" />
         {state.loged ? <>
-          <NavigatorButton href="/mycourse" title={state.session.category === STUDENT ? "已购课程" : "我的课程"} type="book" />
-          {state.session.category !== FOREIGN ? <NavigatorButton href="/order" title="我的预约" type="calendar" /> : null}
-          <NavigatorButton href="/bill" title={"我的" + (state.session.category === STUDENT ? "账单" : "佣金")} type="money-collect" />
-          <NavigatorButton href="/mail" title="查看私信" type="message" />
+          <NavigatorButton href="/mycourse" title={state.session.category === STUDENT ? intl.get("navbar_mycourse_student") : intl.get("navbar_mycourse")} type="book" />
+          {state.session.category !== FOREIGN ? <NavigatorButton href="/order" title={intl.get("navbar_order")} type="calendar" /> : null}
+          <NavigatorButton href="/bill" title={state.session.category === STUDENT ? intl.get("navbar_bill_student") : intl.get("navbar_bill")} type="money-collect" />
+          <NavigatorButton href="/mail" title={intl.get("navbar_mail")} type="message" />
         </> : null}
-        <NavigatorButton href="/user" title={state.loged ? "个人中心" : "用户登录"} type="user" />
+        <NavigatorButton href="/user" title={state.loged ? intl.get("navbar_user") : intl.get("navbar_login")} type="user" />
       </div>
     );
   }

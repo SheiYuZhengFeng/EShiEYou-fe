@@ -115,13 +115,13 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
           <p className={styles.title}>修改个人信息</p>
           {category === STUDENT ? <>
             <Select className={styles.input} defaultValue={this.state.information.language} placeholder="想学习的语种" onChange={handleSelect.bind(this, "language")}>
-              {CONST.language.map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
+              {CONST.language().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
             </Select>
             <Select className={styles.input} defaultValue={this.state.information.level} placeholder="目前的水平" onChange={handleSelect.bind(this, "level")}>
-              {CONST.level.map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
+              {CONST.level().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
             </Select>
             <Select className={styles.input} defaultValue={this.state.information.target} placeholder="最希望锻炼的能力" onChange={handleSelect.bind(this, "target")}>
-              {CONST.target.map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
+              {CONST.target().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
             </Select>
           </> : null}
           {category === NATIVE ? <>
