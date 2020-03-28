@@ -11,6 +11,7 @@ import { unixToString } from "../../utils/datetime";
 import QueueAnim from "rc-queue-anim";
 import ShowModalInput from "../../components/ModalInput";
 import GeneralAPI from "../../services/GeneralAPI";
+import intl from "react-intl-universal";
 
 const getStatusIcon = (status: number) => {
   switch(status){
@@ -28,9 +29,8 @@ const getStatusColor = (status: number) => {
   }
 }
 
-const typeDesc = ["充值", "提现", "消费", "扣除保证金", "返还保证金", "收入", "补偿"];
-
 class Bill extends React.Component<any, BillState> {
+  typeDesc = [intl.get("bill_type_pay"), intl.get("bill_type_get"), intl.get("bill_type_consume"), intl.get("bill_type_deduct"), intl.get("bill_type_back"), intl.get("bill_type_income"), intl.get("bill_type_redress")];
   constructor(props: any) {
     super(props);
     this.state = {...store.getState().BillReducer};
@@ -45,25 +45,25 @@ class Bill extends React.Component<any, BillState> {
     this.ss();
   }
   handlePay = () => {
-    ShowModalInput("请输入充值金额（整数，单位：元）", (text) => {
+    ShowModalInput(intl.get("input_pay_title"), (text) => {
       try {
         let money = Number(text);
-        if (isNaN(money)) throw new Error("请输入数字！");
-        if (money <= 0) throw new Error("请输入正数！");
-        if (money % 1 !== 0) throw new Error("请输入整数！");
+        if (isNaN(money)) throw new Error(intl.get("input_error_number"));
+        if (money <= 0) throw new Error(intl.get("input_error_postive"));
+        if (money % 1 !== 0) throw new Error(intl.get("input_error_integer"));
         money *= 100;
         GeneralAPI.bill.pay({money}).then(res => {
           if (res.code === 0) {
             Modal.confirm({
-              title: "请扫码完成支付",
-              content: <img src={res.data.qrcode} alt="支付二维码" />,
+              title: intl.get("scan_to_pay"),
+              content: <img src={res.data.qrcode} alt="QR Code" />,
               maskClosable: false,
-              okText: "已支付完成",
-              cancelText: "取消支付",
+              okText: intl.get("pay_ok"),
+              cancelText: intl.get("pay_cancel"),
             });
           }
           else {
-            message.error("获取充值二维码失败！");
+            message.error(intl.get("fetch_pay_error"));
           }
         });
       }
@@ -73,20 +73,20 @@ class Bill extends React.Component<any, BillState> {
     });
   }
   handleGet = () => {
-    ShowModalInput("请输入提现金额（最多两位小数，单位：元）", (text) => {
+    ShowModalInput(intl.get("input_get_title"), (text) => {
       try {
         let money = Number(text);
-        if (isNaN(money)) throw new Error("请输入数字！");
-        if (money <= 0) throw new Error("请输入正数！");
+        if (isNaN(money)) throw new Error(intl.get("input_error_number"));
+        if (money <= 0) throw new Error(intl.get("input_error_postive"));
         money *= 100;
-        if (money % 1 !== 0) throw new Error("小数最多两位！");
-        if (money > this.state.balance.data) throw new Error("你没有那么多余额哦！");
+        if (money % 1 !== 0) throw new Error(intl.get("input_error_fix"));
+        if (money > this.state.balance.data) throw new Error(intl.get("not_have_balance"));
         GeneralAPI.bill.get({money}).then(res => {
           if (res.code === 0) {
-            message.success("提现申请成功！");
+            message.success(intl.get("get_request_success"));
           }
           else {
-            message.error("提现申请失败！");
+            message.error(intl.get("get_request_error"));
           }
         });
       }
@@ -103,11 +103,11 @@ class Bill extends React.Component<any, BillState> {
           <div key="balancecontrol" className={styles.balancecontrol}>
             <div className={styles.balance}>
               <div className={styles.title}>
-                你的{store.getState().UserReducer.session.category === STUDENT ? "余额" : "佣金"}
+                {store.getState().UserReducer.session.category === STUDENT ? intl.get("your_balance") : intl.get("your_payment")}
               </div>
               <div className={styles.number}>
                 {balance.status === -1 ?
-                  <Empty description="拉取失败" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                  <Empty description={intl.get("fetch_error")} image={Empty.PRESENTED_IMAGE_SIMPLE} />
                 :
                 balance.status === 0 ?
                   <Spin />
@@ -118,14 +118,14 @@ class Bill extends React.Component<any, BillState> {
             </div>
             {balance.status === 1 ?
               <div className={styles.control}>
-                <Button onClick={this.handlePay}>充值</Button>
-                <Button onClick={this.handleGet}>提现</Button>
+                <Button onClick={this.handlePay}>{intl.get("pay")}</Button>
+                <Button onClick={this.handleGet}>{intl.get("get")}</Button>
               </div>
             : null}
           </div>
           <div key="bills" className={styles.bills}>
             {bills.status === -1 ?
-              <Empty description="拉取失败" />
+              <Empty description={intl.get("fetch_error")} />
             : bills.status === 0 ?
               <Spin size="large" />
             : bills.data.map((v, i) => (
@@ -136,7 +136,7 @@ class Bill extends React.Component<any, BillState> {
                     <div className={styles.status}>
                       <Icon type={getStatusIcon(v.status)} />
                     </div>
-                    <div className={styles.type}>{typeDesc[v.type]}</div>
+                    <div className={styles.type}>{this.typeDesc[v.type]}</div>
                   </div>
                 </div>
                 <div className={styles.time}>{unixToString(v.createtime)}</div>
