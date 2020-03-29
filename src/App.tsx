@@ -1,9 +1,11 @@
 import React from 'react';
 import Router from './router';
 import intl from "react-intl-universal";
+import { getCurrentLocale } from './controller/LocaleController';
 
-const locales = {
+export const locales = {
   "zh-CN": require("./locales/zh-CN.json"),
+  "en-US": require("./locales/en-US.json"),
 };
 
 class App extends React.Component<any, {initDone: boolean}> {
@@ -13,7 +15,7 @@ class App extends React.Component<any, {initDone: boolean}> {
   }
   componentDidMount() {
     intl.init({
-      currentLocale: "zh-CN",
+      currentLocale: getCurrentLocale(),
       locales,
     }).then(() => this.setState({initDone: true}));
   }

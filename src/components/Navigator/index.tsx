@@ -21,6 +21,7 @@ class Navigator extends React.Component {
           <NavigatorButton href="/mail" title={intl.get("navbar_mail")} type="message" />
         </> : null}
         <NavigatorButton href="/user" title={state.loged ? intl.get("navbar_user") : intl.get("navbar_login")} type="user" />
+        <NavigatorButton href="" title="语言 Language" type="global" wrap onClick={() => {}} />
       </div>
     );
   }
