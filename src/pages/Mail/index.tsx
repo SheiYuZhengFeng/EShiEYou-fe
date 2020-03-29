@@ -10,6 +10,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import QueueAnim from 'rc-queue-anim';
 import { SYSTEM } from '../../components/UserDescriptions';
 import { unixToString } from '../../utils/datetime';
+import intl from "react-intl-universal";
 
 class Mail extends React.Component<{}, MailState> {
   constructor(props: any) {
@@ -52,7 +53,7 @@ class Mail extends React.Component<{}, MailState> {
         updateChat(this.state.view, false);
       }
       else {
-        message.error("发送私信失败！");
+        message.error(intl.get("mail_send_fail"));
       }
     });
   }
@@ -69,7 +70,7 @@ class Mail extends React.Component<{}, MailState> {
           <div key="panel" className={styles.panel}>
             <div className={styles.list}>
               {state.status === 0 ? <><Skeleton active avatar /><Skeleton active avatar /><Skeleton active avatar /><Skeleton active avatar /></>
-              : state.status === -1 ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="加载失败" />
+              : state.status === -1 ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={intl.get("fetch_error")} />
               : <>{state.users.map((v, i) => (
                 <div key={i} className={styles.user + " " + (i === state.view ? styles.active : "")} onClick={i === state.view ? undefined : this.handleSelect.bind(this, i)}>
                   <Avatar className={styles.listavator} size="large">
@@ -81,10 +82,10 @@ class Mail extends React.Component<{}, MailState> {
             </div>
             <div className={styles.chat}>
               {state.view === -1 ? <Icon type="message" theme="filled" className={styles.icon} /> : <>
-                <div className={styles.title}>{state.chat.user.category === SYSTEM ? state.chat.user.username : ("与 " + state.chat.user.username + " 的对话")}</div>
+                <div className={styles.title}>{state.chat.user.category === SYSTEM ? state.chat.user.username : intl.get("mail_chat_with", {name: state.chat.user.username})}</div>
                 <div className={styles.mails} ref={(el) => { this.mailScroller = el; }}>
                   {state.chat.status === 0 ? <Skeleton active paragraph={{rows: 5}} />
-                  : state.chat.status === -1 ? <Empty description="加载失败" />
+                  : state.chat.status === -1 ? <Empty description={intl.get("fetch_error")} />
                   : state.chat.mails.map((v, i) => (
                     <div key={i} className={styles.mail + " " + (isMine(v) ? styles.right : styles.left)}>
                       <div className={styles.time}>{unixToString(v.time)}</div>
@@ -95,7 +96,7 @@ class Mail extends React.Component<{}, MailState> {
                 </div>
                 <div className={styles.control}>
                   <Input.TextArea className={styles.input} autoSize={false} ref={(el) => { this.textToSend = el; }} />
-                  <Button className={styles.send} type="primary" onClick={this.handleSend}>发送</Button>
+                  <Button className={styles.send} type="primary" onClick={this.handleSend}>{intl.get("send")}</Button>
                 </div>
               </>}
             </div>

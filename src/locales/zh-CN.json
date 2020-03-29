@@ -122,5 +122,15 @@
   "order_start_time": "预约开始时间",
   "order_end_time": "预约结束时间",
   "order_time_message": "请精确到小时，分和秒将四舍五入到小时",
-  "order": "预约"
+  "order": "预约",
+  "mail_send_fail": "发送私信失败！",
+  "mail_chat_with": "与 {name} 的对话",
+  "send": "发送",
+  "main_header": "我们的优势",
+  "main_title_1": "全程一对一教学",
+  "main_title_2": "完备的课程体系",
+  "main_title_3": "实习兼职一网打尽",
+  "main_desc_1": "对每位学习者，配备一名外教+一名中教+多位客服，致力于打造最完美的学习体验",
+  "main_desc_2": "所有课程均由南京大学外国语学院老师进行审核，任教的国内外高校学生资历透明",
+  "main_desc_3": "如果你是国内外高校小语种专业的同学，欢迎你加入E师亦友平台"
 }
