@@ -4,7 +4,7 @@ import { Icon, Tooltip } from 'antd';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { NavLink } from 'react-router-dom';
 
-class NavigatorButton extends React.Component<{href: string, title: string, type: string, wrap?: boolean} & RouteComponentProps> {
+class NavigatorButton extends React.Component<{href: string, title: string, type: string, wrap?: boolean, onClick?: () => void} & RouteComponentProps> {
   
   render() {
     let wholeClass = styles.whole;
@@ -12,7 +12,7 @@ class NavigatorButton extends React.Component<{href: string, title: string, type
       wholeClass += " " + styles.active;
     }
     return (
-      <NavLink to={this.props.href}>
+      <NavLink to={this.props.href} onClick={(e: React.MouseEvent) => { if (this.props.onClick) { e.stopPropagation(); e.preventDefault(); this.props.onClick(); } }}>
         {this.props.wrap ? 
           <Tooltip title={this.props.title} placement="top">
             <div className={wholeClass}>
