@@ -12,6 +12,7 @@ import QueueAnim from 'rc-queue-anim';
 import { informationAction, LogoutAction } from '../../actions/UserAction';
 import UserDescriptions, { CONST, STUDENT, NATIVE, FOREIGN } from '../../components/UserDescriptions';
 import GeneralAPI from '../../services/GeneralAPI';
+import intl from "react-intl-universal";
 
 class User extends React.Component<{}, {loged: boolean, view: number, information: any, expand: boolean, password: boolean, modify: boolean}> {
   form: any = {}
@@ -45,15 +46,15 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
     const that = this;
     const confirmLogout = () => {
       Modal.confirm({
-        title: "即将退出登录",
-        content: "你确定要退出登录吗？",
-        okText: "确定",
-        cancelText: "取消",
+        title: intl.get("ready_to_logout"),
+        content: intl.get("confirm_to_logout_message"),
+        okText: intl.get("ok"),
+        cancelText: intl.get("cancel"),
         onOk() {
-          const hide = message.loading("正在退出登录...", 0);
+          const hide = message.loading(intl.get("logingout"), 0);
           GeneralAPI.user.logout().then(res => {
             hide();
-            message.success("你已退出登录！");
+            message.success(intl.get("logedout"));
             that.setState({...that.state, expand: false});
             LogoutAction();
           });
@@ -69,10 +70,10 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
     const handlePassword = () => {
       const { form } = this;
       if (!form.oldpassword || !form.newpassword || !form.repeat || form.newpassword !== form.repeat) {
-        message.error("请输入新旧密码且两次新密码输入一致！");
+        message.error(intl.get("password_old_password"));
         return;
       }
-      const hide = message.loading("正在修改...", 0);
+      const hide = message.loading(intl.get("modifying"), 0);
       this.setState({...this.state, password: true});
       GeneralAPI.user.password({oldpassword: form.oldpassword, newpassword: form.newpassword}).then(res => {
         hide();
@@ -80,10 +81,10 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
         if (res.code === 0) {
           this.setState({...this.state, expand: false});
           LogoutAction();
-          message.success("密码修改成功，请用新密码重新登录！");
+          message.success(intl.get("change_password_success"));
         }
         else {
-          message.error("修改失败，旧密码错误！");
+          message.error(intl.get("change_password_fail"));
         }
       });
       this.form = {};
@@ -92,7 +93,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
     const handleModify = () => {
       const { form } = this;
       let update;
-      const hide = message.loading("正在修改...", 0);
+      const hide = message.loading(intl.get("modifying"), 0);
       this.setState({...this.state, modify: true});
       if (category === STUDENT) update = StudentAPI.main.edit({language: form.language, level: form.level, target: form.target, content: form.content});
       else if (category === NATIVE) update = NativeAPI.main.edit({time: form.time, content: form.content});
@@ -101,43 +102,43 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
         hide();
         this.setState({...this.state, modify: false});
         if (res.code === 0) {
-          message.success("个人信息修改成功！");
+          message.success(intl.get("modify_information_success"));
           this.updateInformation();
         }
         else {
-          message.error("个人信息修改失败！");
+          message.error(intl.get("modify_information_fail"));
         }
       });
     }
     return (
       <div key="0" className={styles.settings}>
         <div className={styles.item}>
-          <p className={styles.title}>修改个人信息</p>
+          <p className={styles.title}>{intl.get("modify_information")}</p>
           {category === STUDENT ? <>
-            <Select className={styles.input} defaultValue={this.state.information.language} placeholder="想学习的语种" onChange={handleSelect.bind(this, "language")}>
+            <Select className={styles.input} defaultValue={this.state.information.language} placeholder={intl.get("language")} onChange={handleSelect.bind(this, "language")}>
               {CONST.language().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
             </Select>
-            <Select className={styles.input} defaultValue={this.state.information.level} placeholder="目前的水平" onChange={handleSelect.bind(this, "level")}>
+            <Select className={styles.input} defaultValue={this.state.information.level} placeholder={intl.get("level")} onChange={handleSelect.bind(this, "level")}>
               {CONST.level().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
             </Select>
-            <Select className={styles.input} defaultValue={this.state.information.target} placeholder="最希望锻炼的能力" onChange={handleSelect.bind(this, "target")}>
+            <Select className={styles.input} defaultValue={this.state.information.target} placeholder={intl.get("target")} onChange={handleSelect.bind(this, "target")}>
               {CONST.target().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
             </Select>
           </> : null}
           {category === NATIVE ? <>
-            <Input className={styles.input} name="time" prefix={<Icon type="clock-circle"/>} placeholder="可预约时间" onChange={handleChange} defaultValue={this.state.information.time} />
+            <Input className={styles.input} name="time" prefix={<Icon type="clock-circle"/>} placeholder={intl.get("available_time")} onChange={handleChange} defaultValue={this.state.information.time} />
           </> : null}
-          <Input className={styles.input} name="content" prefix={<Icon type="tags"/>} placeholder="简短介绍一下自己吧！" onChange={handleChange} defaultValue={this.state.information.content} />
-          <Button className={styles.input} type="primary" onClick={handleModify} loading={this.state.modify}>确定</Button>
+          <Input className={styles.input} name="content" prefix={<Icon type="tags"/>} placeholder={intl.get("self_content")} onChange={handleChange} defaultValue={this.state.information.content} />
+          <Button className={styles.input} type="primary" onClick={handleModify} loading={this.state.modify}>{intl.get("ok")}</Button>
         </div>
         <div className={styles.item}>
-          <p className={styles.title}>修改密码</p>
-          <Input className={styles.input} type="password" name="oldpassword" prefix={<Icon type="lock"/>} placeholder="旧密码" onChange={handleChange} disabled={this.state.password} />
-          <Input className={styles.input} type="password" name="newpassword" prefix={<Icon type="lock"/>} placeholder="新密码" onChange={handleChange} disabled={this.state.password} />
-          <Input className={styles.input} type="password" name="repeat" prefix={<Icon type="lock"/>} placeholder="重复新密码" onChange={handleChange} disabled={this.state.password} />
-          <Button className={styles.input} type="primary" onClick={handlePassword} loading={this.state.password}>修改</Button>
+          <p className={styles.title}>{intl.get("change_password")}</p>
+          <Input className={styles.input} type="password" name="oldpassword" prefix={<Icon type="lock"/>} placeholder={intl.get("old_password")} onChange={handleChange} disabled={this.state.password} />
+          <Input className={styles.input} type="password" name="newpassword" prefix={<Icon type="lock"/>} placeholder={intl.get("new_password")} onChange={handleChange} disabled={this.state.password} />
+          <Input className={styles.input} type="password" name="repeat" prefix={<Icon type="lock"/>} placeholder={intl.get("new_password_repeat")} onChange={handleChange} disabled={this.state.password} />
+          <Button className={styles.input} type="primary" onClick={handlePassword} loading={this.state.password}>{intl.get("modify")}</Button>
         </div>
-        <Button className={styles.item} onClick={confirmLogout}>退出登录</Button>
+        <Button className={styles.item} onClick={confirmLogout}>{intl.get("logout")}</Button>
       </div>
     );
   }
@@ -153,7 +154,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
           {i.name}
         </Avatar>
         <UserDescriptions className={styles.description} key="1" title="" information={i} />
-        <Switch key="2" checkedChildren="展开" unCheckedChildren="展开" onChange={this.onSwitch} checked={this.state.expand} />
+        <Switch key="2" checkedChildren={intl.get("expand")} unCheckedChildren={intl.get("expand")} onChange={this.onSwitch} checked={this.state.expand} />
         <QueueAnim key="3" className={styles.setting} animConfig={[{opacity: [1, 0], translateY: [0, 10]}, {opacity: [1, 0], translateY: [0, 10]}]}>{this.setting()}</QueueAnim>
       </QueueAnim>
     );

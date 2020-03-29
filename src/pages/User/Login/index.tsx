@@ -5,6 +5,7 @@ import { toRegisterAction, LoginAction } from '../../../actions/UserAction';
 import GeneralAPI from '../../../services/GeneralAPI';
 import { CONST, STUDENT } from '../../../components/UserDescriptions';
 import { withRouter, RouteComponentProps } from 'react-router';
+import intl from "react-intl-universal";
 
 const { Option } = Select;
 
@@ -16,21 +17,21 @@ class Login extends React.Component<RouteComponentProps, {loading: boolean}> {
   }
   handleLogin = () => {
     if (this.form.username === "" || this.form.password === "") {
-      message.error("请输入用户名和密码！");
+      message.error(intl.get("input_username_password"));
       return;
     }
-    const hide = message.loading("正在登录...", 0);
+    const hide = message.loading(intl.get("logingin"), 0);
     this.setState({...this.state, loading: true});
     GeneralAPI.user.login(this.form).then(res => {
       hide();
       this.setState({...this.state, loading: false});
       if (res.code === 0) {
-        message.success(res.data.name + "，欢迎回来！");
+        message.success(res.data.name + "，" + intl.get("welcome"));
         LoginAction({...res.data, category: this.form.category});
         this.props.history.push("/mycourse");
       }
       else {
-        message.error("用户名或密码错误！");
+        message.error(intl.get("username_password_error"));
       }
     });
   }
@@ -44,14 +45,14 @@ class Login extends React.Component<RouteComponentProps, {loading: boolean}> {
     const inputStyle = {marginTop: "1em", width: "100%"};
     return (
       <div className={styles.whole}>
-        登录为
+        {intl.get("login_as")}
         <Select defaultValue={0} style={{marginLeft: "1em"}} onChange={this.handleSelect}>
           {CONST.categoty().map((v, i) => <Option key={i} value={i}>{v}</Option>)}
         </Select>
-        <Input name="username" prefix={<Icon type="user"/>} placeholder="用户名" style={inputStyle} onChange={this.handleChange}/>
-        <Input name="password" prefix={<Icon type="lock"/>} type="password" placeholder="密码" style={inputStyle} onChange={this.handleChange}/>
-        <Button type="primary" htmlType="submit" style={inputStyle} onClick={this.handleLogin} loading={this.state.loading}>登录</Button>
-        <Button style={inputStyle} onClick={toRegisterAction} disabled={this.state.loading}>注册</Button>
+        <Input name="username" prefix={<Icon type="user"/>} placeholder={intl.get("username")} style={inputStyle} onChange={this.handleChange}/>
+        <Input name="password" prefix={<Icon type="lock"/>} type="password" placeholder={intl.get("password")} style={inputStyle} onChange={this.handleChange}/>
+        <Button type="primary" htmlType="submit" style={inputStyle} onClick={this.handleLogin} loading={this.state.loading}>{intl.get("login")}</Button>
+        <Button style={inputStyle} onClick={toRegisterAction} disabled={this.state.loading}>{intl.get("register")}</Button>
       </div>
     );
   }
