@@ -11,6 +11,7 @@ import StudentAPI from "../../../services/StudentAPI";
 import { raiseOrderAction } from "../../../actions/CourseAction";
 import { durationToTime, unixToString } from "../../../utils/datetime";
 import { calcPrice } from "../../../utils/money";
+import intl from "react-intl-universal";
 
 export interface DetailCourseConfig {
   cid: number,
@@ -50,33 +51,33 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
     }
   }
   buyCourse = () => {
-    if (!store.getState().UserReducer.loged) { message.error("请先登录后购买！"); return; }
-    if (store.getState().UserReducer.session.category !== STUDENT) { message.error("只有学生身份才能购买课程！"); return; }
+    if (!store.getState().UserReducer.loged) { message.error(intl.get("login_to_buy")); return; }
+    if (store.getState().UserReducer.session.category !== STUDENT) { message.error(intl.get("only_student_buy")); return; }
     const data = this.state.data as CourseDetail;
     const onOk = () => {
       StudentAPI.course.buy({cid: this.props.config.cid}).then(res => {
         if (res.code === 0) notification.success({
-          message: "课程购买成功",
-          description: "你可以在“已购课程”中找到刚才购买的“" + data.name + "”，开始你的学习之旅吧！",
+          message: intl.get("buy_course_success"),
+          description: intl.get("buy_course_message", {name: data.name}),
           icon: <Icon type="smile" style={{ color: "green" }} />,
         });
-        else message.error("购买失败，请检查你是否已购买过本课程，以及余额是否充足！");
+        else message.error(intl.get("buy_course_fail"));
       });
     }
     Modal.confirm({
-      title: "即将购买",
+      title: intl.get("buying"),
       content: <>
-        <div>课程名：{data.name}</div>
-        <div>价格：{calcPrice(data.cost, data.discount)}元</div>
-        <div>完成购买后你将可以学习本课程，是否确认购买？</div>
+        <div>{intl.get("course_name")}：{data.name}</div>
+        <div>{intl.get("price")}：{calcPrice(data.cost, data.discount) + " " + intl.get("yuan")}</div>
+        <div>{intl.get("confirm_buy_course_message")}</div>
       </>,
-      okText: "确认购买",
-      cancelText: "我再看看",
+      okText: intl.get("confirm_buy"),
+      cancelText: intl.get("not_sure"),
       onOk,
     });
   }
   toPlay = () => {
-    message.error("只有学生身份且购买课程后才能观看！");
+    message.error(intl.get("only_student_buy_play"));
   }
   toOrder = (id: number, name: string, vid: number, vname: string, e: React.MouseEvent<HTMLInputElement>) => {
     raiseOrderAction({cid: id, name, vid, vname});
@@ -85,28 +86,28 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
   render() {
     let component: JSX.Element;
     if (this.state.status > 0) component = <Spin size="large" />;
-    else if (this.state.status < 0) component = <Empty description="没有找到这门课程" />;
+    else if (this.state.status < 0) component = <Empty description={intl.get("course_not_found")} />;
     else {
       const data = this.state.data as CourseDetail;
       const video = this.state.video as (Video & VideoTitle)[];
       component = (
         <QueueAnim className={styles.detail}>
           <div key="name" className={styles.name}><Tag className={styles.tag} color={CONST.color()[data.category]}>{CONST.language()[data.category]}</Tag>{data.name}</div>
-          <div key="time" className={styles.time}>开课时间：{unixToString(data.starttime)} ~ {unixToString(data.endtime)}</div>
+          <div key="time" className={styles.time}>{intl.get("course_start_time")}：{unixToString(data.starttime)} ~ {unixToString(data.endtime)}</div>
           <div key="score" className={styles.score}><Rate disabled value={Math.round(data.score / 100 * 10) / 2} allowHalf /></div>
           <div key="content" className={styles.content}>{data.content}</div>
           <Collapse key="collapse" bordered={false}>
-            <Collapse.Panel key="1" header="外教信息" className={styles.panel}>
+            <Collapse.Panel key="1" header={intl.get("native") + intl.get("information")} className={styles.panel}>
               <UserDescriptions className={styles.teacher} title="" information={this.state.foreign as GeneralUser}></UserDescriptions>
             </Collapse.Panel>
           </Collapse>
           <div key="control" className={styles.control}>
             <div className={styles.buttons}>
-              {this.props.config.isMy ? null : <Button className={styles.button} type="primary" onClick={this.buyCourse}>购买</Button>}
+              {this.props.config.isMy ? null : <Button className={styles.button} type="primary" onClick={this.buyCourse}>{intl.get("buy")}</Button>}
             </div>
             {this.props.config.isMy ? null : <Price cost={data.cost} discount={data.discount} extra />}
           </div>
-          {this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? <div key="tip">选择一个视频预约上课</div> : null}
+            {this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? <div key="tip">{intl.get("choose_video")}</div> : null}
           <div key="video" className={styles.video}>
             {video.map((v, i) => 
               <div key={i} className={styles.item + (v.vid === this.props.config.vid ? (" " + styles.active) : "")} onClick={this.props.config.isMy && store.getState().UserReducer.session.category === STUDENT ? this.toOrder.bind(this, this.props.config.cid, data.name, v.vid, v.vname) : this.toPlay}>

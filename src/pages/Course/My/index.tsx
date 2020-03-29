@@ -11,6 +11,7 @@ import StudentAPI from "../../../services/StudentAPI";
 import NativeAPI from "../../../services/NativeAPI";
 import ForeignAPI from "../../../services/ForeignAPI";
 import { unixToString } from "../../../utils/datetime";
+import intl from "react-intl-universal";
 
 class MyCourse extends React.Component<RouteComponentProps, {got: boolean, courses: CourseBrief[]}> {
   constructor(props: any) {
@@ -38,7 +39,7 @@ class MyCourse extends React.Component<RouteComponentProps, {got: boolean, cours
         myCourseAction(res.data.courses as CourseBrief[]);
       }
       else {
-        message.error("拉取课程列表失败");
+        message.error(intl.get("fetch_error"));
       }
       this.setState({...this.state, got: true});
     });
@@ -52,7 +53,7 @@ class MyCourse extends React.Component<RouteComponentProps, {got: boolean, cours
       return <div className={styles.whole}><Skeleton className={styles.skeleton} active /></div>;
     }
     else if (this.state.courses.length === 0) {
-      return <Empty description="暂无课程" />;
+      return <Empty description={intl.get("empty_course")} />;
     }
     return (
       <QueueAnim className={styles.whole} animConfig={[{opacity: [1, 0], translateY: [0, 10]}, {opacity: [1, 0], translateY: [0, -10]}]}>
@@ -60,13 +61,13 @@ class MyCourse extends React.Component<RouteComponentProps, {got: boolean, cours
           {state.courses.map((v, i) => 
             <div key={i} className={styles.course} onClick={this.toDetail.bind(this, v.cid)}>
               <div className={styles.name + " " + styles.hidden}><Tag color={CONST.color()[v.category]}>{CONST.language()[v.category]}</Tag>{v.name}</div>
-              {(v as any).createtime ? <div className={styles.time}>创建时间：{unixToString((v as any).createtime)}</div> : null}
-              <div className={styles.time}>开课时间：{unixToString(v.starttime)}</div>
-              <div className={styles.time}>结课时间：{unixToString((v as any).endtime)}</div>
+              {(v as any).createtime ? <div className={styles.time}>{intl.get("course_create_time")}：{unixToString((v as any).createtime)}</div> : null}
+              <div className={styles.time}>{intl.get("course_start_time")}：{unixToString(v.starttime)}</div>
+              <div className={styles.time}>{intl.get("course_end_time")}：{unixToString((v as any).endtime)}</div>
               <div className={styles.bottom}>
                 <div className={styles.buttons}>
-                  {store.getState().UserReducer.session.category === STUDENT ? <Button size={"small"} type="primary">去预约上课</Button> : null}
-                  <Button size={"small"}>查看详细</Button>
+                  {store.getState().UserReducer.session.category === STUDENT ? <Button size={"small"} type="primary">{intl.get("to_order")}</Button> : null}
+                  <Button size={"small"}>{intl.get("get_detail")}</Button>
                 </div>
               </div>
             </div>
