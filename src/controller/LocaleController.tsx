@@ -6,9 +6,6 @@ export const getCurrentLocale = () => {
 }
 
 export const switchLocale = (locale: string) => {
-  new Promise(() => {
-    switchLocaleAction(locale);
-  }).then(() => {
-    window.location.reload();
-  });
+  switchLocaleAction(locale);
+  window.location.reload();
 }
