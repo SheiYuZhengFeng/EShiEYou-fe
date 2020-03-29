@@ -157,5 +157,22 @@
   "refuse_order": "拒绝预约",
   "cancel_order": "取消预约",
   "enter_room": "进入课堂",
-  "check_course": "查看课程"
+  "check_course": "查看课程",
+  "stream_play": "播放继续",
+  "stream_pause": "播放暂停",
+  "class_begin": "开始上课！",
+  "reconnecting": "断开连接，正在重连...",
+  "class_over_title": "下课了！",
+  "class_over_desc": "本次课程已完成！",
+  "back": "返回",
+  "refresh": "刷新",
+  "class_enter_fail_title": "无法加入课堂",
+  "class_enter_fail_desc": "是不是网络不好或者进错房间了？",
+  "loading": "正在加载...",
+  "class_time": "已上课",
+  "confirm_to_over_ahead": "确定要提前下课吗？",
+  "over_ahead": "提前下课",
+  "other_side_ready": "对方已准备",
+  "ready_class": "准备上课",
+  "waiting_other_ready": "你已准备，等待对方准备"
 }

@@ -8,6 +8,7 @@ import { durationToTime } from "../../utils/datetime";
 import { SliderValue } from "antd/lib/slider";
 import WAVEInterface from "react-audio-recorder/dist/waveInterface";
 import { STUDENT } from "../../components/UserDescriptions";
+import intl from "react-intl-universal";
 
 interface RoomState {
   connected: number,
@@ -81,8 +82,8 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     }, 1000);
   }
   receiveControl = (play: boolean) => {
-    if (play) message.info("播放继续");
-    else message.info("播放暂停");
+    if (play) message.info(intl.get("stream_play"));
+    else message.info(intl.get("stream_pause"));
     if (this.video) {
       if (play) this.video.play();
       else this.video.pause();
@@ -95,7 +96,7 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
       case "state":
         const roomstate = JSON.parse(data);
         this.setState({...this.state, connected: 1, roomstate});
-        if (roomstate.onclass) message.success("开始上课！");
+        if (roomstate.onclass) message.success(intl.get("class_begin"));
         break;
       case "audio":
         if (this.audio) this.audio.src = data;
@@ -122,7 +123,7 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
   onClose = () => {
     console.log("close");
     if (this.state.connected === 1 && !this.state.over) {
-      if (!this.hide) this.hide = message.loading("断开连接，正在重连...", 0);
+      if (!this.hide) this.hide = message.loading(intl.get("reconnecting"), 0);
       this.handleRefresh();
     }
     else if (this.state.connected === 0) {
@@ -171,9 +172,9 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
   }
   render() {
     let component: JSX.Element;
-    if (this.state.over) component = <Result status="success" title="下课了！" subTitle="本次课程已完成！" extra={<Button type="primary" onClick={this.handleBack}>返回</Button>} />;
-    else if (this.state.connected === -1) component = <Result status="403" title="无法加入课堂" subTitle="是不是网络不好或者进错房间了？" extra={<><Button type="primary" onClick={this.handleRefresh}>刷新</Button><Button onClick={this.handleBack}>返回</Button></>} />;
-    else if (this.state.connected === 0) component = <><Spin size="large" />正在加载...</>;
+    if (this.state.over) component = <Result status="success" title={intl.get("class_over_title")} subTitle={intl.get("class_over_desc")} extra={<Button type="primary" onClick={this.handleBack}>{intl.get("back")}</Button>} />;
+    else if (this.state.connected === -1) component = <Result status="403" title={intl.get("class_enter_fail_title")} subTitle={intl.get("class_enter_fail_desc")} extra={<><Button type="primary" onClick={this.handleRefresh}>{intl.get("refresh")}</Button><Button onClick={this.handleBack}>{intl.get("back")}</Button></>} />;
+    else if (this.state.connected === 0) component = <><Spin size="large" />{intl.get("loading")}</>;
     else component = (
       <>
         <div className={styles.player}>
@@ -199,22 +200,22 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
               defaultValue={this.state.playstate.progress}
               onAfterChange={this.handleProgress}
             />} />
-            <Cloud wrapped={<div className={styles.lasting}>已上课 {durationToTime(this.state.playstate.time)}</div>} />
+            <Cloud wrapped={<div className={styles.lasting}>{intl.get("class_time") + " " + durationToTime(this.state.playstate.time)}</div>} />
             {this.isStudent ? 
               <Popconfirm
-                title={"确定要提前下课吗？"}
+                title={intl.get("confirm_to_over_ahead")}
                 onConfirm={this.handleOver}
-                okText="确定"
-                cancelText="取消"
+                okText={intl.get("ok")}
+                cancelText={intl.get("cancel")}
               >
-                <CloudButton title={"提前下课"} />
+                <CloudButton title={intl.get("over_ahead")} />
               </Popconfirm>
             : null}
           </> : <>
             {(this.isStudent && !this.state.roomstate.student) || (!this.isStudent && !this.state.roomstate.native) ?
-              <CloudButton title={((this.state.roomstate.student !== this.state.roomstate.native) ? "对方已准备，" : "") + "准备上课"} onClick={this.handleReady} />
+              <CloudButton title={((this.state.roomstate.student !== this.state.roomstate.native) ? (intl.get("other_side_ready") + "，") : "") + intl.get("ready_class")} onClick={this.handleReady} />
             : <>
-              <CloudButton title={"你已准备，等待对方准备"} />
+              <CloudButton title={intl.get("waiting_other_ready")} />
             </>}
           </>}
         </div>
