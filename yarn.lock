@@ -1437,6 +1437,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-timeago@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.npm.taobao.org/@types/react-timeago/download/@types/react-timeago-4.1.1.tgz#14c24cb8c1299379d9c2941ca3373f849d8bc78a"
+  integrity sha1-FMJMuMEpk3nZwpQcozc/hJ2Lx4o=
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.9.0":
   version "16.9.21"
   resolved "https://registry.npm.taobao.org/@types/react/download/@types/react-16.9.21.tgz?cache=0&sync_timestamp=1582159719048&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Freact%2Fdownload%2F%40types%2Freact-16.9.21.tgz#99e274e2ecfab6bb93920e918341daa3198b348d"
@@ -9497,6 +9504,11 @@ react-slick@~0.25.2:
     json2mq "^0.2.0"
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
+
+react-timeago@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.npm.taobao.org/react-timeago/download/react-timeago-4.4.0.tgz#4520dd9ba63551afc4d709819f52b14b9343ba2b"
+  integrity sha1-RSDdm6Y1Ua/E1wmBn1KxS5NDuis=
 
 react@^16.12.0:
   version "16.12.0"

@@ -16,7 +16,7 @@ export const updateMailUsers = () => {
       mailUserAction((res.data.users as MailUser[]).sort((a, b) => {
         if (a.category === SYSTEM) return -1;
         else if (b.category === SYSTEM) return 1;
-        return 0;
+        return b.time - a.time;
       }));
     }
     else {

@@ -63,12 +63,27 @@
                     width: 3em;
                 }
 
-                .listusername {
+                .listtext {
+                    display: flex;
+                    flex-flow: column nowrap;
+                    justify-content: flex-start;
+                    align-items: flex-start;
                     margin-left: .5em;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
+                    width: 100%;
+
+                    .listusername {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    .listtime {
+                        font-size: .6em;
+                        color: fade(black, 30%);
+                    }
                 }
+
+                &.active .listtext .listtime { display: none; }
             }
         }
 

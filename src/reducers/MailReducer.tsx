@@ -22,6 +22,7 @@ const initialState : MailState = {
       category: STUDENT,
       id: 0,
       username: "",
+      time: 0,
     },
     status: 0,
     mails: [],

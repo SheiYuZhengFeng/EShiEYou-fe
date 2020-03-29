@@ -66,6 +66,7 @@ export interface MailUser {
   category: number,
   id: number,
   username: string,
+  time: number,
 }
 
 export interface MailEntity {

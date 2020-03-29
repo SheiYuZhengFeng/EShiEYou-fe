@@ -11,6 +11,7 @@ import QueueAnim from 'rc-queue-anim';
 import { SYSTEM } from '../../components/UserDescriptions';
 import { unixToString } from '../../utils/datetime';
 import intl from "react-intl-universal";
+import TimeAgo from "react-timeago";
 
 class Mail extends React.Component<{}, MailState> {
   constructor(props: any) {
@@ -76,7 +77,10 @@ class Mail extends React.Component<{}, MailState> {
                   <Avatar className={styles.listavator} size="large">
                     {v.category === SYSTEM ? <Icon type="team" /> : v.username}
                   </Avatar>
-                  <div className={styles.listusername}>{v.username}</div>
+                  <div className={styles.listtext}>
+                    <div className={styles.listusername}>{v.username}</div>
+                    <div className={styles.listtime}><TimeAgo date={v.time * 1000} /></div>
+                  </div>
                 </div>
               ))}</>}
             </div>
