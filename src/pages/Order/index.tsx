@@ -11,6 +11,7 @@ import QueueAnim from 'rc-queue-anim';
 import ShowUserDescriptions from '../../components/UserDescriptions/WithModal';
 import { FOREIGN, STUDENT, NATIVE } from '../../components/UserDescriptions';
 import { unixToString } from '../../utils/datetime';
+import intl from "react-intl-universal";
 
 const getType = (v: OrderEntity) => {
   const { state, rid } = v;
@@ -24,7 +25,7 @@ const getType = (v: OrderEntity) => {
 const Map = {
   icon: (v: OrderEntity) => ["close", "question", "clock-circle", "check", "exclamation"][getType(v)],
   background: (v: OrderEntity) => [styles.canceled, styles.waiting, styles.beforeclass, styles.finished, styles.onclass][getType(v)],
-  description: (v: OrderEntity) => ["预约已取消或被拒绝", "等待中教确认中", "学生与中教预约成功，当前未开始上课", "学生与中教预约成功，该预约时段的课程已经结束", "学生与中教预约成功，正在上课中"][getType(v)],
+  description: (v: OrderEntity) => [intl.get("order_status_desc_cancel_refuse"), intl.get("order_status_desc_confirming"), intl.get("order_status_desc_waiting"), intl.get("order_status_desc_finish"), intl.get("order_status_desc_onclass")][getType(v)],
 }
 
 class Order extends React.Component<RouteComponentProps, {status: number, order: OrderEntity[]}> {
@@ -50,28 +51,27 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
       }
       else {
         orderListAction([]);
-        message.error("拉取预约列表失败！");
+        message.error(intl.get("fetch_error"));
       }
     });
   }
   handleAccept = (id: number, accept: boolean) => {
-    const s = accept ? "接受" : "拒绝";
     const onOk = () => {
       NativeAPI.order.reply({id, accept}).then(res => {
         if (res.code === 0) {
-          message.success(s + "预约成功！");
+          message.success(accept ? intl.get("accept_order_success") : intl.get("refuse_order_success"));
           this.updateList();
         }
         else {
-          message.error(s + "预约失败！");
+          message.success(accept ? intl.get("accept_order_fail") : intl.get("refuse_order_fail"));
         }
       });
     }
     Modal.confirm({
-      title: "即将回复预约",
-      content: "你确定要" + s + "该预约吗？",
-      okText: "确定" + s,
-      cancelText: "取消",
+      title: intl.get("replying_order"),
+      content: accept ? intl.get("confirm_to_accept_order") : intl.get("confirm_to_refuse_order"),
+      okText: intl.get("ok"),
+      cancelText: intl.get("cancel"),
       onOk,
     });
   }
@@ -79,19 +79,19 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
     const onOk = () => {
       (category === STUDENT ? StudentAPI.order.cancel : NativeAPI.order.cancel)({id}).then(res => {
         if (res.code === 0) {
-          message.success("取消预约成功！");
+          message.success(intl.get("cancel_order_success"));
           this.updateList();
         }
         else {
-          message.error("取消预约失败！");
+          message.error(intl.get("cancel_order_fail"));
         }
       });
     }
     Modal.confirm({
-      title: "即将取消预约",
-      content: "你确定要取消该预约吗？",
-      okText: "确定取消预约",
-      cancelText: "不取消",
+      title: intl.get("canceling_order"),
+      content: intl.get("confirm_to_cancel_order_message"),
+      okText: intl.get("confirm_to_cancel_order"),
+      cancelText: intl.get("confirm_to_cancel_order_cancel"),
       onOk,
     });
   }
@@ -110,7 +110,7 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
     if (this.state.status === 0) {
       component = <Skeleton active />;
     }
-    else if (this.state.order.length === 0) component = <Empty description="暂无预约" />;
+    else if (this.state.order.length === 0) component = <Empty description={intl.get("empty_order")} />;
     else component = (
       <QueueAnim>
         <Collapse key="orders" className={styles.orders} expandIconPosition="right" bordered={false}>
@@ -122,22 +122,22 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
               </div>
             } className={styles.panel + " " + Map.background(v)}>
               <div className={styles.state}>{Map.description(v)}</div>
-              <div className={styles.createtime}>预约创建于 {unixToString(v.createtime)}</div>
+              <div className={styles.createtime}>{intl.get("order_create_at") + " " + unixToString(v.createtime)}</div>
               <div className={styles.controls}>
                 {category === NATIVE && v.state === 1 ? // 中教，待确认，接受/拒绝
                   <>
-                    <Button type="primary" onClick={this.handleAccept.bind(this, v.id, true)}>接受预约</Button>
-                    <Button type="danger" onClick={this.handleAccept.bind(this, v.id, false)}>拒绝预约</Button>
+                    <Button type="primary" onClick={this.handleAccept.bind(this, v.id, true)}>{intl.get("accept_order")}</Button>
+                    <Button type="danger" onClick={this.handleAccept.bind(this, v.id, false)}>{intl.get("refuse_order")}</Button>
                   </>
                 : null}
                 {(v.state === 0 && v.rid === -1) || (v.state === 1 && category === STUDENT) ? // （预约成功，未上课）或（学生，待中教确认），取消预约
-                  <Button type="danger" onClick={this.handleCancel.bind(this, v.id, category)}>取消预约</Button>
+                  <Button type="danger" onClick={this.handleCancel.bind(this, v.id, category)}>{intl.get("cancel_order")}</Button>
                 : null}
                 {v.state === 0 && v.rid > 0 ? // 上课中
-                  <Button type="primary" onClick={this.toClassRoom.bind(this, v.rid)}>进入课堂</Button>
+                  <Button type="primary" onClick={this.toClassRoom.bind(this, v.rid)}>{intl.get("enter_room")}</Button>
                 : null}
-                <Button onClick={this.toCourse.bind(this, v.cid, v.vid)}>查看课程</Button>
-                <Button onClick={this.showUser.bind(this, category === STUDENT ? v.teacher : v.student, category === STUDENT ? NATIVE : STUDENT)}>查看{category === STUDENT ? "中教" : "学生"}信息</Button>
+                <Button onClick={this.toCourse.bind(this, v.cid, v.vid)}>{intl.get("check_course")}</Button>
+                <Button onClick={this.showUser.bind(this, category === STUDENT ? v.teacher : v.student, category === STUDENT ? NATIVE : STUDENT)}>{category === STUDENT ? intl.get("native") : intl.get("student")} {intl.get("information")}</Button>
               </div>
             </Collapse.Panel>
           ))}
