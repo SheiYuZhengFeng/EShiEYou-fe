@@ -3,7 +3,7 @@ import styles from "./index.module.less";
 import Combiner from "../../components/Combiner";
 import { BillState } from "../../reducers/BillReducer";
 import store from "../../store";
-import { updateAll } from "../../controller/BillController";
+import { updateAll } from "../../controllers/BillController";
 import { STUDENT } from "../../components/UserDescriptions";
 import { Empty, Spin, Icon, Tooltip, Button, message, Modal } from "antd";
 import { convertMoney, signedMoney } from "../../utils/money";

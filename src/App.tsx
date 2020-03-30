@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from './router';
 import intl from "react-intl-universal";
-import { getCurrentLocale } from './controller/LocaleController';
+import { getCurrentLocale } from './controllers/LocaleController';
 
 export const locales = {
   "zh-CN": require("./locales/zh-CN.json"),

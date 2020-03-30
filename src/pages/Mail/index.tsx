@@ -3,7 +3,7 @@ import styles from './index.module.less';
 import Combiner from '../../components/Combiner';
 import store from '../../store';
 import { MailState } from '../../reducers/MailReducer';
-import { makeMailAvailable, updateChat } from '../../controller/MailController';
+import { makeMailAvailable, updateChat } from '../../controllers/MailController';
 import { Skeleton, Empty, Avatar, Icon, Input, Button, message } from 'antd';
 import GeneralAPI, { MailEntity } from '../../services/GeneralAPI';
 import TextArea from 'antd/lib/input/TextArea';

@@ -6,7 +6,7 @@ import { STUDENT, FOREIGN } from "../UserDescriptions";
 import intl from "react-intl-universal";
 import { Modal, Button } from "antd";
 import { locales } from "../../App";
-import { switchLocale } from "../../controller/LocaleController";
+import { switchLocale } from "../../controllers/LocaleController";
 
 class Navigator extends React.Component {
   handleLanguage = () => {
