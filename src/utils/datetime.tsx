@@ -10,7 +10,7 @@ export const durationToTime = (d: number) => {
 }
 
 export const unixToString = (unix: number) => {
-  return new Date(unix * 1000).toLocaleString();
+  return new Date(unix * 1000).toLocaleString("zh", { hour12: false });
 }
 
 export const getCurrentUnix = () => {
