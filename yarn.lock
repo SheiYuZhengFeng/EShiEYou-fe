@@ -9274,9 +9274,9 @@ react-app-rewired@^2.1.5:
   dependencies:
     semver "^5.6.0"
 
-"react-audio-recorder@github:MatrixFrog/react-audio-recorder#master":
+"react-audio-recorder@github:chenghaopeng/react-audio-recorder#master":
   version "2.1.0"
-  resolved "https://codeload.github.com/MatrixFrog/react-audio-recorder/tar.gz/0ead8e5a98d87894913b34d50d01ba834aa4f7f4"
+  resolved "https://codeload.github.com/chenghaopeng/react-audio-recorder/tar.gz/58e82dcc37aa33351495de5354ebd485805a73a6"
 
 react-datetime@^2.16.3:
   version "2.16.3"
