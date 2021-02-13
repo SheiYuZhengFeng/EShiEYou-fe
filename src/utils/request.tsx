@@ -19,8 +19,7 @@ export default async function request(url : string, body ?: {}, token = true) : 
     method: "POST",
     headers: { "Content-type": "application/json" },
     url: server + url,
-    data: body,
-    withCredentials: true,
+    data: body
   }).then(res => {
     return res.data;
   }).catch(error => {
