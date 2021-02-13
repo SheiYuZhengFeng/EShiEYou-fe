@@ -28,7 +28,7 @@ class Login extends React.Component<RouteComponentProps, {loading: boolean}> {
       if (res.code === 0) {
         message.success(res.data.name + "，" + intl.get("welcome"));
         LoginAction({...res.data, category: this.form.category});
-        this.props.history.push("/mycourse");
+        //this.props.history.push("/mycourse");
       }
       else {
         message.error(intl.get("username_password_error"));

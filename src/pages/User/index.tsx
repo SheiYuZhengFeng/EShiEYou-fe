@@ -142,6 +142,9 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
       </div>
     );
   }
+  handleZM = () => {
+    window.location.href = require("../../themes/timg.png");
+  }
   panel = () => {
     if (Object.keys(this.state.information).length === 0) {
       this.updateInformation();
@@ -154,6 +157,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
           {i.name}
         </Avatar>
         <UserDescriptions className={styles.description} key="1" title="" information={i} />
+        <Button key="生成实习证明" type="primary" style={{marginBottom: "1em"}} onClick={this.handleZM}>生成实习证明</Button>
         <Switch key="2" checkedChildren={intl.get("expand")} unCheckedChildren={intl.get("expand")} onChange={this.onSwitch} checked={this.state.expand} />
         <QueueAnim key="3" className={styles.setting} animConfig={[{opacity: [1, 0], translateY: [0, 10]}, {opacity: [1, 0], translateY: [0, 10]}]}>{this.setting()}</QueueAnim>
       </QueueAnim>
