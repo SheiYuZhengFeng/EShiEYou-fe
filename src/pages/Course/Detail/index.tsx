@@ -97,7 +97,7 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
           <div key="score" className={styles.score}><Rate disabled value={Math.round(data.score / 100 * 10) / 2} allowHalf /></div>
           <div key="content" className={styles.content}>{data.content}</div>
           <Collapse key="collapse" bordered={false}>
-            <Collapse.Panel key="1" header={intl.get("native") + intl.get("information")} className={styles.panel}>
+            <Collapse.Panel key="1" header={intl.get("native") + ' ' + intl.get("information")} className={styles.panel}>
               <UserDescriptions className={styles.teacher} title="" information={this.state.foreign as GeneralUser}></UserDescriptions>
             </Collapse.Panel>
           </Collapse>
