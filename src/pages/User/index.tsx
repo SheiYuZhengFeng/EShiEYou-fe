@@ -4,7 +4,7 @@ import Combiner from '../../components/Combiner';
 import store from '../../store';
 import Login from './Login';
 import Register from './Register';
-import { Spin, Avatar, Switch, Button, Modal, message, Input, Icon, Select } from 'antd';
+import { Spin, Avatar, Switch, Button, message, Input, Icon, Select } from 'antd';
 import StudentAPI from '../../services/StudentAPI';
 import NativeAPI from '../../services/NativeAPI';
 import ForeignAPI from '../../services/ForeignAPI';
@@ -43,24 +43,6 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
   }
   setting = () => {
     if (!this.state.expand) return null;
-    const that = this;
-    const confirmLogout = () => {
-      Modal.confirm({
-        title: intl.get("ready_to_logout"),
-        content: intl.get("confirm_to_logout_message"),
-        okText: intl.get("ok"),
-        cancelText: intl.get("cancel"),
-        onOk() {
-          const hide = message.loading(intl.get("logingout"), 0);
-          GeneralAPI.user.logout().then(res => {
-            hide();
-            message.success(intl.get("logedout"));
-            that.setState({...that.state, expand: false});
-            LogoutAction();
-          });
-        },
-      });
-    }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       this.form[e.target.name] = e.target.value.trim();
     }
@@ -138,7 +120,6 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
           <Input className={styles.input} type="password" name="repeat" prefix={<Icon type="lock"/>} placeholder={intl.get("new_password_repeat")} onChange={handleChange} disabled={this.state.password} />
           <Button className={styles.input} type="primary" onClick={handlePassword} loading={this.state.password}>{intl.get("modify")}</Button>
         </div>
-        <Button className={styles.item} onClick={confirmLogout}>{intl.get("logout")}</Button>
       </div>
     );
   }
