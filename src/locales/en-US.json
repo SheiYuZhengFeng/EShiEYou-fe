@@ -229,5 +229,8 @@
   "get_vcode": "Get verification code",
   "vcode": "Verification code",
   "qualification_example": "e.g. Japanese N1",
-  "background_example": "e.g.: Master of Japanese language from Nanjing University"
+  "background_example": "e.g.: Master of Japanese language from Nanjing University",
+  "intern_provement": "Intern Provement",
+  "generate_intern_provement": "Generate Intern Provement",
+  "download": "Download"
 }

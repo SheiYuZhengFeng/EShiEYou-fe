@@ -229,5 +229,8 @@
   "get_vcode": "获取验证码",
   "vcode": "验证码",
   "qualification_example": "如：日语N1",
-  "background_example": "如：南京大学日语系硕士"
+  "background_example": "如：南京大学日语系硕士",
+  "intern_provement": "实习证明",
+  "generate_intern_provement": "生成实习证明",
+  "download": "下载"
 }
