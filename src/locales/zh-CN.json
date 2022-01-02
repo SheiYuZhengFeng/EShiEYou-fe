@@ -192,7 +192,7 @@
   "new_password_repeat": "重复新密码",
   "modify": "修改",
   "logout": "退出登录",
-  "expand": "展开",
+  "modify_information_password": "修改信息及密码",
   "logingin": "正在登录...",
   "welcome": "欢迎回来！",
   "username_password_error": "用户名或密码错误！",

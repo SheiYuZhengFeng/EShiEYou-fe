@@ -4,7 +4,7 @@ import Combiner from '../../components/Combiner';
 import store from '../../store';
 import Login from './Login';
 import Register from './Register';
-import { Spin, Avatar, Switch, Button, message, Input, Icon, Select } from 'antd';
+import { Spin, Avatar, Button, message, Input, Icon, Select, Form } from 'antd';
 import StudentAPI from '../../services/StudentAPI';
 import NativeAPI from '../../services/NativeAPI';
 import ForeignAPI from '../../services/ForeignAPI';
@@ -26,9 +26,10 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
   componentWillUnmount() {
     this.ss();
   }
-  onSwitch = (checked: boolean) => {
-    this.setState({...this.state, expand: checked});
-    if (checked) this.form = {...this.state.information};
+  onSwitch = () => {
+    const expand = !this.state.expand;
+    this.setState({...this.state, expand});
+    if (expand) this.form = {...this.state.information};
   }
   updateInformation = () => {
     const deal = (res: SimpleResponse) => {
@@ -96,29 +97,49 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
       <div key="0" className={styles.settings}>
         <div className={styles.item}>
           <p className={styles.title}>{intl.get("modify_information")}</p>
-          {category === STUDENT ? <>
-            <Select className={styles.input} defaultValue={this.state.information.language} placeholder={intl.get("language")} onChange={handleSelect.bind(this, "language")}>
-              {CONST.language().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
-            </Select>
-            <Select className={styles.input} defaultValue={this.state.information.level} placeholder={intl.get("level")} onChange={handleSelect.bind(this, "level")}>
-              {CONST.level().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
-            </Select>
-            <Select className={styles.input} defaultValue={this.state.information.target} placeholder={intl.get("target")} onChange={handleSelect.bind(this, "target")}>
-              {CONST.target().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
-            </Select>
-          </> : null}
-          {category === NATIVE ? <>
-            <Input className={styles.input} name="time" prefix={<Icon type="clock-circle"/>} placeholder={intl.get("available_time")} onChange={handleChange} defaultValue={this.state.information.time} />
-          </> : null}
-          <Input className={styles.input} name="content" prefix={<Icon type="tags"/>} placeholder={intl.get("self_content")} onChange={handleChange} defaultValue={this.state.information.content} />
-          <Button className={styles.input} type="primary" onClick={handleModify} loading={this.state.modify}>{intl.get("ok")}</Button>
+          <Form layout="vertical">
+            {category === STUDENT ? <>
+              <Form.Item label={intl.get("language")}>
+                <Select className={styles.input} defaultValue={this.state.information.language} onChange={handleSelect.bind(this, "language")}>
+                  {CONST.language().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
+                </Select>
+              </Form.Item>
+              <Form.Item label={intl.get("level")}>
+                <Select className={styles.input} defaultValue={this.state.information.level} onChange={handleSelect.bind(this, "level")}>
+                  {CONST.level().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
+                </Select>
+              </Form.Item>
+              <Form.Item label={intl.get("target")}>
+                <Select className={styles.input} defaultValue={this.state.information.target} onChange={handleSelect.bind(this, "target")}>
+                  {CONST.target().map((v, i) => <Select.Option key={i} value={i}>{v}</Select.Option>)}
+                </Select>
+              </Form.Item>
+            </> : null}
+            {category === NATIVE ? <>
+              <Form.Item label={intl.get("available_time")}>
+                <Input className={styles.input} name="time" prefix={<Icon type="clock-circle"/>} onChange={handleChange} defaultValue={this.state.information.time} />
+              </Form.Item>
+            </> : null}
+            <Form.Item label={intl.get("self_content")}>
+              <Input className={styles.input} name="content" onChange={handleChange} defaultValue={this.state.information.content} />
+            </Form.Item>
+            <Button className={styles.button} type="primary" onClick={handleModify} loading={this.state.modify}>{intl.get("ok")}</Button>
+          </Form>
         </div>
         <div className={styles.item}>
           <p className={styles.title}>{intl.get("change_password")}</p>
-          <Input className={styles.input} type="password" name="oldpassword" prefix={<Icon type="lock"/>} placeholder={intl.get("old_password")} onChange={handleChange} disabled={this.state.password} />
-          <Input className={styles.input} type="password" name="newpassword" prefix={<Icon type="lock"/>} placeholder={intl.get("new_password")} onChange={handleChange} disabled={this.state.password} />
-          <Input className={styles.input} type="password" name="repeat" prefix={<Icon type="lock"/>} placeholder={intl.get("new_password_repeat")} onChange={handleChange} disabled={this.state.password} />
-          <Button className={styles.input} type="primary" onClick={handlePassword} loading={this.state.password}>{intl.get("modify")}</Button>
+          <Form layout="vertical">
+            <Form.Item label={intl.get("old_password")}>
+              <Input className={styles.input} type="password" name="oldpassword" prefix={<Icon type="lock"/>} onChange={handleChange} disabled={this.state.password} />
+            </Form.Item>
+            <Form.Item label={intl.get("new_password")}>
+              <Input className={styles.input} type="password" name="newpassword" prefix={<Icon type="lock"/>} onChange={handleChange} disabled={this.state.password} />
+            </Form.Item>
+            <Form.Item label={intl.get("new_password_repeat")}>
+              <Input className={styles.input} type="password" name="repeat" prefix={<Icon type="lock"/>} onChange={handleChange} disabled={this.state.password} />
+            </Form.Item>
+            <Button className={styles.button} type="primary" onClick={handlePassword} loading={this.state.password}>{intl.get("modify")}</Button>
+          </Form>
         </div>
       </div>
     );
@@ -138,8 +159,12 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
           {i.name}
         </Avatar>
         <UserDescriptions className={styles.description} key="1" title="" information={i} />
-        <Button key="生成实习证明" type="primary" style={{marginBottom: "1em"}} onClick={this.handleZM}>生成实习证明</Button>
-        <Switch key="2" checkedChildren={intl.get("expand")} unCheckedChildren={intl.get("expand")} onChange={this.onSwitch} checked={this.state.expand} />
+        <div key="2" className={styles.control}>
+          <Button type="primary" style={{marginBottom: "1em"}} onClick={this.handleZM}>生成实习证明</Button>
+          <Button onClick={this.onSwitch}>
+            {intl.get('modify_information_password')} <Icon type={this.state.expand ? 'up' : 'down'} />
+          </Button>
+        </div>
         <QueueAnim key="3" className={styles.setting} animConfig={[{opacity: [1, 0], translateY: [0, 10]}, {opacity: [1, 0], translateY: [0, 10]}]}>{this.setting()}</QueueAnim>
       </QueueAnim>
     );
