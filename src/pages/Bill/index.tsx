@@ -5,19 +5,28 @@ import { BillState } from "../../reducers/BillReducer";
 import store from "../../store";
 import { updateAll } from "../../controllers/BillController";
 import { STUDENT } from "../../components/UserDescriptions";
-import { Empty, Spin, Icon, Tooltip, Button, message, Modal } from "antd";
+import { Empty, Spin, Icon, Button, message, Modal, Tag, Radio, Tooltip } from "antd";
 import { convertMoney, signedMoney } from "../../utils/money";
 import { unixToString } from "../../utils/datetime";
 import QueueAnim from "rc-queue-anim";
 import ShowModalInput from "../../components/ModalInput";
 import GeneralAPI from "../../services/GeneralAPI";
 import intl from "react-intl-universal";
+import { RadioChangeEvent } from "antd/lib/radio";
 
 const getStatusIcon = (status: number) => {
   switch(status){
     case -1: return "close";
     case 0: return "clock-circle";
     default: return "check";
+  }
+}
+
+const getStatusTagColor = (status: number) => {
+  switch(status){
+    case -1: return "red";
+    case 0: return "blue";
+    default: return "green";
   }
 }
 
@@ -29,14 +38,22 @@ const getStatusColor = (status: number) => {
   }
 }
 
-class Bill extends React.Component<any, BillState> {
+const getStatusDesc = (status: number) => {
+  switch(status){
+    case -1: return intl.get('canceled');
+    case 0: return intl.get('waiting');
+    default: return intl.get('completed');
+  }
+}
+
+class Bill extends React.Component<any, BillState & { filter: number }> {
   typeDesc = [intl.get("bill_type_pay"), intl.get("bill_type_get"), intl.get("bill_type_consume"), intl.get("bill_type_deduct"), intl.get("bill_type_back"), intl.get("bill_type_income"), intl.get("bill_type_redress")];
   constructor(props: any) {
     super(props);
-    this.state = {...store.getState().BillReducer};
+    this.state = {...store.getState().BillReducer, filter: 0};
   }
   ss = store.subscribe(() => {
-    this.setState({...store.getState().BillReducer});
+    this.setState({...this.state, ...store.getState().BillReducer});
   });
   componentWillMount() {
     updateAll();
@@ -95,6 +112,9 @@ class Bill extends React.Component<any, BillState> {
       }
     });
   }
+  handleFilter = (e: RadioChangeEvent) => {
+    this.setState({...this.state, filter: e.target.value})
+  }
   render() {
     const { balance, bills } = this.state;
     return Combiner(
@@ -123,22 +143,26 @@ class Bill extends React.Component<any, BillState> {
               </div>
             : null}
           </div>
+          <Radio.Group key="control" value={this.state.filter} buttonStyle="solid" style={{ marginTop: '3em' }} onChange={this.handleFilter.bind(this)}>
+            <Radio.Button value={0}>全部</Radio.Button>
+            <Radio.Button value={-1}>支出</Radio.Button>
+            <Radio.Button value={1}>收入</Radio.Button>
+          </Radio.Group>
           <div key="bills" className={styles.bills}>
             {bills.status === -1 ?
               <Empty description={intl.get("fetch_error")} />
             : bills.status === 0 ?
               <Spin size="large" />
-            : bills.data.map((v, i) => (
-              <Tooltip key={i} title={v.content} className={styles.bill + " " + getStatusColor(v.status)}>
-                <div className={styles.moneytypestatus}>
-                  <div className={styles.money}>{signedMoney(v.money)}</div>
-                  <div className={styles.typestatus}>
-                    <div className={styles.status}>
-                      <Icon type={getStatusIcon(v.status)} />
-                    </div>
-                    <div className={styles.type}>{this.typeDesc[v.type]}</div>
-                  </div>
+            : bills.data.filter(v => v.money * this.state.filter >= 0).map((v, i) => (
+              <Tooltip key={i} title={getStatusDesc(v.status)} className={styles.bill + " " + getStatusColor(v.status)}>
+                <div className={styles.typestatus}>
+                  <Tag className={styles.status} color={getStatusTagColor(v.status)}>
+                    <Icon type={getStatusIcon(v.status)} />
+                  </Tag>
+                  <div className={styles.type}>{this.typeDesc[v.type]}</div>
                 </div>
+                <div className={styles.money + (v.money < 0 ? (' ' + styles.minus) : '')}>{signedMoney(v.money)}</div>
+                {v.content}
                 <div className={styles.time}>{unixToString(v.createtime)}</div>
               </Tooltip>
             ))}

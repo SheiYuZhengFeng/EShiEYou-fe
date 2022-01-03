@@ -3,7 +3,6 @@
 .whole {
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
   align-items: center;
 
   .balancecontrol {
@@ -46,44 +45,38 @@
   }
 
   .bills {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-items: flex-start;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 280px);
+    justify-content: center;
+    gap: 2em;
     margin-top: 1.5em;
 
     .bill {
-      flex: 1 0 15em;
       display: flex;
       flex-flow: column nowrap;
-      margin: 1em;
-      padding: 2em;
-      border-radius: 2em;
+      padding: 1em;
+      border-radius: 1em;
       transition: .2s;
-      box-shadow: .2em .2em .5em 0 fade(black, 10%);
+      box-shadow: .2em .2em .5em 0 fade(black, 4%);
       cursor: pointer;
 
-      &.closed { background-color: fade(black, 1%); }
-      &.waiting { background-color: fade(orange, 10%); }
-      &.ok { background-color: fade(green, 3%); }
+      &.closed { background-color: fade(red, 5%); }
+      &.waiting { background-color: fade(blue, 5%); }
+      &.ok { background-color: fade(rgb(0, 255, 0), 5%); }
 
-      .moneytypestatus {
+      .money {
+        font-size: 1.5em;
+        color: @primary-color;
+
+        &.minus {
+          color: orange;
+        }
+      }
+
+      .typestatus {
         display: flex;
         flex-flow: row nowrap;
-        justify-content: space-between;
-        align-items: center;
-
-        .money {
-          font-size: 1.5em;
-          color: @primary-color;
-        }
-
-        .typestatus {
-          display: flex;
-          flex-flow: column nowrap;
-          justify-content: flex-start;
-          align-items: flex-end;
-        }
       }
 
       .time {

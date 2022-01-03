@@ -237,5 +237,8 @@
   "background_example": "e.g.: Master of Japanese language from Nanjing University",
   "intern_provement": "Intern Provement",
   "generate_intern_provement": "Generate Intern Provement",
-  "download": "Download"
+  "download": "Download",
+  "canceled": "Canceled",
+  "waiting": "Waiting",
+  "completed": "Completed!"
 }

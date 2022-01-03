@@ -237,5 +237,8 @@
   "background_example": "如：南京大学日语系硕士",
   "intern_provement": "实习证明",
   "generate_intern_provement": "生成实习证明",
-  "download": "下载"
+  "download": "下载",
+  "canceled": "已取消",
+  "waiting": "等待中",
+  "completed": "已完成"
 }
