@@ -150,14 +150,20 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
       roomstate: { student: true, native: true, onclass: true },
       playstate: {
         time: 0,
-        progress: 400,
+        progress: 20,
         duration: 14 * 60 + 27,
         url: 'https://box.nju.edu.cn/f/8079be06c4c54f168726/?dl=1'
       }
     })
+    setTimeout(() => {
+      if (this.video) {
+        this.video.currentTime = 20;
+        this.video.play();
+      }
+    }, 1000)
     // this.ws.send("ready", "");
     setInterval(() => {
-      this.setState({...this.state, playstate: {...this.state.playstate, time: this.state.playstate.time + 1}})
+      this.setState({...this.state, playstate: {...this.state.playstate, time: this.state.playstate.time + 1, progress: this.state.playstate.progress + 1}})
     }, 1000)
   }
   handleControl = (play: boolean) => {
@@ -166,6 +172,9 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
   }
   handleProgress = (value: SliderValue) => {
     // this.ws.send("progress", { progress: value as number });
+    if (this.video) {
+      this.video.currentTime = value as number;
+    }
   }
   handleMicrophone = () => {
     if (this.state.audio) {
