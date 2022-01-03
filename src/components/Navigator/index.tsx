@@ -55,7 +55,7 @@ class Navigator extends React.Component {
         }
         {state.loged &&
           <Item>
-            <a onClick={confirmLogout} href="/">退出登录</a>
+            <a onClick={confirmLogout} href="/">{intl.get('logout')}</a>
           </Item>
         }
         {!state.loged &&
