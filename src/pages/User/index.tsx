@@ -151,6 +151,7 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
       return <Spin size="large" />;
     }
     const i = this.state.information;
+    const { category } = store.getState().UserReducer.session;
     return (
       <QueueAnim className={styles.panel}>
         <Avatar key="0" className={styles.avatar} size={64}>
@@ -158,9 +159,11 @@ class User extends React.Component<{}, {loged: boolean, view: number, informatio
         </Avatar>
         <UserDescriptions className={styles.description} key="1" title="" information={i} />
         <div key="2" className={styles.control}>
-          <NavLink to="/user/intern">
-            <Button type="primary" style={{marginBottom: "1em"}}>{intl.get('generate_intern_provement')}</Button>
-          </NavLink>
+          {category === NATIVE &&
+            <NavLink to="/user/intern">
+              <Button type="primary" style={{marginBottom: "1em"}}>{intl.get('generate_intern_provement')}</Button>
+            </NavLink>
+          }
           <Button onClick={this.onSwitch}>
             {intl.get('modify_information_password')} <Icon type={this.state.expand ? 'up' : 'down'} />
           </Button>
