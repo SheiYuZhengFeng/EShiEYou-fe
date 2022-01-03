@@ -83,14 +83,35 @@ class OrderCourse extends React.Component<{cid: number} & RouteComponentProps, {
       });
       return <div className={styles.whole}><Spin size="large" /></div>;
     }
+    const dateTimeProps = {
+      timeConstraints : {
+        minutes: {
+          min: 0,
+          max: 0,
+          step: 0
+        },
+        seconds: {
+          min: 0,
+          max: 0,
+          step: 0
+        }
+      },
+      dateFormat: 'YYYY-MM-DD'
+    }
     return (
       <div className={styles.whole}>
         <div className={styles.info}>
           <div className={styles.name}>{intl.get("course_name")}：{this.state.name}</div>
           <div className={styles.name}>{intl.get("video_name")}：{this.state.vname}</div>
-          <div className={styles.time}>{intl.get("order_start_time")}：<Datetime onChange={this.handleTime.bind(this, "starttime")} /></div>
-          <div className={styles.time}>{intl.get("order_end_time")}：<Datetime onChange={this.handleTime.bind(this, "endtime")} /></div>
-          <div className={styles.time}>{intl.get("order_time_message")}</div>
+          <div className={styles.time}>{intl.get("order_start_time")}
+            ：
+            <Datetime onChange={this.handleTime.bind(this, "starttime")} {...dateTimeProps} />
+          </div>
+          <div className={styles.time}>{intl.get("order_end_time")}
+            ：
+            <Datetime onChange={this.handleTime.bind(this, "endtime")} {...dateTimeProps} />
+          </div>
+          <div className={styles.name}>{intl.get("native")}：</div>
           <Collapse key="collapse" bordered={false} className={styles.teachers} accordion onChange={this.handleCollapse}>
             {this.state.teacher.map((v, i) => (
               <Collapse.Panel key={i} header={v.username} className={styles.teacher}>
