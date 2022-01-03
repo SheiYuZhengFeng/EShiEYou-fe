@@ -12,6 +12,7 @@ import { raiseOrderAction } from "../../../actions/CourseAction";
 import { durationToTime, unixToString } from "../../../utils/datetime";
 import { calcPrice } from "../../../utils/money";
 import intl from "react-intl-universal";
+import { toLoginAction } from "../../../actions/UserAction";
 
 export interface DetailCourseConfig {
   cid: number,
@@ -51,7 +52,12 @@ class DetailCourse extends React.Component<{config: DetailCourseConfig} & RouteC
     }
   }
   buyCourse = () => {
-    if (!store.getState().UserReducer.loged) { message.error(intl.get("login_to_buy")); return; }
+    if (!store.getState().UserReducer.loged) {
+      message.error(intl.get("login_to_buy"));
+      toLoginAction()
+      this.props.history.push('/user', { redirect: this.props.history.location.pathname })
+      return;
+    }
     if (store.getState().UserReducer.session.category !== STUDENT) { message.error(intl.get("only_student_buy")); return; }
     const data = this.state.data as CourseDetail;
     const onOk = () => {

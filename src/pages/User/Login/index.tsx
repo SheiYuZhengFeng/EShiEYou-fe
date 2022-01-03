@@ -9,7 +9,7 @@ import intl from "react-intl-universal";
 
 const { Option } = Select;
 
-class Login extends React.Component<RouteComponentProps, {loading: boolean}> {
+class Login extends React.Component<RouteComponentProps<{}, {}, {redirect?: string}>, {loading: boolean}> {
   form: any = {category: STUDENT, username: "", password: ""}
   constructor(props: any) {
     super(props);
@@ -28,7 +28,10 @@ class Login extends React.Component<RouteComponentProps, {loading: boolean}> {
       if (res.code === 0) {
         message.success(res.data.name + "，" + intl.get("welcome"));
         LoginAction({...res.data, category: this.form.category});
-        //this.props.history.push("/mycourse");
+        const redirect = this.props.history.location.state?.redirect
+        if (redirect) {
+          this.props.history.push(redirect);
+        }
       }
       else {
         message.error(intl.get("username_password_error"));
