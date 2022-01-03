@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import StudentAPI, { OrderEntity } from '../../services/StudentAPI';
 import store from '../../store';
 import NativeAPI from '../../services/NativeAPI';
-import { orderListAction } from '../../actions/OrderAction';
+import { expandOrderAction, orderListAction } from '../../actions/OrderAction';
 import { message, Skeleton, Empty, Icon, Collapse, Button, Modal, Tag } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import ShowUserDescriptions from '../../components/UserDescriptions/WithModal';
@@ -30,13 +30,13 @@ const Map = {
   tag: (v: OrderEntity) => [intl.get("order_status_tag_cancel_refuse"), intl.get("order_status_tag_confirming"), intl.get("order_status_tag_waiting"), intl.get("order_status_tag_finish"), intl.get("order_status_tag_onclass")][getType(v)],
 }
 
-class Order extends React.Component<RouteComponentProps, {status: number, order: OrderEntity[]}> {
+class Order extends React.Component<RouteComponentProps, {status: number, order: OrderEntity[], activeIds: string[]}> {
   constructor(props: any) {
     super(props);
-    this.state = {status: store.getState().OrderReducer.status, order: store.getState().OrderReducer.order};
+    this.state = {...store.getState().OrderReducer};
   }
   ss = store.subscribe(() => {
-    this.setState({...this.state, order: store.getState().OrderReducer.order, status: store.getState().OrderReducer.status});
+    this.setState({...store.getState().OrderReducer});
   });
   componentWillMount() {
     this.updateList();
@@ -106,6 +106,13 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
   showUser = (id: number, category: number) => {
     ShowUserDescriptions(category, id, true);
   }
+  handleChange = (ids: string | string[]) => {
+    if (typeof ids === 'string') {
+      expandOrderAction([ids])
+    } else {
+      expandOrderAction(ids)
+    }
+  }
   render() {
     const { category } = store.getState().UserReducer.session;
     let component: JSX.Element;
@@ -115,17 +122,28 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
     else if (this.state.order.length === 0) component = <Empty description={intl.get("empty_order")} />;
     else component = (
       <QueueAnim>
-        <Collapse key="orders" className={styles.orders} expandIconPosition="right" bordered={false}>
+        <Collapse
+          key="orders"
+          className={styles.orders}
+          expandIconPosition="right"
+          bordered={false}
+          onChange={this.handleChange.bind(this)}
+          activeKey={this.state.activeIds}
+        >
           {this.state.order.map((v, i) => (
-            <Collapse.Panel key={i} header={
-              <div className={styles.header}>
-                <Tag className={styles.tag} color={Map.color(v)}>
-                  <Icon className={styles.icon} type={Map.icon(v)} style={{ marginRight: '4px' }} />
-                  {Map.tag(v)}
-                </Tag>
-                <div className={styles.time}>日语五十音入门 {unixToString(v.starttime) + " ~ " + unixToString(v.endtime)}</div>
-              </div>
-            } className={styles.panel + " " + Map.background(v)}>
+            <Collapse.Panel
+              key={i}
+              header={
+                <div className={styles.header}>
+                  <Tag className={styles.tag} color={Map.color(v)}>
+                    <Icon className={styles.icon} type={Map.icon(v)} style={{ marginRight: '4px' }} />
+                    {Map.tag(v)}
+                  </Tag>
+                  <div className={styles.time}>日语五十音入门 {unixToString(v.starttime) + " ~ " + unixToString(v.endtime)}</div>
+                </div>
+              }
+              className={styles.panel + " " + Map.background(v)}
+            >
               <div className={styles.state}>{Map.description(v)}</div>
               <div className={styles.createtime}>{intl.get("order_create_at") + " " + unixToString(v.createtime)}</div>
               <div className={styles.controls}>
