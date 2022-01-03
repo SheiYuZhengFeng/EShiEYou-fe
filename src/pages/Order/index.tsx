@@ -6,7 +6,7 @@ import StudentAPI, { OrderEntity } from '../../services/StudentAPI';
 import store from '../../store';
 import NativeAPI from '../../services/NativeAPI';
 import { orderListAction } from '../../actions/OrderAction';
-import { message, Skeleton, Empty, Icon, Collapse, Button, Modal } from 'antd';
+import { message, Skeleton, Empty, Icon, Collapse, Button, Modal, Tag } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import ShowUserDescriptions from '../../components/UserDescriptions/WithModal';
 import { FOREIGN, STUDENT, NATIVE } from '../../components/UserDescriptions';
@@ -25,7 +25,9 @@ const getType = (v: OrderEntity) => {
 const Map = {
   icon: (v: OrderEntity) => ["close", "question", "clock-circle", "check", "exclamation"][getType(v)],
   background: (v: OrderEntity) => [styles.canceled, styles.waiting, styles.beforeclass, styles.finished, styles.onclass][getType(v)],
+  color: (v: OrderEntity) => ['', 'orange', 'blue', 'green', 'red'][getType(v)],
   description: (v: OrderEntity) => [intl.get("order_status_desc_cancel_refuse"), intl.get("order_status_desc_confirming"), intl.get("order_status_desc_waiting"), intl.get("order_status_desc_finish"), intl.get("order_status_desc_onclass")][getType(v)],
+  tag: (v: OrderEntity) => [intl.get("order_status_tag_cancel_refuse"), intl.get("order_status_tag_confirming"), intl.get("order_status_tag_waiting"), intl.get("order_status_tag_finish"), intl.get("order_status_tag_onclass")][getType(v)],
 }
 
 class Order extends React.Component<RouteComponentProps, {status: number, order: OrderEntity[]}> {
@@ -117,8 +119,11 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
           {this.state.order.map((v, i) => (
             <Collapse.Panel key={i} header={
               <div className={styles.header}>
-                <Icon className={styles.icon} type={Map.icon(v)} />
-                <div className={styles.time}>{unixToString(v.starttime) + " ~ " + unixToString(v.endtime)}</div>
+                <Tag color={Map.color(v)}>
+                  <Icon className={styles.icon} type={Map.icon(v)} style={{ marginRight: '4px' }} />
+                  {Map.tag(v)}
+                </Tag>
+                <div className={styles.time}>日语五十音入门 {unixToString(v.starttime) + " ~ " + unixToString(v.endtime)}</div>
               </div>
             } className={styles.panel + " " + Map.background(v)}>
               <div className={styles.state}>{Map.description(v)}</div>

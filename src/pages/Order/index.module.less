@@ -20,7 +20,7 @@
       align-items: center;
 
       .icon {
-        font-size: 1.3em;
+        font-size: 1em;
       }
 
       .time {
@@ -32,6 +32,7 @@
       border: none;
       border-radius: .5em;
       margin-bottom: 1em;
+      background-color: fade(grey, 8%);
 
       .state {
         font-weight: bold;
@@ -45,14 +46,14 @@
 
     @keyframes onclass {
       0% { background-color: fade(red, 10%); }
-      100% { background-color: fade(red, 40%); }
+      100% { background-color: fade(red, 20%); }
     }
 
-    .canceled { background-color: fade(black, 5%); }
-    .waiting { background-color: fade(orange, 20%); }
+    // .canceled { background-color: fade(black, 5%); }
+    // .waiting { background-color: fade(orange, 20%); }
     .onclass { animation: onclass 1s ease-in-out 0s infinite alternate; }
-    .finished { background-color: fade(green, 10%); }
-    .beforeclass { background-color: fade(@primary-color, 20%); }
+    // .finished { background-color: fade(green, 10%); }
+    // .beforeclass { background-color: fade(@primary-color, 20%); }
 
     .controls {
       margin-top: 1em;
