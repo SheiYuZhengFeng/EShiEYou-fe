@@ -7,7 +7,7 @@ import { message, Result, Spin, Slider, Icon, Button, Popconfirm } from "antd";
 import { durationToTime } from "../../utils/datetime";
 import { SliderValue } from "antd/lib/slider";
 import WAVEInterface from "react-audio-recorder/dist/waveInterface";
-import { STUDENT } from "../../components/UserDescriptions";
+import { NATIVE, STUDENT } from "../../components/UserDescriptions";
 import intl from "react-intl-universal";
 
 interface RoomState {
@@ -75,11 +75,18 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     // this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
     this.isStudent = store.getState().UserReducer.session.category === STUDENT;
     this.waveInterface = new WAVEInterface();
-    this.heartBeat = setInterval(() => {
+    this.heartBeat = setTimeout(() => {
       // if (this.state.connected === 1 && !this.state.over && this.ws.ws.readyState === this.ws.ws.OPEN) {
         // this.ws.send("heartbeat", "");
       // }
-    }, 1000);
+      const { category } = store.getState().UserReducer.session
+      if (category === NATIVE) {
+        this.setState({...this.state, roomstate: { ...this.state.roomstate, student: true }})
+      } else {
+        this.setState({...this.state, roomstate: { ...this.state.roomstate, native: true }}) 
+      }
+      message.info('对方已经准备上课了！')
+    }, 2000);
   }
   receiveControl = (play: boolean) => {
     if (play) message.info(intl.get("stream_play"));
@@ -138,7 +145,20 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
     // this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
   }
   handleReady = () => {
+    this.setState({
+      ...this.state,
+      roomstate: { student: true, native: true, onclass: true },
+      playstate: {
+        time: 0,
+        progress: 400,
+        duration: 14 * 60 + 27,
+        url: 'https://box.nju.edu.cn/f/8079be06c4c54f168726/?dl=1'
+      }
+    })
     // this.ws.send("ready", "");
+    setInterval(() => {
+      this.setState({...this.state, playstate: {...this.state.playstate, time: this.state.playstate.time + 1}})
+    }, 1000)
   }
   handleControl = (play: boolean) => {
     // this.ws.send(play ? "play" : "pause", "");
