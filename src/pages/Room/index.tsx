@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./index.module.less";
-import WS from "../../utils/ws";
+// import WS from "../../utils/ws";
 import { RouteComponentProps, withRouter } from "react-router";
 import store from "../../store";
 import { message, Result, Spin, Slider, Icon, Button, Popconfirm } from "antd";
@@ -28,7 +28,7 @@ interface RoomState {
 }
 
 const initialRoomState: RoomState = {
-  connected: 0,
+  connected: 1,
   roomstate: {
     student: false,
     native: false,
@@ -61,7 +61,7 @@ function CloudButton(props: {title: string | JSX.Element, onClick?: (event: Reac
 }
 
 class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState> {
-  ws: WS;
+  // ws: WS;
   video: HTMLVideoElement | null | undefined;
   audio: HTMLAudioElement | null | undefined;
   isStudent: boolean;
@@ -72,13 +72,13 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
   constructor(props: any) {
     super(props);
     this.state = initialRoomState;
-    this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
+    // this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
     this.isStudent = store.getState().UserReducer.session.category === STUDENT;
     this.waveInterface = new WAVEInterface();
     this.heartBeat = setInterval(() => {
-      if (this.state.connected === 1 && !this.state.over && this.ws.ws.readyState === this.ws.ws.OPEN) {
-        this.ws.send("heartbeat", "");
-      }
+      // if (this.state.connected === 1 && !this.state.over && this.ws.ws.readyState === this.ws.ws.OPEN) {
+        // this.ws.send("heartbeat", "");
+      // }
     }, 1000);
   }
   receiveControl = (play: boolean) => {
@@ -135,17 +135,17 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
   }
   handleRefresh = () => {
     this.setState(initialRoomState);
-    this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
+    // this.ws = new WS("/room/" + this.props.match.params.rid + "/" + store.getState().UserReducer.session.token, this.onMessage, this.onOpen, this.onClose);
   }
   handleReady = () => {
-    this.ws.send("ready", "");
+    // this.ws.send("ready", "");
   }
   handleControl = (play: boolean) => {
-    this.ws.send(play ? "play" : "pause", "");
+    // this.ws.send(play ? "play" : "pause", "");
     this.receiveControl(play);
   }
   handleProgress = (value: SliderValue) => {
-    this.ws.send("progress", { progress: value as number });
+    // this.ws.send("progress", { progress: value as number });
   }
   handleMicrophone = () => {
     if (this.state.audio) {
@@ -160,14 +160,14 @@ class Room extends React.Component<RouteComponentProps<{rid: string}>, RoomState
         const { audioData } = this.waveInterface;
         this.waveInterface.buffers = [[], []];
         const fileReader = new FileReader();
-        fileReader.onload = (e) => { this.ws.send("audio", (e.target as FileReader).result as string); }
+        // fileReader.onload = (e) => { this.ws.send("audio", (e.target as FileReader).result as string); }
         fileReader.readAsDataURL(audioData);
       }, 200);
     }
     this.setState({...this.state, audio: !this.state.audio});
   }
   handleOver = () => {
-    this.ws.send("over", "");
+    // this.ws.send("over", "");
     this.setState({...this.state, over: true});
   }
   render() {
