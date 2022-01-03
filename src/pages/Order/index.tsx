@@ -119,7 +119,7 @@ class Order extends React.Component<RouteComponentProps, {status: number, order:
           {this.state.order.map((v, i) => (
             <Collapse.Panel key={i} header={
               <div className={styles.header}>
-                <Tag color={Map.color(v)}>
+                <Tag className={styles.tag} color={Map.color(v)}>
                   <Icon className={styles.icon} type={Map.icon(v)} style={{ marginRight: '4px' }} />
                   {Map.tag(v)}
                 </Tag>
