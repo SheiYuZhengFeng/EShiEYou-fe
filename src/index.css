@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+li.dot {
+  background-color: #5485E5 !important;
+  box-shadow: 2px 2px 4px #5485E5 !important;
+}
