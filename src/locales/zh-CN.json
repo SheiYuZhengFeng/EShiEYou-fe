@@ -240,5 +240,8 @@
   "download": "下载",
   "canceled": "已取消",
   "waiting": "等待中",
-  "completed": "已完成"
+  "completed": "已完成",
+  "all": "全部",
+  "spend": "支出",
+  "income": "收入"
 }

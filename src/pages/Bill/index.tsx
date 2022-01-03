@@ -138,15 +138,15 @@ class Bill extends React.Component<any, BillState & { filter: number }> {
             </div>
             {balance.status === 1 ?
               <div className={styles.control}>
-                <Button onClick={this.handlePay}>{intl.get("pay")}</Button>
+                <Button onClick={this.handlePay} type="primary">{intl.get("pay")}</Button>
                 <Button onClick={this.handleGet}>{intl.get("get")}</Button>
               </div>
             : null}
           </div>
           <Radio.Group key="control" value={this.state.filter} buttonStyle="solid" style={{ marginTop: '3em' }} onChange={this.handleFilter.bind(this)}>
-            <Radio.Button value={0}>全部</Radio.Button>
-            <Radio.Button value={-1}>支出</Radio.Button>
-            <Radio.Button value={1}>收入</Radio.Button>
+            <Radio.Button value={0}>{intl.get("all")}</Radio.Button>
+            <Radio.Button value={-1}>{intl.get("spend")}</Radio.Button>
+            <Radio.Button value={1}>{intl.get("income")}</Radio.Button>
           </Radio.Group>
           <div key="bills" className={styles.bills}>
             {bills.status === -1 ?

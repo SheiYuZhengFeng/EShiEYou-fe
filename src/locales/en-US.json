@@ -240,5 +240,8 @@
   "download": "Download",
   "canceled": "Canceled",
   "waiting": "Waiting",
-  "completed": "Completed!"
+  "completed": "Completed!",
+  "all": "All",
+  "spend": "Spend",
+  "income": "Income"
 }
